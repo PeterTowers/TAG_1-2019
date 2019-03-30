@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "readgml.h"
+#include "program.h"
 
 int main() {
     FILE *fptr;
     NETWORK *network = malloc(sizeof(NETWORK));
 
     FILE *tmp;
-    tmp = fptr;
+
     char c;
-
-    int a;
-    char file[] = "../data/karate.gml";
-
-    printf("Hello, World!\n");
+    char file[] = "../karate.gml";
 
     fptr = fopen(file, "r");
 
@@ -22,13 +19,15 @@ int main() {
         exit(66);
     }
 
+    tmp = fptr;
     while ((c = getc(tmp)) != EOF) putchar(c);
-    a = read_network(network, fptr);
+    if(read_network(network, fptr) != 0){
+        printf("Could not read network");
+        exit(77);
+    }
 
-    if (a == 0)
-        printf("Deu certo!");
-    else
-        printf("Nao deu certo :(");
+
+    print_vertices(*network);
 
     free_network(network);
     fclose(fptr);
