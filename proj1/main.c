@@ -4,10 +4,14 @@
 
 int main() {
     FILE *fptr;
-    NETWORK *network;
+    NETWORK *network = malloc(sizeof(NETWORK));
+
+    FILE *tmp;
+    tmp = fptr;
+    char c;
 
     int a;
-    char file[] = "/home/pedro/Documents/TeoAppGrafos/proj1/karate.gml";
+    char file[] = "../data/karate.gml";
 
     printf("Hello, World!\n");
 
@@ -18,6 +22,7 @@ int main() {
         exit(66);
     }
 
+    while ((c = getc(tmp)) != EOF) putchar(c);
     a = read_network(network, fptr);
 
     if (a == 0)
