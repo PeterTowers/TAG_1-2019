@@ -16,10 +16,10 @@ int load(NETWORK* network, char* filename){
       return 0;
   }
 
-  tmp = fptr;
-  if(PRINT_FILE_INPUT) while ((c = getc(tmp)) != EOF) putchar(c);
+//  tmp = fptr;
+//  if(PRINT_FILE_INPUT) while ((c = getc(tmp)) != EOF) putchar(c);
   
-
+//    rewind(fptr);
   if(read_network(network, fptr) != 0){
       printf("Could not read network");
       exit(77);
@@ -35,7 +35,7 @@ int cleanup(NETWORK* network){
 };
 
 void print_vertex(VERTEX v){
-  printf("[print_vertex] vertex: %i - degree: %i", v.id, v.degree);
+  printf("[print_vertex] vertex: %i - degree: %i\n", v.id, v.degree);
   return;
 };
 
