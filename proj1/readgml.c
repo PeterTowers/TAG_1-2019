@@ -156,7 +156,7 @@ int count_vertices()
   reset_buffer();
 
   while (next_line(line)==0) {
-    ptr = strstr(line,"node [");
+    ptr = strstr(line,"node");
     if (ptr!=NULL) {
       ptr = strstr(line,"label");
       if (ptr==NULL) result++;
@@ -192,10 +192,12 @@ void create_network(NETWORK *network)
   // Determine whether the network is directed
 
   network->directed = is_directed();
+  printf("Is directed? %i\n", network->directed);
 
   // Count the vertices
 
   network->nvertices = count_vertices();
+  printf("Number of vertices: %i\n", network->nvertices);
 
   // Make space for the vertices
 
