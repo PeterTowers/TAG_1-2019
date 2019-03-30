@@ -142,6 +142,7 @@ fabric.properties
 data/*
 .vscode
 proj1/.idea
+proj1/.idea/workspace.xml
 proj1/CMakeFiles
 proj1/CMakeCache.txt
 proj1/Makefile
