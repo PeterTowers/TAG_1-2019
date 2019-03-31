@@ -2,7 +2,7 @@
  *
  * Disciplina: Teoria e Aplicação de Grafos - Turma A, 01/2019
  *
- * Projeto 1 - Modelagem e conceitos fundamentais de grafo
+ * Projeto 1 - Modelagem e conceitos fundamentais de grafos
  *
  * Este programa utiliza o arquivo './data/karate.gml' para montar um grafo não direcionado, sem peso, utilizando lista
  * de adjacência. Com o grafo, calculamos/imprimimos: os vértices e seus respectivos graus, todos os cliques maximais
