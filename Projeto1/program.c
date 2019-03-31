@@ -12,7 +12,7 @@ int load(NETWORK* network, char* filename){
 
   fptr = fopen(filename, "r");
   if (fptr == NULL ) {
-      printf("Cannot open file");
+      printf("Cannot open file.\n");
       return 0;
   }
 
