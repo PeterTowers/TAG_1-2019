@@ -44,5 +44,8 @@ void print_vertices(NETWORK network){
     printf("[print_vertices] error: network has %i vertices", network.nvertices);
   for(int i = 0; i < network.nvertices; i++)
     print_vertex(network.vertex[i]);
+
+    printf("\n[get_degrees] Greatest degree vertice: %i. Degree: %i\n", network.max_degree->id,
+            network.max_degree->degree);
   return;
-};
+}
