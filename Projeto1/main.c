@@ -26,7 +26,7 @@
 
 int main() {
     NETWORK network;
-    if(!load(&network, "data/karate.gml")) exit(-1);
+    if(!load(&network, "../data/karate.gml")) exit(-1);
 
     print_vertices(network);
 
