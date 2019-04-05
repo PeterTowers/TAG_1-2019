@@ -5,14 +5,6 @@
 
 #define PRINT_FILE_INPUT 1
 
-typedef struct BK_LIST{
-    VERTEX vertex;
-
-    struct BK_LIST* previous;
-    struct BK_LIST* next;
-} BK_LIST;
-
-int max_clique(NETWORK* network);
 
 int load(NETWORK* network, char* filename){
   FILE *fptr;
@@ -86,6 +78,19 @@ void generate_list(NETWORK* network, struct BK_LIST* list) {
 
     return;
 }
+
+
+/**
+ * BronKerbosch1(R, P, X):
+ *     if P and X are both empty:
+ *         report R as a maximal clique
+ *     for each vertex v in P:
+ *         BronKerbosch1(R ⋃ {v}, P ⋂ N(v), X ⋂ N(v))
+ *         P := P \ {v}
+ *         X := X ⋃ {v}
+ *
+ */
+
 
 int bron_kerbosch(BK_LIST group_r, BK_LIST group_p, BK_LIST group_x) {
     return 0;
