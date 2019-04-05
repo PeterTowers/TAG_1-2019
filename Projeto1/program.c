@@ -98,10 +98,10 @@ int max_clique(NETWORK* network) {
 
     BK_LIST* candidate3 = candidates->next;
 
-    for(int i = 0; i < 2; i++)
-        candidate3 = candidate3->next;
+//    for(int i = 0; i < 1; i++)
+//        candidate3 = candidate3->next;
 
-    printf("[max_clique] vertex: %i - degree %i\n\n", candidates->vertex.id, candidates->vertex.degree);
+    printf("[max_clique] vertex: %i - degree %i\n\n", candidate3->vertex.id, candidate3->vertex.degree);
     if (candidates->next == NULL)
         printf("Could not generate bk_list");
     return 0;
