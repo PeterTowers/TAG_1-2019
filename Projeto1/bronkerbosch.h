@@ -50,4 +50,6 @@ void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x);
 // TODO: Document method - max_clique
 int max_clique(NETWORK*);
 
+// TODO: Document method - destroy
+void destroy(BK_LIST* list);
 #endif
