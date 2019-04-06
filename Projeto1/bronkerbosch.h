@@ -13,8 +13,11 @@ typedef struct BK_LIST{
     struct BK_LIST* next;
 } BK_LIST;
 
+// TODO: Document method - cloee
+BK_LIST* clone(BK_LIST* list);
+
 // TODO: Document method - conjunction (union)
-BK_LIST conjunction(BK_LIST, VERTEX);
+BK_LIST* conjunction(BK_LIST*, VERTEX);
 // BK_LIST conjunction(BK_LIST, BK_LIST);
 
 // TODO: Document method - intersection

@@ -2,10 +2,29 @@
 
 #define TEST_LIST_FUNCTIONS
 
+BK_LIST* clone(BK_LIST* list){
+  if (list == NULL) return NULL;
+  BK_LIST *head;
 
-BK_LIST conjunction(BK_LIST list, VERTEX vertex) {
-  // TODO: Implement method
-  return list;
+  head = malloc(sizeof(BK_LIST));
+
+  head->vertex = list->vertex;
+  head->previous = NULL;
+  head->next = clone(list->next);
+
+  if (head->next != NULL) head->next->previous = head;
+
+  return head;
+}
+
+BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
+  BK_LIST* copy = clone(list);
+  // BK_LIST* last = copy;
+
+  // while(last != NULL) last = last->next;
+  // last->next = malloc(sizeof(BK_LIST));
+
+  return copy;
 }
 // BK_LIST conjunction(BK_LIST, BK_LIST);
 
@@ -97,10 +116,10 @@ int max_clique(NETWORK* network) {
 
     #ifdef TEST_LIST_FUNCTIONS
       printf("---------------- TESTING CONJUNCTION\n");
-      BK_LIST con = conjunction(*candidates, network->vertex[0]);
+      BK_LIST* con = conjunction(candidates, network->vertex[0]);
       print_list(candidates);
       printf("%d\n", network->vertex[0].id);
-      print_list(&con);
+      print_list(con);
       
       
 
