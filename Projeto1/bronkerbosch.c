@@ -113,6 +113,21 @@ void generate_list(NETWORK* network, BK_LIST* list) {
     return;
 }
 
+BK_LIST* generate_neighbours (NETWORK network, VERTEX vertex) {
+    BK_LIST* neighbours;
+    int aux;
+
+    for (int i = 0; i < vertex.degree; i++) {
+        aux = vertex.edge[i].target;
+        neighbours->vertex = network.vertex[aux];
+        neighbours->next = malloc(sizeof(BK_LIST));
+        neighbours = neighbours->next;
+    }
+
+    return neighbours;
+}
+
+
 
 /**
  * BronKerbosch1(R, P, X):
