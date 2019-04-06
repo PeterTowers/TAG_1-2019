@@ -3,21 +3,35 @@
 #define TEST_LIST_FUNCTIONS
 
 
-BK_LIST conjunction(BK_LIST list, VERTEX vertex) {
+BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
   // TODO: Implement method
   return list;
 }
 // BK_LIST conjunction(BK_LIST, BK_LIST);
 
 
-BK_LIST intersection(BK_LIST list1, BK_LIST list2) {
-  // TODO: Implement method
-  return list1;
-}
+//BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {    // TODO: Implement method
+//    BK_LIST* intersected = malloc(sizeof(BK_LIST));
+//
+//    struct BK_LIST* next1 = list1;
+//    struct BK_LIST* next2 = list2;
+//
+//    while (next1 != NULL) {
+//        while (next2 != NULL) {
+//            if (next1->vertex.id == next2->vertex.id)
+//                intersected = conjunction(intersected, next1->vertex);
+//            else
+//                next2 = next2->next;
+//        }
+//        next1 = next1->next;
+//    }
+//
+//  return intersected;
+//}
 
 
-BK_LIST disjunction(BK_LIST list, VERTEX vertex) {
-  // TODO: Implement method
+BK_LIST disjunction(BK_LIST list, VERTEX vertex) {      // TODO: Implement method
+
   return list;
 }
 // BK_LIST disjunction(BK_LIST, BK_LIST);
@@ -25,7 +39,7 @@ BK_LIST disjunction(BK_LIST list, VERTEX vertex) {
 
 
 
-void print_list(const BK_LIST *list){
+void print_list(BK_LIST *list){
   BK_LIST* tracer = list;
 
   printf("[print_list] (");
@@ -39,7 +53,7 @@ void print_list(const BK_LIST *list){
 }
 
 void generate_list(NETWORK* network, BK_LIST* list) {
-   struct BK_LIST *last, *current;
+   BK_LIST *last, *current;
 
     list->previous = NULL;
     list->vertex = network->vertex[0];
@@ -92,15 +106,15 @@ int max_clique(NETWORK* network) {
 
     printf("[max_clique] vertex: %i - degree %i\n\n", candidate3->vertex.id, candidate3->vertex.degree);
     if (candidates->next == NULL)
-        printf("Could not generate bk_list");
+        printf("Could not generate bk_list.\n");
 
 
     #ifdef TEST_LIST_FUNCTIONS
       printf("---------------- TESTING CONJUNCTION\n");
-      BK_LIST con = conjunction(*candidates, network->vertex[0]);
+      BK_LIST* con = conjunction(candidates, network->vertex[0]);
       print_list(candidates);
       printf("%d\n", network->vertex[0].id);
-      print_list(&con);
+      print_list(con);
       
       
 
