@@ -19,10 +19,14 @@ BK_LIST* clone(BK_LIST* list){
 
 BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
   BK_LIST* copy = clone(list);
-  // BK_LIST* last = copy;
+  BK_LIST* last = copy;
 
-  // while(last != NULL) last = last->next;
-  // last->next = malloc(sizeof(BK_LIST));
+  while(last->next != NULL) last = last->next;
+  last->next = malloc(sizeof(BK_LIST));
+  
+  last->next->previous = last;
+  last->next->next = NULL;
+  last->next->vertex = vertex;
 
   return copy;
 }
