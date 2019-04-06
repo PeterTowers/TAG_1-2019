@@ -2,22 +2,23 @@
 #include <stdlib.h>
 #include "network.h"
 
-#ifndef _VERTEX_H
-#define _VERTEX_H
+#ifndef _PROGRAM_H
+#define _PROGRAM_H
 
-
-typedef struct BK_LIST{
-    VERTEX vertex;
-
-    struct BK_LIST* previous;
-    struct BK_LIST* next;
-} BK_LIST;
-
+// TODO: Document function signature - max_clique
 int max_clique(NETWORK* network);
 
+// TODO: Document function signature - load
 int load(NETWORK* network, char* filename);
+
+// TODO: Document function signature - print_vertex
 void print_vertex(VERTEX v);
+
+// TODO: Document function signature - print_vertices
 void print_vertices(NETWORK n);
+
+// TODO: Document function signature - cleanup
 int cleanup(NETWORK* network);
+
 
 #endif
