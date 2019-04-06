@@ -71,7 +71,26 @@ BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {
 }
 // BK_LIST disjunction(BK_LIST, BK_LIST);
 
+BK_LIST* algebraic_union(BK_LIST* list1, BK_LIST* list2) {
+    if (list1 == NULL)
+        return list2;
+    else if (list2 == NULL)
+        return list1;
+    else {
+        BK_LIST *unionized = clone(list1);
+        BK_LIST *aux = list2;
 
+
+        while (aux != NULL) {
+            if (contains(unionized, aux->vertex) != 0)
+                conjunction(unionized, aux->vertex);
+
+            aux = aux->next;
+        }
+
+        return unionized;
+    }
+}
 
 
 void print_list(BK_LIST *list){
@@ -113,9 +132,9 @@ void generate_list(NETWORK* network, BK_LIST* list) {
     return;
 }
 
-BK_LIST* generate_neighbours (NETWORK network, VERTEX vertex) {
-    BK_LIST* neighbours;
+BK_LIST* find_neighbours (NETWORK network, VERTEX vertex) {
     int aux;
+    BK_LIST* neighbours = malloc(sizeof(BK_LIST));
 
     for (int i = 0; i < vertex.degree; i++) {
         aux = vertex.edge[i].target;
@@ -127,14 +146,31 @@ BK_LIST* generate_neighbours (NETWORK network, VERTEX vertex) {
     return neighbours;
 }
 
+BK_LIST* find_greatest_degree (BK_LIST* list) {
+    BK_LIST* max = list;
+    BK_LIST* aux = list;
+
+    if (list == NULL)
+        return NULL;
+
+    while (aux != NULL) {
+        if (aux->vertex.degree > max->vertex.degree) {
+            max = aux;
+        }
+        aux = aux->next;
+    }
+
+    return max;
+}
 
 
 /**
- * BronKerbosch1(R, P, X):
+ * BronKerbosch2(R,P,X):
  *     if P and X are both empty:
  *         report R as a maximal clique
- *     for each vertex v in P:
- *         BronKerbosch1(R ⋃ {v}, P ⋂ N(v), X ⋂ N(v))
+ *     choose a pivot vertex u in P ⋃ X
+ *     for each vertex v in P \ N(u):
+ *         BronKerbosch2(R ⋃ {v}, P ⋂ N(v), X ⋂ N(v))
  *         P := P \ {v}
  *         X := X ⋃ {v}
  *
@@ -146,6 +182,8 @@ BK_LIST* bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x) {
         print_list(group_r);
         printf('\n');
     }
+
+    BK_LIST* pivot = find_greatest_degree()
 
     while (group_p != NULL)
 

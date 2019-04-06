@@ -28,10 +28,17 @@ BK_LIST* intersection(BK_LIST*, BK_LIST*);
 BK_LIST* disjunction(BK_LIST*, VERTEX);
 // BK_LIST disjunction(BK_LIST, BK_LIST);
 
+// TODO: Document method - algebraic_union
+BK_LIST* algebraic_union(BK_LIST* list1, BK_LIST* list2);
 
 // TODO: Document method - generate_list
 void generate_list(NETWORK*, BK_LIST*);
 
+// TODO: Document method - find_neighbours
+BK_LIST* find_neighbours (NETWORK network, VERTEX vertex);
+
+// TODO: Document method - find_greatest_degree
+BK_LIST* find_greatest_degree (BK_LIST* list);
 
 // TODO: Document method - print_list
 void print_list(BK_LIST*);
