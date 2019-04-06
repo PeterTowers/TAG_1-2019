@@ -33,29 +33,37 @@ BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
 // BK_LIST conjunction(BK_LIST, BK_LIST);
 
 
-//BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {    // TODO: Implement method
-//    BK_LIST* intersected = malloc(sizeof(BK_LIST));
-//
-//    struct BK_LIST* next1 = list1;
-//    struct BK_LIST* next2 = list2;
-//
-//    while (next1 != NULL) {
-//        while (next2 != NULL) {
-//            if (next1->vertex.id == next2->vertex.id)
-//                intersected = conjunction(intersected, next1->vertex);
-//            else
-//                next2 = next2->next;
-//        }
-//        next1 = next1->next;
-//    }
-//
-//  return intersected;
-//}
+BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {    // TODO: Implement method
+   BK_LIST* intersected = malloc(sizeof(BK_LIST));
+   BK_LIST* next1 = list1;
+   BK_LIST* next2 = list2;
+
+   while (next1 != NULL) {
+       while (next2 != NULL) {
+           if (next1->vertex.id == next2->vertex.id) intersected = conjunction(intersected, next1->vertex);
+           next2 = next2->next;
+       }
+       next1 = next1->next;
+   }
+
+ return intersected;
+}
 
 
-BK_LIST disjunction(BK_LIST list, VERTEX vertex) {      // TODO: Implement method
+BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {      // TODO: Implement method
+  if (list == NULL) return NULL;
+  if (list->vertex.id == vertex.id) return disjunction(list->next, vertex);
+  BK_LIST *head;
 
-  return list;
+  head = malloc(sizeof(BK_LIST));
+
+  head->vertex = list->vertex;
+  head->previous = NULL;
+  head->next = disjunction(list->next, vertex);
+
+  if (head->next != NULL) head->next->previous = head;
+
+  return head;
 }
 // BK_LIST disjunction(BK_LIST, BK_LIST);
 
@@ -142,8 +150,18 @@ int max_clique(NETWORK* network) {
       
 
       printf("---------------- TESTING INTERSECTION\n");
+      BK_LIST* inter = conjunction(candidates, network->vertex[0]);
+      print_list(inter);
 
       printf("---------------- TESTING DISJUNCTION\n");
+      BK_LIST* dis = disjunction(candidates, network->vertex[0]);
+      print_list(candidates);
+      printf("%d\n", network->vertex[0].id);
+      print_list(dis);
+
+      free(con);
+      free(inter);
+      free(dis);
     #endif
 
     return 0;

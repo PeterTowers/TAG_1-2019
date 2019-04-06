@@ -25,7 +25,7 @@ BK_LIST* intersection(BK_LIST*, BK_LIST*);
 
 
 // TODO: Document method - disjunction
-BK_LIST disjunction(BK_LIST, VERTEX);
+BK_LIST* disjunction(BK_LIST*, VERTEX);
 // BK_LIST disjunction(BK_LIST, BK_LIST);
 
 
