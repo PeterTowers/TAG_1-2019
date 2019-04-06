@@ -125,8 +125,16 @@ void generate_list(NETWORK* network, BK_LIST* list) {
  *
  */
 
-int bron_kerbosch(BK_LIST group_r, BK_LIST group_p, BK_LIST group_x) {
-    return 0;
+BK_LIST* bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x) {
+    if ((group_p == NULL) && (group_x == NULL)) {
+        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
+        print_list(group_r);
+        printf('\n');
+    }
+
+    while (group_p != NULL)
+
+        return 0;
 }
 
 int max_clique(NETWORK* network) {
@@ -178,4 +186,18 @@ int max_clique(NETWORK* network) {
     #endif
 
     return 0;
+}
+
+void destroy(BK_LIST* list) {
+    BK_LIST *aux1, *aux2;
+
+    aux1 = list;
+
+    while (aux1->previous != NULL)
+        aux1 = aux1->previous;
+
+    while (aux2 != NULL) {
+        aux2 = aux1->next;
+        free(aux1);
+    }
 }
