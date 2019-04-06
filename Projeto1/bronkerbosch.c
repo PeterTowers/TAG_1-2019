@@ -176,19 +176,23 @@ BK_LIST* find_greatest_degree (BK_LIST* list) {
  *
  */
 
-BK_LIST* bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x) {
-    if ((group_p == NULL) && (group_x == NULL)) {
-        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
-        print_list(group_r);
-        printf('\n');
-    }
-
-    BK_LIST* pivot = find_greatest_degree()
-
-    while (group_p != NULL)
-
-        return 0;
-}
+//void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x) {
+//    if ((group_p == NULL) && (group_x == NULL)) {
+//        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
+//        print_list(group_r);
+//        printf('\n');
+//
+//
+//    }
+//
+//    BK_LIST* pivot = find_greatest_degree()
+//
+//    while (group_p != NULL) {
+//
+//    };
+//
+//
+//}
 
 int max_clique(NETWORK* network) {
     BK_LIST* candidates = calloc(1, sizeof(BK_LIST));
