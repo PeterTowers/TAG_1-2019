@@ -33,24 +33,30 @@ BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
 // BK_LIST conjunction(BK_LIST, BK_LIST);
 
 
-BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {    // TODO: Implement method
-   BK_LIST* intersected = malloc(sizeof(BK_LIST));
-   BK_LIST* next1 = list1;
-   BK_LIST* next2 = list2;
-
-   while (next1 != NULL) {
-       while (next2 != NULL) {
-           if (next1->vertex.id == next2->vertex.id) intersected = conjunction(intersected, next1->vertex);
-           next2 = next2->next;
-       }
-       next1 = next1->next;
-   }
-
- return intersected;
+int contains(BK_LIST* list, VERTEX vertex){
+  if (list == NULL) return 0;
+  return (list->vertex.id == vertex.id) || contains(list->next, vertex);
 }
 
+BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {
+  if (list1 == NULL || list2 == NULL) return NULL;
+  
+  BK_LIST *head = NULL;
+  VERTEX vertex = list1->vertex;
 
-BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {      // TODO: Implement method
+  if (contains(list2, list1->vertex)){
+    head = malloc(sizeof(BK_LIST));
+    head->vertex = vertex;
+    head->previous = NULL;
+    head->next = intersection(list1->next, list2);
+    if (head->next != NULL) head->next->previous = head;
+  }
+  else head = intersection(list1->next, list2);
+
+  return head;
+}
+
+BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {
   if (list == NULL) return NULL;
   if (list->vertex.id == vertex.id) return disjunction(list->next, vertex);
   BK_LIST *head;
@@ -141,29 +147,37 @@ int max_clique(NETWORK* network) {
 
 
     #ifdef TEST_LIST_FUNCTIONS
+      VERTEX vertex = network->vertex[0];
       printf("---------------- TESTING CONJUNCTION\n");
-      BK_LIST* con = conjunction(candidates, network->vertex[0]);
+      BK_LIST* con = conjunction(candidates, vertex);
       print_list(candidates);
-      printf("%d\n", network->vertex[0].id);
+      printf("%d\n", vertex.id);
       print_list(con);
-      
-      
-
-      printf("---------------- TESTING INTERSECTION\n");
-      BK_LIST* inter = conjunction(candidates, network->vertex[0]);
-      print_list(inter);
 
       printf("---------------- TESTING DISJUNCTION\n");
-      BK_LIST* dis = disjunction(candidates, network->vertex[0]);
+      BK_LIST* dis = disjunction(candidates, vertex);
       print_list(candidates);
-      printf("%d\n", network->vertex[0].id);
+      printf("%d\n", vertex.id);
       print_list(dis);
 
+      printf("---------------- TESTING CONTAINS\n");
+      printf("%d\n", contains(con, vertex));
+      printf("%d\n", contains(dis, vertex));
+
+      printf("---------------- TESTING INTERSECTION\n");
+      BK_LIST* inter = intersection(candidates, dis);
+      BK_LIST* nil1 = intersection(NULL, candidates);
+      BK_LIST* nil2 = intersection(candidates, NULL);
+      print_list(inter);
+      print_list(nil1);
+      print_list(nil2);
+
       free(con);
-      free(inter);
       free(dis);
+      free(inter);
+      free(nil1);
+      free(nil2);
     #endif
 
     return 0;
 }
-
