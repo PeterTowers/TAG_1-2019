@@ -2,14 +2,20 @@
 
 #define TEST_LIST_FUNCTIONS
 
+BK_LIST* new(VERTEX vertex){
+  BK_LIST *head;
+  head = malloc(sizeof(BK_LIST));
+  head->vertex = vertex;
+  head->previous = NULL;
+  head->next = NULL;
+  return head;
+}
+
 BK_LIST* clone(BK_LIST* list){
   if (list == NULL) return NULL;
   BK_LIST *head;
 
-  head = malloc(sizeof(BK_LIST));
-
-  head->vertex = list->vertex;
-  head->previous = NULL;
+  head = new(list->vertex);
   head->next = clone(list->next);
 
   if (head->next != NULL) head->next->previous = head;
@@ -22,11 +28,8 @@ BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
   BK_LIST* last = copy;
 
   while(last->next != NULL) last = last->next;
-  last->next = malloc(sizeof(BK_LIST));
-  
+  last->next = new(vertex);
   last->next->previous = last;
-  last->next->next = NULL;
-  last->next->vertex = vertex;
 
   return copy;
 }
@@ -45,9 +48,7 @@ BK_LIST* intersection(BK_LIST* list1, BK_LIST* list2) {
   VERTEX vertex = list1->vertex;
 
   if (contains(list2, list1->vertex)){
-    head = malloc(sizeof(BK_LIST));
-    head->vertex = vertex;
-    head->previous = NULL;
+    head = new(vertex);
     head->next = intersection(list1->next, list2);
     if (head->next != NULL) head->next->previous = head;
   }
@@ -60,11 +61,8 @@ BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {
   if (list == NULL) return NULL;
   if (list->vertex.id == vertex.id) return disjunction(list->next, vertex);
   BK_LIST *head;
-
-  head = malloc(sizeof(BK_LIST));
-
-  head->vertex = list->vertex;
-  head->previous = NULL;
+  
+  head = new(list->vertex);
   head->next = disjunction(list->next, vertex);
 
   if (head->next != NULL) head->next->previous = head;
