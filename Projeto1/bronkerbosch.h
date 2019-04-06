@@ -13,7 +13,6 @@ typedef struct BK_LIST{
     struct BK_LIST* next;
 } BK_LIST;
 
-
 // TODO: Document method - conjunction (union)
 BK_LIST conjunction(BK_LIST, VERTEX);
 // BK_LIST conjunction(BK_LIST, BK_LIST);
@@ -30,6 +29,9 @@ BK_LIST disjunction(BK_LIST, VERTEX);
 // TODO: Document method - generate_list
 void generate_list(NETWORK*, BK_LIST*);
 
+
+// TODO: Document method - print_list
+void print_list(const BK_LIST*);
 
 // TODO: Document method - bron_kerbosch
 int bron_kerbosch(BK_LIST, BK_LIST, BK_LIST);

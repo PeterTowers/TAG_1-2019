@@ -4,9 +4,6 @@
 #include "readgml.h"
 #include "bronkerbosch.h"
 
-#define PRINT_FILE_INPUT 1
-
-
 int load(NETWORK* network, char* filename){
   FILE *fptr;
   FILE *tmp;
@@ -15,19 +12,12 @@ int load(NETWORK* network, char* filename){
   fptr = fopen(filename, "r");
   if (fptr == NULL ) {
       printf("Cannot open file.\n");
-      return 0;                         // Mudar returns. Em C, return 0 indica sucesso - Pedro
+      return 0;                         // TODO: Mudar returns. Em C, return 0 indica sucesso - Pedro
   }
-
-//  tmp = fptr;
-//  if(PRINT_FILE_INPUT) while ((c = getc(tmp)) != EOF) putchar(c);
-  
-//    rewind(fptr);
   if(read_network(network, fptr) != 0){
       printf("Could not read network");
       exit(77);
   }
-
-  int ok = max_clique(network);
 
   fclose(fptr);
   return 1;
