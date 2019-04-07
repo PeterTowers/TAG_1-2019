@@ -233,6 +233,40 @@ int max_clique(NETWORK* network) {
         print_list(nil2);
 
         printf("---------------- TESTING ALG_UNION\n");
+        BK_LIST* alg_union = clone(candidates);
+        BK_LIST* alg_union2 = clone(candidates);        // Não sei porque não está sendo tradado como uma lista indep. - Pedro
+
+        VERTEX vertex1 = network->vertex[15];
+        VERTEX vertex2 = network->vertex[10];
+        VERTEX vertex3 = network->vertex[18];
+        VERTEX vertex4 = network->vertex[9];
+
+        alg_union = disjunction(alg_union, vertex);
+        alg_union = disjunction(alg_union, vertex1);
+        alg_union = disjunction(alg_union, vertex2);
+
+        alg_union2 = disjunction(alg_union, vertex3);
+        alg_union2 = disjunction(alg_union, vertex4);
+
+        BK_LIST* unionized;
+        unionized = algebraic_union(alg_union, alg_union2);
+
+        printf("vertexes removed from alg_union: %i, %i, %i\n", vertex.id, vertex1.id, vertex2.id);
+        printf("alg_union:\n");
+        print_list(alg_union);
+        print_list(unionized);
+        printf("above, unionized list\n");
+
+        printf("vertexes removed from alg_union2: %i, %i\n", vertex3.id, vertex4.id);
+        printf("alg_union2:\n");
+        print_list(alg_union2);
+
+        printf("candidates list:\n");
+        print_list(candidates);
+
+        destroy(alg_union);
+        destroy(alg_union2);
+        destroy(unionized);
 
         printf("---------------- TESTING FIND_NEIGHBOURS\n");
         BK_LIST* aux = clone(candidates);
