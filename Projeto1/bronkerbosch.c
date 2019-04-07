@@ -136,11 +136,10 @@ BK_LIST* find_neighbours (NETWORK* network, BK_LIST* list, VERTEX vertex, int de
     if ((degree == vertex.degree) || (vertex.degree == 0))
         return NULL;
 
-    int aux = vertex.edge[degree].target;
     BK_LIST* neighbour = malloc(sizeof(BK_LIST));
 
     neighbour->previous = list;
-    neighbour->vertex = network->vertex[aux];
+    neighbour->vertex = network->vertex[vertex.edge[degree].target];
     neighbour->next = malloc(sizeof(BK_LIST));
     neighbour->next = find_neighbours(network, neighbour, vertex, ++degree);
 
@@ -181,21 +180,41 @@ VERTEX find_greatest_degree (BK_LIST* list) {
  *
  */
 
-//void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x) {
+//void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network) {
 //    if ((group_p == NULL) && (group_x == NULL)) {
 //        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
 //        print_list(group_r);
-//        printf('\n');
-//
-//
+//        printf("\n");
 //    }
 //
-//    BK_LIST* pivot = find_greatest_degree()
+//    VERTEX pivot = find_greatest_degree(algebraic_union(group_p, group_x));
 //
-//    while (group_p != NULL) {
+//    BK_LIST* pivot_neighbours;
+//    neighbours->vertex = network->vertex[pivot.edge[0].target];
+//    neighbours->next = malloc(sizeof(BK_LIST));
+//    neighbours->next = find_neighbours(network, neighbours, pivot, 1);
 //
-//    };
+//    BK_LIST* group_v;
 //
+//    while (neighbours != NULL) {
+//        group_v = disjunction(group_p, neighbours->vertex);
+//        neighbours = neighbours->next;
+//    }
+//
+//    while (group_v != NULL) {
+//        BK_LIST* v_neighbours;
+//        v_neighbours->vertex = network->vertex[group_v->vertex.edge[0].target];
+//        v_neighbours->next = malloc(sizeof(BK_LIST));
+//        v_neighbours->next = find_neighbours(network, v_neighbours, group_v->vertex, 1);
+//
+//        bron_kerbosch(conjunction(group_r, group_v->vertex), intersection(group_p, v_neighbours),
+//                intersection(group_x, v_neighbours), network);
+//
+//        group_p = disjunction(group_p, group_v->vertex);
+//        group_x = conjunction(group_x, group_v->vertex);
+//
+//        group_v = group_v->next;
+//    }
 //
 //}
 
@@ -236,7 +255,7 @@ int max_clique(NETWORK* network) {
         print_list(nil1);
         print_list(nil2);
 
-        printf("---------------- TESTING ALG_UNION\n");
+        printf("---------------- TESTING ALGEBRAIC_UNION\n");
         BK_LIST* alg_union = clone(candidates);
         BK_LIST* alg_union2 = clone(candidates);        // Não sei porque não está sendo tradado como uma lista indep. - Pedro
 
@@ -273,33 +292,29 @@ int max_clique(NETWORK* network) {
         destroy(unionized);
 
         printf("---------------- TESTING FIND_NEIGHBOURS\n");
-        BK_LIST* aux = clone(candidates);
-        BK_LIST* aux1 = aux->next;
-        BK_LIST* aux2 = aux1->next;
+        BK_LIST* aux;
+        BK_LIST* aux1;
+        BK_LIST* aux2;
 
-        aux->next = malloc(sizeof(BK_LIST));
-        aux1->next = malloc(sizeof(BK_LIST));
-        aux2->next = malloc(sizeof(BK_LIST));
+        VERTEX vertex6 = candidates->vertex;
+        VERTEX vertex7 = candidates->next->vertex;
+        VERTEX vertex8 = candidates->next->next->vertex;
 
-        aux->next = find_neighbours(network,aux, aux->vertex, 0);
-        printf("aux->vertex.id: %i\n", aux->vertex.id);
-
-        aux1->next = find_neighbours(network,aux1, aux1->vertex, 0);
-        printf("aux1->vertex.id: %i\n", aux1->vertex.id);
-
-        aux2->next = find_neighbours(network,aux2, aux2->vertex, 0);
-        printf("aux2->vertex.id: %i\n", aux2->vertex.id);
-
-        printf("\nNeighbours of vertex %i:\n", aux->vertex.id);
+        aux = find_neighbours(network, NULL, vertex6, 0);
+        printf("\nNeighbours of vertex %i:\n", vertex6.id);
         print_list(aux);
 
-        printf("\nNeighbours of vertex %i:\n", aux1->vertex.id);
+        aux1 = find_neighbours(network, NULL, vertex7, 0);
+        printf("\nNeighbours of vertex %i:\n", vertex7.id);
         print_list(aux1);
 
-        printf("\nNeighbours of vertex %i:\n", aux2->vertex.id);
+        aux2 = find_neighbours(network, NULL, vertex8, 0);
+        printf("\nNeighbours of vertex %i:\n", vertex8.id);
         print_list(aux2);
 
         destroy(aux);
+        destroy(aux1);
+        destroy(aux2);
 
         printf("---------------- TESTING FIND_GREATEST_DEGREE\n");
         BK_LIST* aux4 = NULL;
@@ -321,6 +336,9 @@ int max_clique(NETWORK* network) {
         printf("3rd greatest degree vertex: %i.\tDegree: %i\n", greatDegree.id, greatDegree.degree);
 
         destroy(aux4);
+
+        printf("---------------- TESTING BRON_KERBOSCH\n");
+        //bron_kerbosch(NULL, candidates, NULL, network);
 
         destroy(con);
         destroy(dis);

@@ -44,7 +44,7 @@ VERTEX find_greatest_degree (BK_LIST* list);
 void print_list(BK_LIST*);
 
 // TODO: Document method - bron_kerbosch
-void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x);
+void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network);
 
 
 // TODO: Document method - max_clique
