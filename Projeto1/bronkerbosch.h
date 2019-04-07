@@ -38,7 +38,7 @@ void generate_list(NETWORK*, BK_LIST*);
 BK_LIST* find_neighbours (NETWORK* network, BK_LIST* list, VERTEX vertex, int degree);
 
 // TODO: Document method - find_greatest_degree
-BK_LIST* find_greatest_degree (BK_LIST* list);
+VERTEX find_greatest_degree (BK_LIST* list);
 
 // TODO: Document method - print_list
 void print_list(BK_LIST*);

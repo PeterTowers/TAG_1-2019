@@ -147,16 +147,20 @@ BK_LIST* find_neighbours (NETWORK* network, BK_LIST* list, VERTEX vertex, int de
     return neighbour;
 }
 
-BK_LIST* find_greatest_degree (BK_LIST* list) {
-    BK_LIST* max = list;
-    BK_LIST* aux = list;
+VERTEX find_greatest_degree (BK_LIST* list) {
+    if (list == NULL) {
+        VERTEX errVertex;
+        errVertex.degree = -1;
 
-    if (list == NULL)
-        return NULL;
+        return errVertex;
+    }
+
+    BK_LIST* aux = list->next;
+    VERTEX max = list->vertex;
 
     while (aux != NULL) {
-        if (aux->vertex.degree > max->vertex.degree) {
-            max = aux;
+        if (aux->vertex.degree > max.degree) {
+            max = aux->vertex;
         }
         aux = aux->next;
     }
@@ -296,6 +300,27 @@ int max_clique(NETWORK* network) {
         print_list(aux2);
 
         destroy(aux);
+
+        printf("---------------- TESTING FIND_GREATEST_DEGREE\n");
+        BK_LIST* aux4 = NULL;
+
+        VERTEX greatDegree = find_greatest_degree(aux4);
+
+        printf("NULL list vertex degree: %i\n", greatDegree.degree);
+
+        aux4 = clone(candidates);
+        greatDegree = find_greatest_degree(aux4);
+        printf("Greatest degree vertex: %i.\t\tDegree: %i\n", greatDegree.id, greatDegree.degree);
+
+        aux4 = disjunction(aux4, greatDegree);
+        greatDegree = find_greatest_degree(aux4);
+        printf("2nd greatest degree vertex: %i.\tDegree: %i\n", greatDegree.id, greatDegree.degree);
+
+        aux4 = disjunction(aux4, greatDegree);
+        greatDegree = find_greatest_degree(aux4);
+        printf("3rd greatest degree vertex: %i.\tDegree: %i\n", greatDegree.id, greatDegree.degree);
+
+        destroy(aux4);
 
         destroy(con);
         destroy(dis);
