@@ -5,7 +5,8 @@
  * Projeto 1 - Modelagem e conceitos fundamentais de grafos
  *
  * Este programa utiliza o arquivo './data/karate.gml' para montar um grafo não direcionado, sem peso, utilizando lista
- * de adjacência. Com o grafo, calculamos/imprimimos: os vértices e seus respectivos graus, todos os cliques maximais
+ * de adjacência. Com o grafo,
+ *  calculamos/imprimimos: os vértices e seus respectivos graus, todos os cliques maximais
  * o coeficiente de aglomeração de cada vértice e o coeficiente médio de aglomeração do grafo.
  *
  * Autores:
@@ -28,15 +29,11 @@ int main() {
     NETWORK network;
     if(!load(&network, "../data/karate.gml")) exit(-1);
 
-    // Question 1
     print_vertices(network);
 
-    // Question 2
-    max_clique(&network);
 
-    // Question 3
-
-    // Question 4
+    question3(&network);
+    question4(&network);
 
     return (cleanup(&network) ? 0 : -3);
 }

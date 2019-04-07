@@ -20,5 +20,17 @@ void print_vertices(NETWORK n);
 // TODO: Document function signature - cleanup
 int cleanup(NETWORK* network);
 
+// TODO: Document method - avg_agglomeration
+void question1(NETWORK*);
+
+// TODO: Document method - avg_agglomeration
+void question2(NETWORK*);
+
+// TODO: Document method - avg_agglomeration
+void question3(NETWORK*);
+
+// TODO: Document method - avg_agglomeration
+void question4(NETWORK*);
+
 
 #endif

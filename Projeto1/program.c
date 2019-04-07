@@ -3,6 +3,7 @@
 #include "program.h"
 #include "readgml.h"
 #include "bronkerbosch.h"
+#include "agglomeration.h"
 
 int load(NETWORK* network, char* filename){
   FILE *fptr;
@@ -42,4 +43,15 @@ void print_vertices(NETWORK network){
     printf("\n[get_degrees] Greatest degree vertice: %i. Degree: %i\n", network.max_degree->id,
             network.max_degree->degree);
   return;
+}
+
+void question3(NETWORK* network){
+  printf("[question 3] agglomeration coefficient for each vertex:\n");
+  for(int i = 0; i < network->nvertices; i++)
+    printf("\t %d: %f\n", network->vertex[i].id, agglomeration(network->vertex[i]));
+
+}
+
+void question4(NETWORK* network){
+  printf("[question 4] average agglomeration coefficient for the graph: %f", avg_agglomeration(network));
 }
