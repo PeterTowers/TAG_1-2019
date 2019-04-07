@@ -132,18 +132,19 @@ void generate_list(NETWORK* network, BK_LIST* list) {
     return;
 }
 
-BK_LIST* find_neighbours (NETWORK network, VERTEX vertex) {
-    int aux;
-    BK_LIST* neighbours = malloc(sizeof(BK_LIST));
+BK_LIST* find_neighbours (NETWORK* network, BK_LIST* list, VERTEX vertex, int degree) {
+    if ((degree == vertex.degree) || (vertex.degree == 0))
+        return NULL;
 
-    for (int i = 0; i < vertex.degree; i++) {
-        aux = vertex.edge[i].target;
-        neighbours->vertex = network.vertex[aux];
-        neighbours->next = malloc(sizeof(BK_LIST));
-        neighbours = neighbours->next;
-    }
+    int aux = vertex.edge[degree].target;
+    BK_LIST* neighbour = malloc(sizeof(BK_LIST));
 
-    return neighbours;
+    neighbour->previous = list;
+    neighbour->vertex = network->vertex[aux];
+    neighbour->next = malloc(sizeof(BK_LIST));
+    neighbour->next = find_neighbours(network, neighbour, vertex, ++degree);
+
+    return neighbour;
 }
 
 BK_LIST* find_greatest_degree (BK_LIST* list) {
@@ -201,45 +202,72 @@ int max_clique(NETWORK* network) {
 
     BK_LIST* candidate3 = candidates->next;
 
-//    for(int i = 0; i < 1; i++)
-//        candidate3 = candidate3->next;
-
     printf("[max_clique] vertex: %i - degree %i\n\n", candidate3->vertex.id, candidate3->vertex.degree);
     if (candidates->next == NULL)
         printf("Could not generate bk_list.\n");
 
-
     #ifdef TEST_LIST_FUNCTIONS
-      VERTEX vertex = network->vertex[0];
-      printf("---------------- TESTING CONJUNCTION\n");
-      BK_LIST* con = conjunction(candidates, vertex);
-      print_list(candidates);
-      printf("%d\n", vertex.id);
-      print_list(con);
+        VERTEX vertex = network->vertex[0];
+        printf("---------------- TESTING CONJUNCTION\n");
+        BK_LIST* con = conjunction(candidates, vertex);
+        print_list(candidates);
+        printf("%d\n", vertex.id);
+        print_list(con);
 
-      printf("---------------- TESTING DISJUNCTION\n");
-      BK_LIST* dis = disjunction(candidates, vertex);
-      print_list(candidates);
-      printf("%d\n", vertex.id);
-      print_list(dis);
+        printf("---------------- TESTING DISJUNCTION\n");
+        BK_LIST* dis = disjunction(candidates, vertex);
+        print_list(candidates);
+        printf("%d\n", vertex.id);
+        print_list(dis);
 
-      printf("---------------- TESTING CONTAINS\n");
-      printf("%d\n", contains(con, vertex));
-      printf("%d\n", contains(dis, vertex));
+        printf("---------------- TESTING CONTAINS\n");
+        printf("%d\n", contains(con, vertex));
+        printf("%d\n", contains(dis, vertex));
 
-      printf("---------------- TESTING INTERSECTION\n");
-      BK_LIST* inter = intersection(candidates, dis);
-      BK_LIST* nil1 = intersection(NULL, candidates);
-      BK_LIST* nil2 = intersection(candidates, NULL);
-      print_list(inter);
-      print_list(nil1);
-      print_list(nil2);
+        printf("---------------- TESTING INTERSECTION\n");
+        BK_LIST* inter = intersection(candidates, dis);
+        BK_LIST* nil1 = intersection(NULL, candidates);
+        BK_LIST* nil2 = intersection(candidates, NULL);
+        print_list(inter);
+        print_list(nil1);
+        print_list(nil2);
 
-      free(con);
-      free(dis);
-      free(inter);
-      free(nil1);
-      free(nil2);
+        printf("---------------- TESTING ALG_UNION\n");
+
+        printf("---------------- TESTING FIND_NEIGHBOURS\n");
+        BK_LIST* aux = clone(candidates);
+        BK_LIST* aux1 = aux->next;
+        BK_LIST* aux2 = aux1->next;
+
+        aux->next = malloc(sizeof(BK_LIST));
+        aux1->next = malloc(sizeof(BK_LIST));
+        aux2->next = malloc(sizeof(BK_LIST));
+
+        aux->next = find_neighbours(network,aux, aux->vertex, 0);
+        printf("aux->vertex.id: %i\n", aux->vertex.id);
+
+        aux1->next = find_neighbours(network,aux1, aux1->vertex, 0);
+        printf("aux1->vertex.id: %i\n", aux1->vertex.id);
+
+        aux2->next = find_neighbours(network,aux2, aux2->vertex, 0);
+        printf("aux2->vertex.id: %i\n", aux2->vertex.id);
+
+        printf("\nNeighbours of vertex %i:\n", aux->vertex.id);
+        print_list(aux);
+
+        printf("\nNeighbours of vertex %i:\n", aux1->vertex.id);
+        print_list(aux1);
+
+        printf("\nNeighbours of vertex %i:\n", aux2->vertex.id);
+        print_list(aux2);
+
+        destroy(aux);
+
+        destroy(con);
+        destroy(dis);
+        destroy(inter);
+        destroy(nil1);
+        destroy(nil2);
     #endif
 
     return 0;

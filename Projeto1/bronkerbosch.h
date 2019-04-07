@@ -35,7 +35,7 @@ BK_LIST* algebraic_union(BK_LIST* list1, BK_LIST* list2);
 void generate_list(NETWORK*, BK_LIST*);
 
 // TODO: Document method - find_neighbours
-BK_LIST* find_neighbours (NETWORK network, VERTEX vertex);
+BK_LIST* find_neighbours (NETWORK* network, BK_LIST* list, VERTEX vertex, int degree);
 
 // TODO: Document method - find_greatest_degree
 BK_LIST* find_greatest_degree (BK_LIST* list);
