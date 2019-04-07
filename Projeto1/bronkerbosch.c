@@ -24,6 +24,11 @@ BK_LIST* clone(BK_LIST* list){
 }
 
 BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
+    if (list == NULL) {
+        BK_LIST* newList = new(vertex);
+        return newList;
+    }
+
   BK_LIST* copy = clone(list);
   BK_LIST* last = copy;
 
@@ -180,43 +185,43 @@ VERTEX find_greatest_degree (BK_LIST* list) {
  *
  */
 
-//void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network) {
-//    if ((group_p == NULL) && (group_x == NULL)) {
-//        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
-//        print_list(group_r);
-//        printf("\n");
-//    }
-//
-//    VERTEX pivot = find_greatest_degree(algebraic_union(group_p, group_x));
-//
-//    BK_LIST* pivot_neighbours;
-//    neighbours->vertex = network->vertex[pivot.edge[0].target];
-//    neighbours->next = malloc(sizeof(BK_LIST));
-//    neighbours->next = find_neighbours(network, neighbours, pivot, 1);
-//
-//    BK_LIST* group_v;
-//
-//    while (neighbours != NULL) {
-//        group_v = disjunction(group_p, neighbours->vertex);
-//        neighbours = neighbours->next;
-//    }
-//
-//    while (group_v != NULL) {
-//        BK_LIST* v_neighbours;
-//        v_neighbours->vertex = network->vertex[group_v->vertex.edge[0].target];
-//        v_neighbours->next = malloc(sizeof(BK_LIST));
-//        v_neighbours->next = find_neighbours(network, v_neighbours, group_v->vertex, 1);
-//
-//        bron_kerbosch(conjunction(group_r, group_v->vertex), intersection(group_p, v_neighbours),
-//                intersection(group_x, v_neighbours), network);
-//
-//        group_p = disjunction(group_p, group_v->vertex);
-//        group_x = conjunction(group_x, group_v->vertex);
-//
-//        group_v = group_v->next;
-//    }
-//
-//}
+void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network) {
+    if ((group_p == NULL) && (group_x == NULL)) {
+        printf("[bron_kerbosch] Maximal clique found between vertexes:\n");
+        print_list(group_r);
+        printf("\n");
+
+        return;
+    }
+
+    VERTEX pivot = find_greatest_degree(algebraic_union(group_p, group_x)); // pivot vertex 'u'
+
+    BK_LIST* pivot_neighbours = find_neighbours(network, NULL, pivot, 0);   // neighbour vertexes of 'u', N(u)
+
+    // Now we create a list of vertices v := P \ N(u)
+    BK_LIST* group_v = clone(group_p);
+    while (pivot_neighbours != NULL) {
+        group_v = disjunction(group_v, pivot_neighbours->vertex);
+        pivot_neighbours = pivot_neighbours->next;
+    }
+
+    // Here we iterate through each vertex found in v
+    while (group_v != NULL) {
+        // We need to define a list of neighbours of each vertex v, N(v)
+        BK_LIST* v_neighbours = find_neighbours(network, NULL, group_v->vertex, 0);
+
+        // Recursive call on Bron-Kerbosch algorithm passing these parameters: R ⋃ {v}, P ⋂ N(v), X ⋂ N(v)
+        bron_kerbosch(conjunction(group_r, group_v->vertex), intersection(group_p, v_neighbours),
+                intersection(group_x, v_neighbours), network);
+
+        group_p = disjunction(group_p, group_v->vertex);    // P := P \ {v}
+        group_x = conjunction(group_x, group_v->vertex);    // X := X ⋃ {v}
+
+        group_v = group_v->next;    // Set the next element of list {v}
+    }
+
+    return;
+}
 
 int max_clique(NETWORK* network) {
     BK_LIST* candidates = calloc(1, sizeof(BK_LIST));
@@ -338,7 +343,7 @@ int max_clique(NETWORK* network) {
         destroy(aux4);
 
         printf("---------------- TESTING BRON_KERBOSCH\n");
-        //bron_kerbosch(NULL, candidates, NULL, network);
+        bron_kerbosch(NULL, candidates, NULL, network);
 
         destroy(con);
         destroy(dis);
