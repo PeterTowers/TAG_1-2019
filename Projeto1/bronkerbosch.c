@@ -266,8 +266,8 @@ int max_clique(NETWORK* network) {
         destroy(con);
         destroy(dis);
         destroy(inter);
-        destroy(nil1);
-        destroy(nil2);
+        free(nil1);
+        free(nil2);
     #endif
 
     return 0;
