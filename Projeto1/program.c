@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "program.h"
 #include "readgml.h"
-
-#define PRINT_FILE_INPUT 1
+#include "bronkerbosch.h"
 
 int load(NETWORK* network, char* filename){
   FILE *fptr;
@@ -13,13 +12,8 @@ int load(NETWORK* network, char* filename){
   fptr = fopen(filename, "r");
   if (fptr == NULL ) {
       printf("Cannot open file.\n");
-      return 0;
+      return 0;                         // TODO: Mudar returns. Em C, return 0 indica sucesso - Pedro
   }
-
-//  tmp = fptr;
-//  if(PRINT_FILE_INPUT) while ((c = getc(tmp)) != EOF) putchar(c);
-  
-//    rewind(fptr);
   if(read_network(network, fptr) != 0){
       printf("Could not read network");
       exit(77);
@@ -44,5 +38,8 @@ void print_vertices(NETWORK network){
     printf("[print_vertices] error: network has %i vertices", network.nvertices);
   for(int i = 0; i < network.nvertices; i++)
     print_vertex(network.vertex[i]);
+
+    printf("\n[get_degrees] Greatest degree vertice: %i. Degree: %i\n", network.max_degree->id,
+            network.max_degree->degree);
   return;
-};
+}

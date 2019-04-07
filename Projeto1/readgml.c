@@ -292,8 +292,10 @@ void get_degrees(NETWORK *network)
 {
   int s,t;
   int vs,vt;
+  int max = 0;
   char *ptr;
   char line[LINELENGTH];
+  VERTEX *vertex;
 
   reset_buffer();
 
@@ -326,13 +328,29 @@ void get_degrees(NETWORK *network)
     if ((s>=0)&&(t>=0)) {
       vs = find_vertex(s,network);
       network->vertex[vs].degree++;
+
       if (network->directed==0) {
-	vt = find_vertex(t,network);
-	network->vertex[vt].degree++;
+	    vt = find_vertex(t,network);
+	    network->vertex[vt].degree++;
       }
     }
 
+    // Test vertex's degrees to find the one with the greatest degree
+
+    if ((network->vertex[vs].degree > max) || (network->vertex[vt].degree > max)) {
+        if (network->vertex[vs].degree >= network->vertex[vt].degree) {
+            max = network->vertex[vs].degree;
+            vertex = &network->vertex[vs];
+        }
+        else {
+            max = network->vertex[vt].degree;
+            vertex = &network->vertex[vt];
+        }
+
+
+    }
   }
+  network->max_degree = vertex;
 
   return;
 }

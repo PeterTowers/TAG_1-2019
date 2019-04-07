@@ -21,9 +21,10 @@ typedef struct {
 } VERTEX;
 
 typedef struct {
-  int nvertices;     // Number of vertices in network
-  int directed;      // 1 = directed network, 0 = undirected
-  VERTEX *vertex;    // Array of VERTEX structs, one for each vertex
+  int nvertices;        // Number of vertices in network
+  int directed;         // 1 = directed network, 0 = undirected
+  VERTEX *vertex;       // Array of VERTEX structs, one for each vertex
+  VERTEX *max_degree;   // Greatest degree vertex's address, if there are multiples, only the 1st one will be considered
 } NETWORK;
 
 #endif

@@ -26,9 +26,17 @@
 
 int main() {
     NETWORK network;
-    if(!load(&network, "data/karate.gml")) exit(-1);
+    if(!load(&network, "../data/karate.gml")) exit(-1);
 
+    // Question 1
     print_vertices(network);
+
+    // Question 2
+    max_clique(&network);
+
+    // Question 3
+
+    // Question 4
 
     return (cleanup(&network) ? 0 : -3);
 }

@@ -140,6 +140,8 @@ fabric.properties
 # End of https://www.gitignore.io/api/clion
 
 .vscode
+
+*.idea
 proj1/.idea
 proj1/.idea/workspace.xml
 proj1/CMakeFiles
@@ -152,4 +154,3 @@ Projeto1/.idea/.name
 Projeto1/.idea/misc.xml
 Projeto1/.idea/modules.xml
 Projeto1/.idea/proj1.iml
-Projeto1/.idea/workspace.xml
