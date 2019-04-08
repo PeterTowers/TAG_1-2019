@@ -5,31 +5,28 @@
 #ifndef _PROGRAM_H
 #define _PROGRAM_H
 
-// TODO: Document function signature - max_clique
-int max_clique(NETWORK* network);
+// Função para abrir o arquivo karate.gml e criar o grafo a partir dele
+int load(NETWORK*, char*);
 
-// TODO: Document function signature - load
-int load(NETWORK* network, char* filename);
+// Função chamada para desalocar a memória utilizada pela network
+int cleanup(NETWORK*);
 
-// TODO: Document function signature - print_vertex
+// Função para imprimir o id e o grau do vértice passado
 void print_vertex(VERTEX v);
 
-// TODO: Document function signature - print_vertices
-void print_vertices(NETWORK n);
+// Função relativa ao objetivo 1 do projeto: imprimir cada vértice do grafo e seu respectivo grau
+void question1(NETWORK);
 
-// TODO: Document function signature - cleanup
-int cleanup(NETWORK* network);
-
-// TODO: Document method - avg_agglomeration
-void question1(NETWORK*);
-
-// TODO: Document method - avg_agglomeration
+// Função relativa ao objetivo 2 do projeto: encontrar e imprimir todos os cliques maximais
 void question2(NETWORK*);
 
-// TODO: Document method - avg_agglomeration
+// Função para encontrar os cliques maximais fazendo a chamada inicial de bron_kerbosch()
+int max_clique(NETWORK* network);
+
+// Função relativa ao objetivo 3 do projeto: calcular e imprimir o coeficiente de aglomeração de cada vértice
 void question3(NETWORK*);
 
-// TODO: Document method - avg_agglomeration
+// Função relativa ao objetivo 4 do projeto: calcular e imprimir o coeficiente médio de aglomeracao do grafo
 void question4(NETWORK*);
 
 
