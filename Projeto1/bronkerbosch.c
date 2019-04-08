@@ -6,10 +6,9 @@
 // BronKerbosch2.
 void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network) {
     if ((group_p == NULL) && (group_x == NULL)) {   // Condição de parada da recursão
-        printf("\n");
-        printf("Clique maximal encontrado entre os vértices:\n");   // Imprime os vértices que fazem parte do clique
+        
+        printf("\t- clique maximal encontrado entre os vértices: ");   // Imprime os vértices que fazem parte do clique
         print_list(group_r);
-        printf("\n");
 
         return; // Pára a execução da função e retorna para a chamada superior
     }

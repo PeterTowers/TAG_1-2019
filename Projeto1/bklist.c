@@ -25,6 +25,14 @@ BK_LIST* clone(BK_LIST* list) {
     return head;
 }
 
+
+// Função que calcula recursivamente o comprimento de uma lista
+int length(BK_LIST* list){
+  return (list == NULL)
+    ? 0
+    : 1 + length(list->next);
+}
+
 // conjunction() adiciona um vértice na última posição da lista
 BK_LIST* conjunction(BK_LIST* list, VERTEX vertex) {
 
@@ -81,12 +89,14 @@ BK_LIST* disjunction(BK_LIST* list, VERTEX vertex) {
     // Condição de parada da chamada recursiva
     if (list == NULL) return NULL;
 
-    // Procura o elemento na lista e ao encontra-lo, faz uma chamada recursiva passando o elemento seguinte da lista
-    // de forma a fazer os ajustes necessários aos ponteiros.
+    // Procura o elemento na lista e ao encontra-lo, ignora ele ao inves de 
+    // Inclui-lo na lista resultante
     if (list->vertex.id == vertex.id) return disjunction(list->next, vertex);
     BK_LIST *head;
 
     head = new(list->vertex);
+    // Faz uma chamada recursiva passando o elemento seguinte da lista
+    // de forma a fazer os ajustes necessários aos ponteiros.
     head->next = disjunction(list->next, vertex);
 
     if (head->next != NULL) head->next->previous = head;
@@ -123,7 +133,7 @@ BK_LIST* algebraic_union(BK_LIST* list1, BK_LIST* list2) {
 void print_list(BK_LIST* list) {
   BK_LIST* tracer = list;
 
-  printf("[print_list] (");
+  printf("(");
   while(tracer != NULL){
     printf("%d", tracer->vertex.id);
     if (tracer->next != NULL) printf(", ");

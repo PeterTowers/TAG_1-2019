@@ -19,6 +19,10 @@ BK_LIST* new(VERTEX);
 // A função clone() clona uma lista para um outro endereço de memória
 BK_LIST* clone(BK_LIST*);
 
+
+// length() calcula o comprimento de uma lista
+int length(BK_LIST*);
+
 // conjunction() adiciona um vértice na última posição da lista
 BK_LIST* conjunction(BK_LIST*, VERTEX);
 
