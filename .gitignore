@@ -138,19 +138,3 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/clion
-
-.vscode
-
-*.idea
-proj1/.idea
-proj1/.idea/workspace.xml
-proj1/CMakeFiles
-proj1/CMakeCache.txt
-proj1/Makefile
-proj1/cmake_install.cmake
-proj1/proj1
-proj1/proj1.cbp
-Projeto1/.idea/.name
-Projeto1/.idea/misc.xml
-Projeto1/.idea/modules.xml
-Projeto1/.idea/proj1.iml
