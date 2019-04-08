@@ -5,53 +5,65 @@
 #include "bronkerbosch.h"
 #include "agglomeration.h"
 
+// Função para abrir o arquivo karate.gml e criar o grafo a partir dele
 int load(NETWORK* network, char* filename){
   FILE *fptr;
-  FILE *tmp;
-  char c;
 
   fptr = fopen(filename, "r");
   if (fptr == NULL ) {
-      printf("Cannot open file.\n");
-      return 0;                         // TODO: Mudar returns. Em C, return 0 indica sucesso - Pedro
+      printf("Nao foi possivel abrir o arquivo '.gml'.\n");
+      return 1;
   }
+
+  // Utiliza a função read_network() para construir o grafo com os dados contidos no arquivo 'data/karate.gml'
   if(read_network(network, fptr) != 0){
-      printf("Could not read network");
+      printf("Nao foi possivel gerar a network.\n");
       exit(77);
   }
 
   fclose(fptr);
-  return 1;
-};
+  return 0;
+}
 
+// Função chamada para desalocar a memória utilizada pela network
 int cleanup(NETWORK* network){
   free_network(network);
-  return 1;
-};
+  return 0;
+}
 
+// Função para imprimir o id e o grau do vértice passado
 void print_vertex(VERTEX v){
-  printf("[print_vertex] vertex: %i - degree: %i\n", v.id, v.degree);
+  printf("Vertice de id: %2i - Grau: %2i\n", v.id, v.degree);
   return;
-};
+}
 
-void print_vertices(NETWORK network){
+// Função relativa ao objetivo 1 do projeto: imprimir cada vértice do grafo e seu respectivo grau
+void question1(NETWORK network){
   if (network.nvertices <= 0)
-    printf("[print_vertices] error: network has %i vertices", network.nvertices);
+    printf("[question1] Erro na inicializacao da network: network contem %i vertices", network.nvertices);
+  printf("Objetivo (1): imprimir cada vertice e seu respectivo grau.\n\n");
   for(int i = 0; i < network.nvertices; i++)
     print_vertex(network.vertex[i]);
 
-    printf("\n[get_degrees] Greatest degree vertice: %i. Degree: %i\n", network.max_degree->id,
-            network.max_degree->degree);
   return;
 }
 
+// Função relativa ao objetivo 2 do projeto: encontrar e imprimir todos os cliques maximais
+void question2(NETWORK* network) {
+    printf("Objetivo (2): imprimir todos os cliques maximais.\n");
+    if (max_clique(network) != 0)
+        printf("Erro na função max_clique().");
+}
+
+// Função relativa ao objetivo 3 do projeto: calcular e imprimir o coeficiente de aglomeração de cada vértice
 void question3(NETWORK* network){
-  printf("[question 3] agglomeration coefficient for each vertex:\n");
+  printf("Objetivo (3): coeficiente de aglomeracao de cada vértice\n\n");
   for(int i = 0; i < network->nvertices; i++)
-    printf("\t %d: %f\n", network->vertex[i].id, agglomeration(network, i));
+    printf("\tVertice %2d - coeficiente: %f\n", network->vertex[i].id, agglomeration(network, i));
 
 }
 
+// Função relativa ao objetivo 4 do projeto: calcular e imprimir o coeficiente médio de aglomeracao do grafo
 void question4(NETWORK* network){
-  printf("[question 4] average agglomeration coefficient for the graph: %f", avg_agglomeration(network));
+  printf("\nObjetivo (4): coeficiente medio de aglomeracao do grafo: %f", avg_agglomeration(network));
 }

@@ -198,6 +198,8 @@ VERTEX find_greatest_degree (BK_LIST* list) {
 void destroy(BK_LIST* list) {
     if (list == NULL) return;   // Caso a lista passada esteja vazia, não é necessário desalocar seu espaço em memória
 
+    BK_LIST *aux1, *aux2;
+
     aux1 = list;
 
     // Laço para chegar no primeiro elemento da lista
@@ -208,5 +210,6 @@ void destroy(BK_LIST* list) {
     while (aux2 != NULL) {
         aux2 = aux1->next;
         free(aux1);
+        aux1 = aux2;
     }
 }
