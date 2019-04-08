@@ -48,7 +48,7 @@ void print_vertices(NETWORK network){
 void question3(NETWORK* network){
   printf("[question 3] agglomeration coefficient for each vertex:\n");
   for(int i = 0; i < network->nvertices; i++)
-    printf("\t %d: %f\n", network->vertex[i].id, agglomeration(network->vertex[i]));
+    printf("\t %d: %f\n", network->vertex[i].id, agglomeration(network, i));
 
 }
 
