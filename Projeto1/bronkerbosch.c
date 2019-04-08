@@ -6,6 +6,7 @@
 // BronKerbosch2.
 void bron_kerbosch(BK_LIST* group_r, BK_LIST* group_p, BK_LIST* group_x, NETWORK* network) {
     if ((group_p == NULL) && (group_x == NULL)) {   // Condição de parada da recursão
+        printf("\n");
         printf("Clique maximal encontrado entre os vértices:\n");   // Imprime os vértices que fazem parte do clique
         print_list(group_r);
         printf("\n");
@@ -53,7 +54,7 @@ int max_clique(NETWORK* network) {
 
     // Chamada inicial de bron_kerbosch(), passando NULL para indicar as listas vazias
     bron_kerbosch(NULL, candidates, NULL, network);
-
+    
     // Chama a função de limpeza de memória
     destroy(candidates);
 
