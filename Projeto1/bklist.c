@@ -171,6 +171,7 @@ VERTEX find_greatest_degree (BK_LIST* list) {
 }
 
 void destroy(BK_LIST* list) {
+    if (list == NULL) return;
     BK_LIST *aux1, *aux2;
 
     aux1 = list;

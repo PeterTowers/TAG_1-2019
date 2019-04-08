@@ -7,7 +7,7 @@
 #define _AGGLOMERATION_H
 
 // TODO: Document method - agglomeration
-float agglomeration(VERTEX);
+float agglomeration(NETWORK*, int);
 
 // TODO: Document method - avg_agglomeration
 float avg_agglomeration(NETWORK*);
