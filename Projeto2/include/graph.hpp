@@ -1,12 +1,24 @@
+#pragma once
 #include <iostream>
+#include <vector>
+#include <utility>
+#include <functional>
 
 template <class T> class digraph
 {
 private:
-    T* data;
-    std::vector<digraph<T>*> edges;
+    std::vector<T*> nodes;
+    std::vector<std::pair<T*, T*>> edges;
 
 public:
-    digraph(T value) : data(value) { };
+    digraph() : nodes(), edges() { };
     ~digraph() {};
+
+    bool connect(unsigned int,
+                 unsigned int,
+                 std::function<unsigned int(T)> get_id = [](T a){ return a; });
+    void print_adj();
+    void push(T*);
 };
+
+

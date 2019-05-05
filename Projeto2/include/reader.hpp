@@ -1,7 +1,7 @@
+#pragma once
 #include "toml.h"
 #include "graph.hpp"
 #include "course.hpp"
 
-// TODO: Move to HPP
-digraph<course>* read(std::string);
-
+digraph<course>* build(std::vector<std::string>);   // Read from stream
+digraph<course>* build(std::string);                // Read from file
