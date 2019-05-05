@@ -37,7 +37,7 @@ void digraph<T>::print_adj(){
 
         for (auto& edge : edges)
             if (edge.first->id == node->id)
-                std::cout << edge.first->id << ' ';
+                std::cout << edge.second->id << ' ';
 
         std::cout << std::endl;
     }
