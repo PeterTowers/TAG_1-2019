@@ -31,14 +31,13 @@
  *
  * ====================================== */
 
-template <class T>
-int topo_sorting(digraph<T>* graph) {
+int topo_sorting(digraph<course>* graph) {
     // TODO: receive/create graph
-    digraph<T> list_l;
-    digraph<T> list_s = graph->root_nodes(); // DONE: Filter graph for nodes with no incoming edge
+    digraph<course> list_l;
+    digraph<course> list_s = graph->root_nodes(); // DONE: Filter graph for nodes with no incoming edge
 
     list_s.cp_edges(graph);
-    list_s.print_adj();     // For test purposes only
+    list_s.print_adj();     // For test purpose only
     // TODO: Run Kahn's algorithm
 
     return 0;
