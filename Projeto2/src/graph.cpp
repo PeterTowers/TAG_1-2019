@@ -43,4 +43,14 @@ void digraph<T>::print_adj(){
     }
 }
 
+template <class T>
+void digraph<T>::root_nodes(){
+    // TODO: remove nodes which are connected by edges
+
+    for (auto& node : nodes) {
+        ;
+
+    }
+}
+
 template class digraph<course>;

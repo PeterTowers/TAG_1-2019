@@ -19,6 +19,7 @@ public:
                  std::function<unsigned int(T)> get_id = [](T a){ return a; });
     void print_adj();
     void push(T*);
+    void root_nodes();
 };
 
 
