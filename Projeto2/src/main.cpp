@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/reader.hpp"
 #include "../include/graph.hpp"
+#include "../include/topoSorting.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -15,8 +16,10 @@ int main(int argc, char const *argv[])
     // auto graph = read(args[0]);
     // if (graph == nullptr) return -1;
 
+    digraph<course>* graph = build("../data/materias.txt");
+    graph->print_adj();
 
-    build("../data/materias.txt")->print_adj();
+    int i = topo_sorting(graph);
 
-    return 0;
+    return i;
 }

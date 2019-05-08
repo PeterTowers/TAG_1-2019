@@ -27,7 +27,7 @@ bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsig
 }
 
 template <class T>
-void digraph<T>::print_adj(){
+void digraph<T>::print_adj() {
     std::cout << "[print_adj] Printing adjacency list: " << std::endl;
 
     for (auto& node : nodes){
@@ -44,13 +44,27 @@ void digraph<T>::print_adj(){
 }
 
 template <class T>
-void digraph<T>::root_nodes(){
-    // TODO: remove nodes which are connected by edges
+void digraph<T>::cp_edges(digraph<T>* origin) {
+    edges = origin->edges;
+}
+
+template<class T>
+digraph<T> digraph<T>::root_nodes() {
+    digraph<T> roots;
+    bool isRoot = true;
 
     for (auto& node : nodes) {
-        ;
-
+        for (auto& edge : edges)
+            if (node->id == edge.second->id) {
+                isRoot = false;
+                break;
+            }
+        if (isRoot)
+            roots.push(node);
+        else
+            isRoot = true;
     }
+    return roots;
 }
 
 template class digraph<course>;
