@@ -11,4 +11,7 @@ course::course(unsigned int id, std::string name, unsigned int credits, std::fun
 
 course::~course()
 {
+  
 }
+
+int cost(course c) { return c.credits; }
