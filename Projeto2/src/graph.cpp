@@ -43,52 +43,7 @@ void digraph<T>::print_adj() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-// template <class T>
-// bool digraph<T>::filter(std::function<bool(T)> f){
-//   // TODO: Implement graph filtering
-//   return this;
-// }
-
-// template <class T>
-// digraph<T> digraph<T>::without(T* address){
-//   // TODO: Implement graph filtering
-//   auto target = nodes.find(nodes.begin(), nodes.end(), address)
-
-//   return (target == nodes.end()
-//     ? this
-//     : digraph<T>(nodes, ));
-// }
-
-
-// template <class T>
-// unsigned int digraph<T>::nodecount(){ return nodes.size() }
-
-
-// std::vector<T> filter(std::vector<T> input, std::function<bool(T)> criteria){
-//   std::vector<T> output = []
-
-//   for(auto& element : input)
-//     if (criteria(element) == true)
-//       output.push_back(element);
-
-//   return output;
-// }
-
-
-// TODO: Método que retorna as bordas partindo de um nó pelo índice
-// TODO: Função de busca em profundidade num grafo
- template <class T>
+template <class T>
 std::vector<unsigned int> digraph<T>::neighbors(unsigned int i) {
     std::vector<unsigned int> output;
 
@@ -139,8 +94,6 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
   return output;
 }
 
-
-
 template <class T>
 void digraph<T>::print_ordered(std::function<void(T)> print_node){
   auto ordered = this->ordered();
@@ -152,30 +105,6 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
   }
 }
 
-
-
-// template <class T>
-// void digraph<T>::cp_edges(digraph<T>* origin) {
-//     edges = origin->edges;
-// }
-
-// template<class T>
-// digraph<T> digraph<T>::root_nodes() {
-//     digraph<T> roots;
-//     bool isRoot = true;
-
-//     for (auto& node : nodes) {
-//         for (auto& edge : edges)
-//             if (node->id == edge.second->id) {
-//                 isRoot = false;
-//                 break;
-//             }
-//         if (isRoot)
-//             roots.push(node);
-//         else
-//             isRoot = true;
-//     }
-//     return roots;
-// }
+// TODO: Função de busca em profundidade num grafo
 
  template class digraph<course>;
