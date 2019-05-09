@@ -125,6 +125,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 
     visited[i] = true;
     auto node = nodes[i];
+    output.push_back(node);
 
     if(std::find(output.begin(), output.end(), node) != output.end()) continue; // Node has been visited on current iteration
 
@@ -144,7 +145,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 
 
     }
-    output.push_back(node);
+
   }
 
   return output;
