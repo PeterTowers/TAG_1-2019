@@ -4,25 +4,13 @@
 // template <class T>
 // std::vector<T*> digraph<T>::nodes() { return this.nodes };
 
-
-void foo(){
-  std::vector<int> vec({1, 2, 3, 4});
-
-  for(int i = 0; i < vec.size(); i++)
-    std::cout << vec[i] << std::endl;
-
-  for(auto& c : vec)
-    std::cout << c << std::endl;
-
-};
-
 template <class T>
 void digraph<T>::push(T* value) {
     nodes.push_back(value);
 }
 
 template <class T>
-bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsigned int(T)> get_id){
+bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsigned int(T)> get_id) {
     T *c1 = nullptr, *c2 = nullptr;
 
     for(auto&& c : nodes){
@@ -101,7 +89,7 @@ void digraph<T>::print_adj() {
 // TODO: Método que retorna as bordas partindo de um nó pelo índice
 // TODO: Função de busca em profundidade num grafo
  template <class T>
-std::vector<unsigned int> digraph<T>::neighbors(unsigned int i){
+std::vector<unsigned int> digraph<T>::neighbors(unsigned int i) {
     std::vector<unsigned int> output;
 
     for(int i = 0; i < edges.size(); i++)
@@ -109,7 +97,7 @@ std::vector<unsigned int> digraph<T>::neighbors(unsigned int i){
             output.push_back(i);
 
         return output;
-};
+}
 
 template <class T>
 std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {

@@ -5,10 +5,8 @@
 #include <functional>
 #include <algorithm>
 #include <stack>
-#include <algorithm>
 
-template <class T> class digraph
-{
+template <class T> class digraph {
 private:
     std::vector<T*> nodes;
     std::vector<std::pair<T*, T*>> edges;
