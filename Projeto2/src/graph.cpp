@@ -70,7 +70,8 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
     auto node = nodes[i];
     output.push_back(node);
 
-    if(std::find(output.begin(), output.end(), node) != output.end()) continue; // Node has been visited on current iteration
+    // Node has been visited on current iteration
+    if(std::find(output.begin(), output.end(), node) != output.end()) continue;
 
     for(auto neighbor : neighbors(i)){
       
@@ -80,13 +81,10 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
         exit(-1);
       }
 
-
       // Neighbor has been stacked, move on to next neighbor
       if(std::find(output.begin(), output.end(), node) == output.end())
         for(auto stacked : ordered(visited, output))
           output.push_back(stacked);
-
-
     }
 
   }
@@ -103,6 +101,11 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     print_node(*nodes[i]);
     std::cout << std::endl;
   }
+}
+
+template <class T>
+std::vector<T*> digraph<T>::critical_path(std::vector<bool> visited, std::vector<T*> output) {
+
 }
 
 // TODO: Função de busca em profundidade num grafo
