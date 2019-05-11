@@ -2,8 +2,8 @@
 #include <string>
 
 // Split: divide uma string em substrings
-std::vector<std::string> split(const std::string& s, char delimiter)
-{
+// Function split() divides a string into substrings according to a set delimiter
+std::vector<std::string> split(const std::string& s, char delimiter) {
    std::vector<std::string> tokens;
    std::string token;
    std::istringstream tokenStream(s);
@@ -11,9 +11,10 @@ std::vector<std::string> split(const std::string& s, char delimiter)
    return tokens;
 }
 
-// Treating text
+// Treating commentary text
 bool comment(std::string str) { return str.front() == '#'; }
 
+// TODO: document function - prep
 std::vector<std::string> prep(std::string input){
     std::vector<std::string> output;
 
@@ -23,13 +24,16 @@ std::vector<std::string> prep(std::string input){
     return output;
 }
 
-
-digraph<course>* build(std::vector<std::string> stream){
+// Function build() parses through an input STREAM and builds a digraph of courses
+digraph<course>* build(std::vector<std::string> stream) {
+    // Checks input
     if (stream.empty()) return nullptr;
 
+    // Instantiates the digraph
     digraph<course> *output = new digraph<course>();
 
-    for(auto line : stream){
+    // Runs through file
+    for(auto line : stream) {
         std::vector<std::string> consumable(prep(line));
 
         // Eat comments
@@ -82,14 +86,16 @@ digraph<course>* build(std::vector<std::string> stream){
     return output;
 }
 
-digraph<course>* build(std::string filename){
-    std::ifstream input(filename.c_str());
+// Function build() parses through an input FILE, builds a stream and passes it to the build() function above
+digraph<course>* build(std::string filename) {
+    std::ifstream input(filename.c_str());  // Loads file
 
-    if (!input){
+    if (!input){                            // If there's an error with the file, returns a nullptr
         std::cout << "[read] no input!";
         return nullptr;
     }
 
+    // Builds the stream
     std::string temp;
     std::vector<std::string> res;
 
@@ -102,5 +108,5 @@ digraph<course>* build(std::string filename){
         res.push_back(std::string(temp.c_str()));
     }
 
-    return build(res);
+    return build(res);                      // Calls previous build() function passing built stream to it
 }
