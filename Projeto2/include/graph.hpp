@@ -35,8 +35,8 @@ public:
     // Prints a topologically-ordered version of the graph
     void print_ordered(std::function<void(T)> = [](T a){ std::cout << a; });
 
-    // Receives a vertex's id and returns its neighbors' ids
-    // Retorna os ids dos vértices adjacentes ao vértice cujo id foi passado para o método
+    // Receives a vertex's index and returns its neighbors' indexes
+    // Retorna os índices dos vértices adjacentes ao vértice cujo índice foi passado para o método
     std::vector<unsigned int> neighbors(unsigned int);
 
     // Topological sort

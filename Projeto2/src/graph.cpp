@@ -4,38 +4,38 @@
 // template <class T>
 // std::vector<T*> digraph<T>::nodes() { return this.nodes };
 
-template <class T>
-void digraph<T>::push(T* value) {
+template<class T>
+void digraph<T>::push(T *value) {
     nodes.push_back(value);
 }
 
-template <class T>
+template<class T>
 bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsigned int(T)> get_id) {
     T *c1 = nullptr, *c2 = nullptr;
 
-    for(auto&& c : nodes){
+    for (auto &&c : nodes) {
         if (get_id(*c) == id1) c1 = c;
         if (get_id(*c) == id2) c2 = c;
     }
 
     if (c1 == nullptr || c2 == nullptr) return false;
 
-    edges.push_back({ c1, c2 });
+    edges.push_back({c1, c2});
     // edges.push_back(std::pair<course*, course*>(c1, c2));
 
     return true;
 }
 
-template <class T>
+template<class T>
 void digraph<T>::print_adj() {
     std::cout << "[print_adj] Printing adjacency list: " << std::endl;
 
-    for (auto& node : nodes){
+    for (auto &node : nodes) {
         std::cout << "[print_adj] "
                   << node->id
                   << " -> ";
 
-        for (auto& edge : edges)
+        for (auto &edge : edges)
             if (edge.first->id == node->id)
                 std::cout << edge.second->id << ' ';
 
@@ -43,71 +43,93 @@ void digraph<T>::print_adj() {
     }
 }
 
-template <class T>
+template<class T>
 std::vector<unsigned int> digraph<T>::neighbors(unsigned int i) {
     std::vector<unsigned int> output;
 
-    for(int i = 0; i < edges.size(); i++)
-        if(edges[i].first == nodes[i])
+    for (int i = 0; i < edges.size(); i++)
+        if (edges[i].first == nodes[i])
             output.push_back(i);
 
-        return output;
+    return output;
 }
 
-template <class T>
-std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {
-  
-  // Initialize visited array
-  if (visited.empty())
-    for(auto node : nodes)
-      visited.push_back(false);
+template<class T>
+std::vector<T *> digraph<T>::ordered(std::vector<bool> visited, std::vector<T *> output) {
 
-  // 1. Chamar dfsTodosVertices em G para computar f[v] para cada vértice v
-  for (int i = 0; i < nodes.size(); i++){
-    // if(output.count() == nodes.count()) break; // All nodes have been visited
+    // Initialize visited array
+    if (visited.empty())
+        for (auto node : nodes)
+            visited.push_back(false);
 
-    visited[i] = true;
-    auto node = nodes[i];
-    output.push_back(node);
+    // 1. Chamar dfsTodosVertices em G para computar f[v] para cada vértice v
+    for (int i = 0; i < nodes.size(); i++) {
+        // if(output.count() == nodes.count()) break; // All nodes have been visited
 
-    // Node has been visited on current iteration
-    if(std::find(output.begin(), output.end(), node) != output.end()) continue;
+        visited[i] = true;
+        auto node = nodes[i];
+        output.push_back(node);
 
-    for(auto neighbor : neighbors(i)){
-      
-      // 2. Se G contém uma aresta retorno (v, w) (i.e., se f[w] > f[v]) , reportar erro ;  
-      if(visited[neighbor]){
-        std::cout << "[digraph::ordered] error: found cycle (" << i << ',' << neighbor << ')' << std::endl;
-        exit(-1);
-      }
+        // Node has been visited on current iteration
+        if (std::find(output.begin(), output.end(), node) != output.end()) continue;
 
-      // Neighbor has been stacked, move on to next neighbor
-      if(std::find(output.begin(), output.end(), node) == output.end())
-        for(auto stacked : ordered(visited, output))
-          output.push_back(stacked);
+        for (auto neighbor : neighbors(i)) {
+
+            // 2. Se G contém uma aresta retorno (v, w) (i.e., se f[w] > f[v]) , reportar erro ;
+            if (visited[neighbor]) {
+                std::cout << "[digraph::ordered] error: found cycle (" << i << ',' << neighbor << ')' << std::endl;
+                exit(-1);
+            }
+
+            // Neighbor has been stacked, move on to next neighbor
+            if (std::find(output.begin(), output.end(), node) == output.end())
+                for (auto stacked : ordered(visited, output))
+                    output.push_back(stacked);
+        }
+
     }
 
-  }
-
-  return output;
+    return output;
 }
 
-template <class T>
-void digraph<T>::print_ordered(std::function<void(T)> print_node){
-  auto ordered = this->ordered();
+template<class T>
+void digraph<T>::print_ordered(std::function<void(T)> print_node) {
+    auto ordered = this->ordered();
 
-  for (int i = 0; i < ordered.size(); i++){
-    std::cout << "node: ";
-    print_node(*nodes[i]);
-    std::cout << std::endl;
-  }
+    for (int i = 0; i < ordered.size(); i++) {
+        std::cout << "node: ";
+        print_node(*nodes[i]);
+        std::cout << std::endl;
+    }
 }
 
-template <class T>
-std::vector<T*> digraph<T>::critical_path(std::vector<bool> visited, std::vector<T*> output) {
+template<class T>
+std::vector<T *> digraph<T>::critical_path(int weightSum, int auxWeight, int index, int pos,
+                                           std::vector<unsigned int> criticalPath, std::vector<int> auxPath) {
+    // Checks if graph has edges. pos == 0 means it'll check only on the first method call
+    if (index == 0 && edges.empty()) {
+        std::cout << "Error: graph has no edges." << std::endl;
+        exit(-666); // TODO: just quit method instead of ending the whole program
+    }
+
+    if (nodes[index] == nodes.end());   // TODO: end recursion
+
+    auto neighborhood = neighbors(nodes[index]->id);
+
+    if (neighborhood.empty());   // TODO: end recursion
+
+    auxWeight += nodes[index]->credits;
+
+    for (auto neighbor : neighborhood) {
+        int i = 0;
+        for (i; i < nodes.size(); i++)
+            if (edges[neighbor].second() == nodes[i])
+                break;
+    }
 
 }
 
 // TODO: Função de busca em profundidade num grafo
 
- template class digraph<course>;
+template
+class digraph<course>;
