@@ -1,3 +1,29 @@
+/* Universidade de Brasília
+ *
+ * Disciplina: Teoria e Aplicação de Grafos - Turma A, 01/2019
+ *
+ * Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
+ *
+ * Este programa utiliza o arquivo './data/materias.txt' para montar um dígrafo com peso, utilizando lista de
+ * adjacência. Implementamos as seguintes funções sobre o dígrafo:
+ * (1) ordenação topológica;
+ * (2) caminho crítico; e
+ * (3) impressão de uma imagem contendo:
+ *      (3.1) o dígrafo;
+ *      (3.2) sua ordenação topológica; e
+ *      (3.4) seu caminho crítico.          // TODO: descrever o caminho crítico
+ *
+ * Autores:
+ * Pedro Lucas Silva Haga Torres - 16/0141575
+ * Thales Gonçalves Grilo        - 14/0163603
+ *                                              // TODO: atualizar link para documentação/impressão em PT-BR
+ * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2
+ * ---------------------------------------------------------------------------------------------------------------------
+ * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
+ * // TODO: esse campo é necessário?
+ * ---------------------------------------------------------------------------------------------------------------------
+ */
+
 #include <iostream>
 #include "../include/reader.hpp"
 #include "../include/graph.hpp"
@@ -17,12 +43,14 @@ int main(int argc, char const *argv[])
     // auto graph = read(args[0]);
     // if (graph == nullptr) return -1;
 
+    // Builds the digraph onto object 'graph'
     digraph<course>* graph = build("../data/materias.txt");
+
+    // Prints digraph onscreen in terminal
     graph->print_adj();
 
-    // int i = topo_sorting(graph);
-
+    // Prints sorted graph (sorted by topological sorting)
     graph->print_ordered(print_course);
 
-    // return i;
+    return 0;
 }
