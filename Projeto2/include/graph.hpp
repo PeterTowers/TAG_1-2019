@@ -6,19 +6,22 @@
 #include <algorithm>
 #include <stack>
 
+// Class for a polymorphic digraph
 template <class T> class digraph {
 private:
-    std::vector<T*> nodes;
-    std::vector<std::pair<T*, T*>> edges;
+    std::vector<T*> nodes;                  // Vector for all nodes in digraph
+    std::vector<std::pair<T*, T*>> edges;   // Vector for all the edges between nodes in digraph
 
 public:
-    // digraph() : nodes(), edges() { };
+    // digraph() : nodes(), edges() { };    // TODO: cleanup
+    // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
     digraph(std::vector<T*> nodes = std::vector<T*>(),
             std::vector<std::pair<T*, T*>> edges = std::vector<std::pair<T*, T*>>())
       : nodes(nodes),
         edges(edges) { };
 
-    ~digraph() {};
+    // Destructor method
+    ~digraph() { };
 
 
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
@@ -47,7 +50,8 @@ public:
     std::vector<T*> critical_path(std::vector<bool> visited = std::vector<bool>(),
                                   std::vector<T*> output = std::vector<T*>());
 
-    unsigned int nodecount();
+    // TODO: cleanup ------------------------------------------------------------------------------------------
+    unsigned int node_count();
 
 //    digraph<T> filter(std::function<bool(T)>); // Returns the subgraph that excludes nodes for which the given function returns false
 //    digraph<T> without(T*); // Returns the graph without the given element
