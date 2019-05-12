@@ -132,31 +132,35 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         return criticalPath;
     }
 
+    // Sets default weight value to current iteration
+    weight += nodes[index]->credits;
+
     // Setting auxiliary variables to track max calculated weight, current calculated weight and current path
-    int maxWeight = weight + nodes[index]->credits;
-    int auxWeight = maxWeight;
+    int maxWeight, auxWeight;
+    maxWeight = auxWeight = weight;
     std::vector<unsigned int> maxPath;
 
     // Iterates through node's neighbors
     for (auto neighbor : neighborhood) {
-        criticalPath = path_finder(criticalPath, visited, neighbor, weight);    // TODO: correctly pass 'weight' value
+        // Recursively call method onto neighbors passing updated values
+        criticalPath = path_finder(criticalPath, visited, neighbor, weight);
 
         auxWeight += criticalPath[neighbor].second; // Sets current weight to self plus that of a given path
 
         // If current calculated weight is greater than max, we have a new critical path
         if (auxWeight > maxWeight) {
             maxWeight = auxWeight;  // Set new maximal weight
-            auxWeight = weight;     // TODO: Correctly set value to default
+            auxWeight = weight;     // Resets auxWeight to default value for next comparisons
 
             maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
         }
     }
 
     // After checking all neighbors, we'll have a critical path for the node
-    criticalPath[index].first = maxPath;    // Saves path for current node
+    criticalPath[index].first = maxPath;                                        // Saves path for current node
     criticalPath[index].first.insert(criticalPath[index].first.begin(), index); // Insert current node into path
 
-    criticalPath[index].second = maxWeight; // Save the sum of the path's weights
+    criticalPath[index].second = maxWeight; // Save this node's critical path weight as the sum of the path's weights
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
@@ -166,7 +170,7 @@ void digraph<T>::critical_path() {
     // Checks if graph has edges. pos == 0 means it'll check only on the first method call
     if (edges.empty()) {
         std::cout << "Error: graph has no edges." << std::endl;
-        exit(-666); // TODO: just quit method instead of ending the whole program
+        exit(-2); // TODO: quit method instead of ending the whole program?
     }
 
     std::vector<bool> visited;
