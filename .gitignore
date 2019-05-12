@@ -157,3 +157,5 @@ Projeto1/.idea/proj1.iml
 
 # Releases
 *.zip
+*.dot
+*.ps
