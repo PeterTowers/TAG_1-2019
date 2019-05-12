@@ -132,29 +132,33 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         return criticalPath;
     }
 
+    // Setting auxiliary variables to track max calculated weight, current calculated weight and current path
     int maxWeight = weight + nodes[index]->credits;
     int auxWeight = maxWeight;
     std::vector<unsigned int> maxPath;
 
+    // Iterates through node's neighbors
     for (auto neighbor : neighborhood) {
-        criticalPath = path_finder(criticalPath, visited, neighbor, weight);
+        criticalPath = path_finder(criticalPath, visited, neighbor, weight);    // TODO: correctly pass 'weight' value
 
-        auxWeight += criticalPath[neighbor].second;
+        auxWeight += criticalPath[neighbor].second; // Sets current weight to self plus that of a given path
 
+        // If current calculated weight is greater than max, we have a new critical path
         if (auxWeight > maxWeight) {
-            maxWeight = auxWeight;
-            auxWeight = weight;
+            maxWeight = auxWeight;  // Set new maximal weight
+            auxWeight = weight;     // TODO: Correctly set value to default
 
-            maxPath = criticalPath[neighbor].first;
+            maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
         }
     }
 
-    criticalPath[index].first = maxPath;
-    criticalPath[index].first.insert(criticalPath[index].first.begin(), index);
+    // After checking all neighbors, we'll have a critical path for the node
+    criticalPath[index].first = maxPath;    // Saves path for current node
+    criticalPath[index].first.insert(criticalPath[index].first.begin(), index); // Insert current node into path
 
-    criticalPath[index].second = maxWeight;
+    criticalPath[index].second = maxWeight; // Save the sum of the path's weights
 
-    return criticalPath;
+    return criticalPath;    // Returns vector containing calculated critical path
 }
 
 template <class T>

@@ -52,7 +52,7 @@ public:
     // Calculates digraph's critical path
     std::vector<std::pair<std::vector<unsigned int>, int>> path_finder(
             std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
-            unsigned int index, int maxWeight = 0);
+            unsigned int index, int weight = 0);
 
     // TODO: cleanup ------------------------------------------------------------------------------------------
     unsigned int node_count();
