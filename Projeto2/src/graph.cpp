@@ -58,7 +58,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     }
 }
 
-// Method neighbors() receives a vertex's id and returns its neighbors' ids
+// Method neighbors() receives a vertex's index and returns its neighbors' indices
 template <class T>
 std::vector<unsigned int> digraph<T>::neighbors(unsigned int i) {
     std::vector<unsigned int> output;
@@ -111,29 +111,96 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
   return output;    // Returns a topologically ordered list of nodes
 }
 
-template<class T>
-std::vector<T *> digraph<T>::critical_path(int weightSum, int auxWeight, int index, int pos,
-                                           std::vector<unsigned int> criticalPath, std::vector<int> auxPath) {
+template <class T>
+std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
+        std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
+        unsigned int index, int weight) {
+    // Checks if node has been visited before, if so, its critical path is already calculated
+    if (visited[index])
+        return criticalPath;
+
+    // Otherwise, set node as visited
+    visited[index] = true;
+
+    // Find node's adjacent veterxes
+    std::vector<unsigned int> neighborhood = neighbors(index);
+
+    // If node has no neighbors, then its critical path is set as itself, with its own weight (credits)
+    if (neighborhood.empty()) {
+        criticalPath[index].first.push_back(index);
+        criticalPath[index].second = nodes[index]->credits;
+        return criticalPath;
+    }
+
+    int maxWeight = weight + nodes[index]->credits;
+    int auxWeight = maxWeight;
+    std::vector<unsigned int> maxPath;
+
+    for (auto neighbor : neighborhood) {
+        criticalPath = path_finder(criticalPath, visited, neighbor, weight);
+
+        auxWeight += criticalPath[neighbor].second;
+
+        if (auxWeight > maxWeight) {
+            maxWeight = auxWeight;
+            auxWeight = weight;
+
+            maxPath = criticalPath[neighbor].first;
+        }
+    }
+
+    criticalPath[index].first = maxPath;
+    criticalPath[index].first.insert(criticalPath[index].first.begin(), index);
+
+    criticalPath[index].second = maxWeight;
+
+    return criticalPath;
+}
+
+template <class T>
+void digraph<T>::critical_path() {
     // Checks if graph has edges. pos == 0 means it'll check only on the first method call
-    if (index == 0 && edges.empty()) {
+    if (edges.empty()) {
         std::cout << "Error: graph has no edges." << std::endl;
         exit(-666); // TODO: just quit method instead of ending the whole program
     }
 
-    if (nodes[index] == nodes.end());   // TODO: end recursion
+    std::vector<bool> visited;
 
-    auto neighborhood = neighbors(nodes[index]->id);
+    for(auto node : nodes)
+        visited.push_back(false);
 
-    if (neighborhood.empty());   // TODO: end recursion
+    int maxWeight = 0;
 
-    auxWeight += nodes[index]->credits;
+    std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
+    std::pair<std::vector<unsigned int>, int> theCriticalPath;
 
-    for (auto neighbor : neighborhood) {
-        int i = 0;
-        for (i; i < nodes.size(); i++)
-            if (edges[neighbor].second() == nodes[i])
-                break;
+    for (int i = 0; i < nodes.size(); i++) {
+        if (visited[i]) {
+            if (graphCriticalPaths[i].second > maxWeight) {
+                maxWeight = graphCriticalPaths[i].second;
+                theCriticalPath.first = graphCriticalPaths[i].first;
+                theCriticalPath.second = maxWeight;
+            }
+            continue;
+        }
+
+        graphCriticalPaths = path_finder(graphCriticalPaths, visited, i);
+
+        if (graphCriticalPaths[i].second > maxWeight) {
+            maxWeight = graphCriticalPaths[i].second;
+            theCriticalPath.first = graphCriticalPaths[i].first;
+            theCriticalPath.second = maxWeight;
+        }
     }
+
+    // printf() debugging
+
+    std::cout << "Critical path is:" << std::endl;
+    for (auto node : theCriticalPath.first) {
+        std::cout << nodes[node]->id << " -> ";
+    }
+    std::cout << "\nSum of nodes weight: " << theCriticalPath.second << std::endl;
 
 }
 
