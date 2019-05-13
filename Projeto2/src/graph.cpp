@@ -143,7 +143,10 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
         }
         else {                      // If node has neighbors, prints them accordingly and current node's weight to edge
             outputFile << " -> { ";
-            for (auto neighbor : neighborhood) {
+            for (auto edge : neighborhood) {
+                unsigned int neighbor = edges[edge].second->id;
+                neighbor = find_node_by_id(neighbor);
+
                 outputFile << nodes[neighbor]->id << ' ';
             }
             outputFile << "}[label=\"" << nodes[index]->credits << "\",weight=\"" << nodes[index]->credits << "\"];\n";
