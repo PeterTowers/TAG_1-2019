@@ -8,19 +8,22 @@
  * adjacência. Implementamos as seguintes funções sobre o dígrafo:
  * (1) ordenação topológica;
  * (2) caminho crítico; e
- * (3) impressão de uma imagem contendo:
- *      (3.1) o dígrafo;
- *      (3.2) sua ordenação topológica; e
- *      (3.4) seu caminho crítico.          // TODO: descrever o caminho crítico
+ * (3) impressão dos arquivos '.dot' do:
+ *      (3.1) Dígrafo ('../data/adjacency_list.dot');
+ *      (3.2) A ordenação topológica do dígrafo ('../data/topological_order');
+ *      (3.4) Caminho crítico  do dígrafo ('../data/critical_path').
+ *
+ * Para maiores informações sobre o cálculo do caminho crítico e sobre a impressão do dígrafo como imagem, leia o
+ * arquivo README.MD.
  *
  * Autores:
  * Pedro Lucas Silva Haga Torres - 16/0141575
  * Thales Gonçalves Grilo        - 14/0163603
- *                                              // TODO: atualizar link para documentação/impressão em PT-BR
+ *
  * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2
  * ---------------------------------------------------------------------------------------------------------------------
  * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
- * // TODO: esse campo é necessário?
+ * TODO: esse campo é necessário?
  * ---------------------------------------------------------------------------------------------------------------------
  */
 
