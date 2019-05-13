@@ -20,6 +20,50 @@ bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsig
     return true;
 }
 
+// Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
+template <class T>
+unsigned int digraph<T>::find_node_by_id(unsigned int id) {
+    int index = 0;
+
+    // Iterates through 'nodes' vector and find a node's index using its id
+    while (nodes[index]->id != id)
+        index++;
+
+    return index;
+}
+
+// Method find_critical_path() returns the index of the critical path on 'criticalPaths' vector
+template <class T>
+unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
+    int maxWeight = 0;              // Auxiliary variable to store a path's sum of weights
+    std::vector<unsigned int> path; // path stores indices of critical paths with the same sum of weights
+
+    // Iterates through vector to find path with biggest weight.
+    for (int i = 0; i < criticalPaths.size(); i++)
+        if (criticalPaths[i].second > maxWeight)
+            maxWeight = criticalPaths[i].second;
+
+    // Iterates through vector again to find if there are other paths with the same weight
+    for (int i = 0; i < criticalPaths.size(); i++)
+        if (criticalPaths[i].second == maxWeight)
+            path.push_back(i);  // Saves paths with the biggest weight
+
+    // If there's more than one path with the same maximal weight, looks for the one with the most nodes
+    if (path.size() > 1) {
+        unsigned  int index = path[0];
+
+        for (int i = 0; i < (path.size() - 1); i++) {
+            if (criticalPaths[path[i]].first.size() < criticalPaths[path[i+1]].first.size())
+                index = path[i+1];
+        }
+
+        return index;   // Returns the index of the path with the most nodes
+    }
+
+    else
+        return path[0]; // Returns the index of the path with the biggest weight
+}
+
 // Method push() adds a node to the graph
 template <class T>
 void digraph<T>::push(T* value) {
@@ -33,10 +77,10 @@ void digraph<T>::print_adj() {
     // Variable for file handling
     std::ofstream outputFile;
 
-    // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERRASED
+    // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERASED
     outputFile.open("../data/adjacency_list.dot", std::ios::trunc);
 
-    // Prints an error if the file wasn't openned correctly and exits program with code '-3'
+    // Prints an error if the file wasn't opened correctly and exits program with code '-3'
     if (!outputFile) {
         std::cout << "Error: Could not open file for adjacency list." << std::endl;
         exit(-3);
@@ -99,10 +143,10 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node) {
     // Variable for file handling
     std::ofstream outputFile;
 
-    // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERRASED
+    // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERASED
     outputFile.open("../data/topological_order.dot", std::ios::trunc);
 
-    // Prints an error if the file wasn't openned correctly and exits program with code '-4'
+    // Prints an error if the file wasn't opened correctly and exits program with code '-4'
     if (!outputFile) {
         std::cout << "Error: Could not open file for adjacency list." << std::endl;
         exit(-4);
@@ -143,6 +187,81 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node) {
     outputFile << '}';
 
     outputFile.close(); // Closes the file
+}
+
+// Method critical_path() finds the digraph's critical path and prints it to file
+template <class T>
+void digraph<T>::critical_path() {
+    // Checks if graph has edges. If it doesn't, exits with code '-2'.
+    if (edges.empty()) {
+        std::cout << "Error: graph has no edges." << std::endl;
+        exit(-2);
+    }
+
+    // Sets up and initializes an array to represent visited nodes
+    std::vector<bool> visited;
+    for(auto node : nodes)
+        visited.push_back(false);
+
+    /*
+      Define a container for the graph's critical paths and size it according to nodes, since each node will have its
+       critical path.
+     */
+    std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
+    graphCriticalPaths.resize(nodes.size());
+
+    // Iterates through graph
+    for (int i = 0; i < nodes.size(); i++) {
+        // If a node has been visited before, it already has a critical path, so, moves on
+        if (visited[i])
+            continue;
+
+        // Calls path_finder() on node to find its critical path
+        graphCriticalPaths = path_finder(graphCriticalPaths, visited, i);
+    }
+
+    // Calls find_critical_path() to find the index of the critical path on 'graphCriticalPaths' vector
+    unsigned int index = find_critical_path(graphCriticalPaths);
+
+    // Saves the critical
+    std::pair<std::vector<unsigned int>, int> theCriticalPath = graphCriticalPaths[index];
+
+    // Calls print_critical_path() to print subgraph to file
+    print_critical_path(theCriticalPath.first);
+}
+
+template <class T>
+void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
+    /* Sets a variable for file handling and opens file in WRITE mode, passing 'trunc' parameter so that if there's a
+       previous file, it'll be ERRASED
+     */
+    std::ofstream print_crit("../data/critical_path.dot", std::ios::trunc);
+
+    // Prints an error if the file wasn't opened correctly and exits program with code '-5'
+    if (!print_crit) {
+        std::cout << "Error: could not open file for critical path." << std::endl;
+        exit(-5);
+    }
+
+    // Prints header as a comment
+    print_crit << "/* ----- UnB's Computer Science course's critical path subgraph ----- */\n";
+
+    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
+    print_crit << "digraph {\n";
+    print_crit << "\tlabel=\"Subgraph containing the critical path of UnB's CS bachelor courses\";\n";
+    print_crit << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
+
+    // Prints node's id, followed by its adjacent's id, with its weight (credits) information
+    for (int i = 0; i < (criticalPath.size() - 1); i++){
+        print_crit << '\t' << nodes[criticalPath[i]]->id << " -> " << nodes[criticalPath[i+1]]->id;
+        print_crit << "[label=\"" << nodes[i]->credits << "\",weight=\"" << nodes[i]->credits << "\"];\n";
+    }
+
+    // Prints '}' signifying the graph's end
+    print_crit << '}';
+
+    print_crit.close(); // Closes the file
+
 }
 
 // Method neighbors() receives a vertex's id and returns the positions of its edges on the edges array
@@ -200,6 +319,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
   return output;
 }
 
+// Method path_finder() calculates a critical path for every node
 template <class T>
 std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
@@ -242,120 +362,17 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
             maxWeight = auxWeight;  // Set new maximal weight
             maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
         }
-        auxWeight = 0;     // Resets auxWeight to default value for next comparisons
+        // Resets auxWeight to default value for next comparisons
+        auxWeight = 0;
     }
 
     // After checking all neighbors, we'll have a critical path for the node
     criticalPath[index].first = maxPath;                                        // Saves path for current node
     criticalPath[index].first.insert(criticalPath[index].first.begin(), index); // Insert current node into path
 
-    criticalPath[index].second = maxWeight + nodes[index]->credits; // Save this node's critical path weight as the sum of the path's weights
+    // Save this node's critical path weight as the sum of the path's weights
+    criticalPath[index].second = maxWeight + nodes[index]->credits;
 
     return criticalPath;    // Returns vector containing calculated critical path
-}
-
-template <class T>
-void digraph<T>::critical_path() {
-    // Checks if graph has edges. pos == 0 means it'll check only on the first method call
-    if (edges.empty()) {
-        std::cout << "Error: graph has no edges." << std::endl;
-        exit(-2); // TODO: quit method instead of ending the whole program?
-    }
-
-    std::vector<bool> visited;
-
-    for(auto node : nodes)
-        visited.push_back(false);
-
-    int maxWeight = 0;
-
-    std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
-    graphCriticalPaths.resize(nodes.size());
-
-    for (int i = 0; i < nodes.size(); i++) {
-        if (visited[i])
-            continue;
-
-        graphCriticalPaths = path_finder(graphCriticalPaths, visited, i);
-    }
-
-    unsigned int index = find_critical_path(graphCriticalPaths);
-
-    std::pair<std::vector<unsigned int>, int> theCriticalPath = graphCriticalPaths[index];
-
-    // printf() debugging
-
-    std::cout << "Critical path is:" << std::endl;
-    for (auto node : theCriticalPath.first) {
-        std::cout << nodes[node]->id << " -> ";
-    }
-    std::cout << "\nSum of nodes weight: " << theCriticalPath.second << std::endl;
-
-    print_critical_path(theCriticalPath.first);
-}
-
-template <class T>
-unsigned int digraph<T>::find_node_by_id(unsigned int id) {
-    int index = 0;
-
-    while (nodes[index]->id != id)
-        index++;
-
-    return index;
-}
-
-template <class T>
-unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
-    int maxWeight = 0;
-    std::vector<unsigned int> path;
-
-    for (int i = 0; i < criticalPaths.size(); i++)
-        if (criticalPaths[i].second >= maxWeight) {
-            maxWeight = criticalPaths[i].second;
-            path.push_back(i);
-        }
-
-    if (path.size() > 1) {
-        unsigned  int index = path[0];
-
-        for (int i = 0; i < (path.size() - 1); i++) {
-            if (criticalPaths[path[i]].first.size() < criticalPaths[path[i+1]].first.size())
-                index = path[i+1];
-        }
-
-        return index;
-    }
-
-    else
-        return path[0];
-}
-
-template <class T>
-void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
-
-    std::ofstream print_crit("../data/critical_path.dot", std::ios::trunc);
-    if (!print_crit) {
-        std::cout << "Error: could not open file for critical path." << std::endl;
-        exit(-5);
-    }
-
-    // Prints header as a comment
-    print_crit << "/* ----- UnB's Computer Science course's critical path subgraph ----- */\n";
-
-    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
-    print_crit << "digraph {\n";
-    print_crit << "\tlabel=\"Subgraph containing the critical path of UnB's CS bachelor courses\";\n";
-    print_crit << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
-
-    for (int i = 0; i < (criticalPath.size() - 1); i++){
-        print_crit << '\t' << nodes[criticalPath[i]]->id << " -> " << nodes[criticalPath[i+1]]->id;
-        print_crit << "[label=\"" << nodes[i]->credits << "\",weight=\"" << nodes[i]->credits << "\"];\n";
-    }
-
-    // Prints '}' signifying the graph's end
-    print_crit << '}';
-
-    print_crit.close(); // Closes the file
-
 }
  template class digraph<course>;
