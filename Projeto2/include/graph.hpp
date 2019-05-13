@@ -55,6 +55,8 @@ public:
             std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
             unsigned int index, int weight = 0);
 
+    unsigned int find_node_by_id(unsigned int id);
+
     // TODO: cleanup ------------------------------------------------------------------------------------------
     unsigned int node_count();
 
