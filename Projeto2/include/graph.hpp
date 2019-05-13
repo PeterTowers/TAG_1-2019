@@ -29,6 +29,17 @@ public:
                  unsigned int, // targed node
                  std::function<unsigned int(T)> get_id = [](T a){ return a; });
 
+    /* digraph::find_node_by_id
+        Receives a node's id and locates its index in 'nodes' vector,
+     */
+    unsigned int find_node_by_id(unsigned int id);
+
+    /* digraph::find_critical_path
+        Finds the index of all the critical paths (according to the sum of their weights) and, if there's a tie, selects
+        one with the most nodes. Returns the index of the critical path.
+     */
+    unsigned int find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>>);
+
     /* digraph::push
         Adds a node to the graph
         Receives:
@@ -46,17 +57,22 @@ public:
       */
     void print_ordered(std::function<void(T)> = [](T a){ std::cout << a; });
 
+    /* digraph::critical_path
+        Calculates digraph's critical path using path_finder() and prints it
+      */
+    void critical_path();
+
+    /* digraph::print_critical_path
+        Prints a subgraph containing the critical path to a .dot file. Receives said critical path.
+     */
+    void print_critical_path(std::vector<unsigned int>);
+
     /* digraph::neighbors
         Receives
           - The index (position) of a node, relative to the digraph's internal array of nodes
         Returns:
           - A vector with the indices (positions) of the input node's
       */
-    // Calculates digraph's critical path using path_finder() and prints it
-    void critical_path();
-
-    // Receives a vertex's index and returns its neighbors' indexes
-    // Retorna os índices dos vértices adjacentes ao vértice cujo índice foi passado para o método
     std::vector<unsigned int> neighbors(unsigned int);
 
     /* digraph::ordered
@@ -73,16 +89,15 @@ public:
     std::vector<T*> ordered(std::vector<bool> visited = std::vector<bool>(),
                             std::vector<T*> output = std::vector<T*>());
 
-    // Calculates digraph's critical path
+    /* digraph::path_finder
+        Recursively calculates a critical path for all nodes. If a course is disconnected, its path is set as itself and
+        its weight, as the courses credits. Each course has its own critical path: itself or all nodes ahead of it.
+        The critical path of a connected node is selected by the sum of course's credits, including the last one on the
+        path.
+      */
     std::vector<std::pair<std::vector<unsigned int>, int>> path_finder(
             std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
             unsigned int index);
-
-    unsigned int find_node_by_id(unsigned int id);
-
-    unsigned int find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>>);
-
-    void print_critical_path(std::vector<unsigned int>);
 };
 
 
