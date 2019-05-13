@@ -1,39 +1,59 @@
 #include "../include/reader.hpp"
 #include <string>
+#include <sstream>
 
-// Split: divide uma string em substrings
-// Function split() divides a string into substrings according to a set delimiter
+// Split: divides a string into substrings, provided a given separator
 std::vector<std::string> split(const std::string& s, char delimiter) {
-   std::vector<std::string> tokens;
-   std::string token;
-   std::istringstream tokenStream(s);
-   while (std::getline(tokenStream, token, delimiter)) tokens.push_back(token);
-   return tokens;
+    std::vector<std::string> tokens;    // Output container: array of parsed tokens
+    std::string token;                  // Token buffer
+    std::istringstream tokenStream(s);  // Input Stream
+
+    // Grab tokens from the stream, passing the delimiter
+    while (std::getline(tokenStream, token, delimiter)) tokens.push_back(token);
+    return tokens;
 }
 
-// Treating commentary text
+/** comment: Tells wether a given string is a comment or not
+ *    Receives:
+ *      - A string
+ *    Returns:
+ *      - true if the string is a comment, ie, starts with '#'
+ */
 bool comment(std::string str) { return str.front() == '#'; }
 
-// TODO: document function - prep
+/** prep: Prepare strings to be consumed by the parser
+ *    Receives:
+ *      - A string, representing a line in the input data file
+ *    Returns:
+ *      - An array of strings, comprised of the input string
+ *        split into tokens, with comments ignored.
+ */
 std::vector<std::string> prep(std::string input){
     std::vector<std::string> output;
 
+    // If token represents a comment, skip entire line
     for (auto element : split(input, ' ')) if (comment(element)) break;
+
+    // If token represents data, push it into the array
     for (auto element : split(input, ' ')) if (element > "")     output.push_back(element);
 
+    // Return the treated array of strings
     return output;
 }
 
-// Function build() parses through an input STREAM and builds a digraph of courses
+// build: Parses an array of strings into a digraph
 digraph<course>* build(std::vector<std::string> stream) {
-    // Checks input
+
+    // Check input
     if (stream.empty()) return nullptr;
 
-    // Instantiates the digraph
+    // Instantiate the digraph
     digraph<course> *output = new digraph<course>();
 
-    // Runs through file
+    // Run through file
     for(auto line : stream) {
+        
+        // Create temporary buffer, which will be consumed
         std::vector<std::string> consumable(prep(line));
 
         // Eat comments
@@ -47,50 +67,41 @@ digraph<course>* build(std::vector<std::string> stream) {
             continue;
         }
 
-        std::cout << "[build] input: ";
-        for(auto term : consumable)
-            std::cout << "\""
-                      << term
-                      << "\" ";
-
-        std::cout << std::endl;
-
-        // Parse course ID
+        // Parse (consume) 1st field: Course ID (integer)
         unsigned int id = (unsigned int) std::stoul(consumable.front(), nullptr, 0);
         consumable.erase(consumable.begin());
 
-        // Parse course Name
+        // Parse (consume) 2nd field: Course Name (string)
         std::string name = consumable.front();
         consumable.erase(consumable.begin());
 
-        // Parse course Name
+        // Parse (consume) 3rd field: Course Credits (integer)
         unsigned int credits = (unsigned int) std::stoul(consumable.front(), nullptr, 0);
         consumable.erase(consumable.begin());
         
-        // Create new node
+        // Push parsed node into the graph
         output->push(new course(id, name, credits));
 
 
-        // Create edges
-        for(auto prereq : consumable){
-//            std::cout << "[build] prereq: "
-//                  << '\''
-//                  << prereq
-//                  << '\''
-//                  << std::endl;
-
+        /** Parse (consume) trailing parameters from the buffer (other course IDs),
+          *   from which the edges of the graph are then constructed
+          */
+        for(auto prereq : consumable)
             if (comment(consumable.front())) continue;
             else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id, [](course a){ return a.id; });
-        }
     }
     return output;
 }
 
-// Function build() parses through an input FILE, builds a stream and passes it to the build() function above
-digraph<course>* build(std::string filename) {
-    std::ifstream input(filename.c_str());  // Loads file
 
-    if (!input){                            // If there's an error with the file, returns a nullptr
+
+// build overload: receives a filename, and call its homonim with the input properly split
+digraph<course>* build(std::string filename) {
+    // Loads file
+    std::ifstream input(filename.c_str()); 
+
+    // Catches bad input
+    if (!input){
         std::cout << "[read] no input!";
         return nullptr;
     }
@@ -99,14 +110,10 @@ digraph<course>* build(std::string filename) {
     std::string temp;
     std::vector<std::string> res;
 
-    while(std::getline(input, temp)){
-        // Debug Printings
-        // #ifdef DEBUG_FILE_PRINTDATA
-            std::cout << temp << std::endl;
-        // #endif
 
-        res.push_back(std::string(temp.c_str()));
-    }
+    // Pushes each line into the output
+    while(std::getline(input, temp)) res.push_back(std::string(temp.c_str()));
 
-    return build(res);                      // Calls previous build() function passing built stream to it
+    // Passes output into homonim
+    return build(res);
 }
