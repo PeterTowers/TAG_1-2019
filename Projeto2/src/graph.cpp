@@ -64,7 +64,7 @@ void digraph<T>::print_adj() {
 
     // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
     outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Digraph of UnB's CS course\";\n";
+    outputFile << "\tlabel=\"Digraph of UnB's CS bachelor courses\";\n";
     outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
     for (auto& node : nodes){       // Prints each node's id in 'nodes'...
@@ -127,7 +127,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
 
     // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
     outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Topologically ordered digraph of UnB's CS course\";\n";
+    outputFile << "\tlabel=\"Topologically ordered digraph of UnB's CS bachelor courses\";\n";
     outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
     for (int i = 0; i < ordered.size(); i++){   // Iterates through vector ordered
