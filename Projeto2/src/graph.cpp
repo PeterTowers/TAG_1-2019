@@ -1,8 +1,6 @@
 #include "../include/graph.hpp"
 #include "../include/course.hpp"
 
-// template <class T>
-// std::vector<T*> digraph<T>::nodes() { return this.nodes };
 
 // Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
@@ -31,24 +29,9 @@ void digraph<T>::push(T* value) {
 // Method print_adj() prints adjacency list
 template <class T>
 void digraph<T>::print_adj() {
-// ----------------------------------- Prints to screen on terminal -----------------------------------
-//    std::cout << "[print_adj] Printing adjacency list: " << std::endl;  // Prints a "header"
-//
-//    for (auto& node : nodes){       // Prints each node in 'nodes'
-//        std::cout << "[print_adj] "
-//                  << node->id
-//                  << " -> ";
-//
-//        for (auto& edge : edges)    // Followed by its adjacent nodes
-//            if (edge.first->id == node->id)
-//                std::cout << edge.second->id << ' ';
-//
-//        std::cout << std::endl;
-//    }
-// ----------------------------------------------------------------------------------------------------
-// --------------- Prints to 'adjacency_list.dot' file, located at '../data/' directory ---------------
 
-    std::ofstream outputFile;   // Variable for file handling
+    // Variable for file handling
+    std::ofstream outputFile;   
 
     // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERRASED
     outputFile.open("../data/adjacency_list.dot", std::ios::trunc);
@@ -65,26 +48,38 @@ void digraph<T>::print_adj() {
     // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
     outputFile << "digraph {\n";
     outputFile << "\tlabel=\"Digraph of UnB's CS course\";\n";
-    outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
-    for (auto& node : nodes){       // Prints each node's id in 'nodes'...
-        outputFile << '\t' << node->id; // ... with an indentation
+    // Builds graph with left-to-right orientation
+    outputFile << "\trankdir=LR;\n";
+
+    // Prints each node's id in 'nodes'...
+    for (auto& node : nodes){
+
+        // ... with an indentation
+        outputFile << '\t' << node->id;
 
         bool hasAdjacent = true;
 
-        for (int i = 0; i < edges.size(); i++)    // Followed by its adjacent nodes if there are any
+        // Followed by its adjacent nodes if there are any
+        for (int i = 0; i < edges.size(); i++)    
+
             if (edges[i].first->id == node->id) {
                 // These symbols: ' -> {' should be printed only once and only if the node has adjacents
                 if (hasAdjacent) {
                     outputFile << " -> { ";
-                    hasAdjacent = false;    // Sets variable to false so symbols won't be printed again
+
+                    // Sets variable to false so symbols won't be printed again
+                    hasAdjacent = false;
                 }
+
                 // Prints adjacent nodes to file followed by a single space. The last one isn't a problem
                 outputFile << edges[i].second->id << ' ';
             }
 
-        // If node has an adjacent, 'hasAdjacent' will be set to false, so we need the opposite value for this condition
-        if (!hasAdjacent)   // in order to print the weight of the edge into the file
+        /* If node has an adjacent, 'hasAdjacent' will be set to false, so we need the opposite value for this condition
+            in order to print the weight of the edge into the file
+          */
+        if (!hasAdjacent)
             outputFile << "}[label=\"" << node->credits << "\",weight=\"" << node->credits << "\"];\n";
         // If node doesn't have an adjacent, all that's needed is a semicolon and a newline
         else
@@ -94,24 +89,19 @@ void digraph<T>::print_adj() {
     // Prints '}' signifying the graph's end
     outputFile << '}';
 
-    outputFile.close(); // Closes the file
+    // Closes the file
+    outputFile.close(); 
 }
 
 // Method print_ordered() prints a topologically-ordered version of the graph
 template <class T>
 void digraph<T>::print_ordered(std::function<void(T)> print_node){
-    auto ordered = this->ordered(); // Sets a variable to receive the output of method ordered()
 
-// ----------------------------------- Prints to screen on terminal -----------------------------------
-//    for (int i = 0; i < ordered.size(); i++){
-//        std::cout << "node: ";
-//        print_node(*nodes[i]);
-//        std::cout << std::endl;
-//    }
-// ----------------------------------------------------------------------------------------------------
-// -------------- Prints to 'topological_order.dot' file, located at '../data/' directory -------------
+    // Instantiates a variable to receive the output of method ordered()
+    auto ordered = this->ordered();
 
-    std::ofstream outputFile;   // Variable for file handling
+    // Variable for file handling
+    std::ofstream outputFile;   
 
     // Open file in WRITE mode, passing 'trunc' parameter so that if there's a previous file, it'll be ERRASED
     outputFile.open("../data/topological_order.dot", std::ios::trunc);
@@ -159,16 +149,18 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     outputFile.close(); // Closes the file
 }
 
-// Method neighbors() receives a vertex's id and returns its neighbors' ids
+// Method neighbors() receives a vertex's id and returns the positions of its edges on the edges array
 template <class T>
 std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
+    // Variable that will receive
     std::vector<unsigned int> output;
 
-    for(int i = 0; i < edges.size(); i++)
-        if(edges[i].first == nodes[index])
-            output.push_back(i);
+    for(int i = 0; i < edges.size(); i++)   // Iterates through each edge
+        if(edges[i].first == nodes[index])  // If the edge's source is the requested node
+            output.push_back(i);            // Save that edge
 
-        return output;
+    // Returns the saved edges
+    return output;
 }
 
 // Recursive method orderred() implements digraph's topological sort
@@ -180,43 +172,42 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
     for(auto node : nodes)
       visited.push_back(false);
 
-  // 1. Chamar dfsTodosVertices em G para computar f[v] para cada vértice v //TODO: explain this better
   // Implements a DFS on digraph in order to...
   for (int i = 0; i < nodes.size(); i++){
     // if(output.count() == nodes.count()) break; // All nodes have been visited
 
-    visited[i] = true;      // Sets i-th node as visited
+    visited[i] = true;      // Mark the current node temporarily
     auto node = nodes[i];   // Stores i-th node inside 'node' variable
-    output.push_back(node); // Pushes 'node' inside 'output' vector
+    output.push_back(node); // Push current node into the output stack, permanently marking it
 
-    // If node has been visited on current iteration, skips to the next one
+    // Ignore node if it has been permanently visited
     if(std::find(output.begin(), output.end(), node) != output.end()) continue;
 
-    for(auto neighbor : neighbors(i)) { // Visit node's adjacent nodes
-      
-      // 2. Se G contém uma aresta retorno (v, w) (i.e., se f[w] > f[v]) , reportar erro ;
-      // If digraph has a cycle, prints an error and exit with condition "-1"
+    // Visit node's adjacent nodes
+    for(auto neighbor : neighbors(i)) {
+
+      // Cycle Detection: If digraph has a cycle, prints an error and exit with condition "-1"
       if(visited[neighbor]) {
         std::cout << "[digraph::ordered] error: found cycle (" << i << ',' << neighbor << ')' << std::endl;
         exit(-1);
       }
 
-      // Stacks neighbors and move on to next one
+      /** Recursion
+       *   Pushes entire topologically ordered subgraph starging from
+       *    current neighbor into the stack first, recursively.
+       */
       if(std::find(output.begin(), output.end(), node) == output.end())
         for(auto stacked : ordered(visited, output))
           output.push_back(stacked);
     }
-
   }
 
-  return output;    // Returns a topologically ordered list of nodes
+  // Returns a topologically ordered list of nodes
+  return output;
 }
 
 template <class T>
 std::vector<T*> digraph<T>::critical_path(std::vector<bool> visited, std::vector<T*> output) {
 
 }
-
-// TODO: Função de busca em profundidade num grafo
-
  template class digraph<course>;
