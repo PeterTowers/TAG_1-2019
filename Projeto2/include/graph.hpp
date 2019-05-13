@@ -52,6 +52,11 @@ public:
         Returns:
           - A vector with the indices (positions) of the input node's
       */
+    // Calculates digraph's critical path using path_finder() and prints it
+    void critical_path();
+
+    // Receives a vertex's index and returns its neighbors' indexes
+    // Retorna os índices dos vértices adjacentes ao vértice cujo índice foi passado para o método
     std::vector<unsigned int> neighbors(unsigned int);
 
     /* digraph::ordered
@@ -68,12 +73,16 @@ public:
     std::vector<T*> ordered(std::vector<bool> visited = std::vector<bool>(),
                             std::vector<T*> output = std::vector<T*>());
 
-    /* digraph::critical_path
-      Returns graph's critical path
-      TODO: describe input and output
-      */
-    std::vector<T*> critical_path(std::vector<bool> visited = std::vector<bool>(),
-                                  std::vector<T*> output = std::vector<T*>());
+    // Calculates digraph's critical path
+    std::vector<std::pair<std::vector<unsigned int>, int>> path_finder(
+            std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
+            unsigned int index);
+
+    unsigned int find_node_by_id(unsigned int id);
+
+    unsigned int find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>>);
+
+    void print_critical_path(std::vector<unsigned int>);
 };
 
 

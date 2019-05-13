@@ -43,6 +43,7 @@ int main(int argc, char const *argv[])
 
     // Prints sorted graph (sorted by topological sorting)
     graph->print_ordered(print_course);
+    graph->critical_path();
 
     return 0;
 }
