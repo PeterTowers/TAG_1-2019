@@ -212,7 +212,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 template <class T>
 std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
-        unsigned int index, int weight) {
+        unsigned int index) {
     // Checks if node has been visited before, if so, its critical path is already calculated
     if (visited[index])
         return criticalPath;
@@ -230,37 +230,35 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         return criticalPath;
     }
 
-    // Sets default weight value to current iteration
-    weight += nodes[index]->credits;
-
     // Setting auxiliary variables to track max calculated weight, current calculated weight and current path
     int maxWeight, auxWeight;
-    maxWeight = auxWeight = weight;
+    maxWeight = auxWeight = 0;
     std::vector<unsigned int> maxPath;
 
     // Iterates through node's neighbors
     for (auto edge : neighborhood) {
+        // Finds adjacent nodes' id from 'edges' vector and finds node's position in 'nodes' vector
         unsigned int neighbor = edges[edge].second->id;
         neighbor = find_node_by_id(neighbor);
+
         // Recursively call method onto neighbors passing updated values
-        criticalPath = path_finder(criticalPath, visited, neighbor, weight);
+        criticalPath = path_finder(criticalPath, visited, neighbor);
 
         auxWeight += criticalPath[neighbor].second; // Sets current weight to self plus that of a given path
 
         // If current calculated weight is greater than max, we have a new critical path
         if (auxWeight > maxWeight) {
             maxWeight = auxWeight;  // Set new maximal weight
-
             maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
         }
-        auxWeight = weight;     // Resets auxWeight to default value for next comparisons
+        auxWeight = 0;     // Resets auxWeight to default value for next comparisons
     }
 
     // After checking all neighbors, we'll have a critical path for the node
     criticalPath[index].first = maxPath;                                        // Saves path for current node
     criticalPath[index].first.insert(criticalPath[index].first.begin(), index); // Insert current node into path
 
-    criticalPath[index].second = maxWeight; // Save this node's critical path weight as the sum of the path's weights
+    criticalPath[index].second = maxWeight + nodes[index]->credits; // Save this node's critical path weight as the sum of the path's weights
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
