@@ -154,3 +154,9 @@ Projeto1/.idea/.name
 Projeto1/.idea/misc.xml
 Projeto1/.idea/modules.xml
 Projeto1/.idea/proj1.iml
+
+# Releases
+*.zip
+*.dot
+*.ps
+*.svg

@@ -33,7 +33,7 @@ int cleanup(NETWORK* network){
 
 // Função para imprimir o id e o grau do vértice passado
 void print_vertex(VERTEX v){
-  printf("Vertice de id: %2i - Grau: %2i\n", v.id, v.degree);
+  printf("\t - vertice de id: %2i - Grau: %2i\n", v.id, v.degree);
   return;
 }
 
@@ -41,7 +41,7 @@ void print_vertex(VERTEX v){
 void question1(NETWORK network){
   if (network.nvertices <= 0)
     printf("[question1] Erro na inicializacao da network: network contem %i vertices", network.nvertices);
-  printf("Objetivo (1): imprimir cada vertice e seu respectivo grau.\n\n");
+  printf("\nObjetivo (1): imprimir cada vertice e seu respectivo grau.\n");
   for(int i = 0; i < network.nvertices; i++)
     print_vertex(network.vertex[i]);
 
@@ -50,16 +50,16 @@ void question1(NETWORK network){
 
 // Função relativa ao objetivo 2 do projeto: encontrar e imprimir todos os cliques maximais
 void question2(NETWORK* network) {
-    printf("Objetivo (2): imprimir todos os cliques maximais.\n");
+    printf("\nObjetivo (2): imprimir todos os cliques maximais.\n");
     if (max_clique(network) != 0)
         printf("Erro na função max_clique().");
 }
 
 // Função relativa ao objetivo 3 do projeto: calcular e imprimir o coeficiente de aglomeração de cada vértice
 void question3(NETWORK* network){
-  printf("Objetivo (3): coeficiente de aglomeracao de cada vértice\n\n");
+  printf("\nObjetivo (3): coeficiente de aglomeracao de cada vértice\n\n");
   for(int i = 0; i < network->nvertices; i++)
-    printf("\tVertice %2d - coeficiente: %f\n", network->vertex[i].id, agglomeration(network, i));
+    printf("\t- vertice %2d - coeficiente: %.2f\n", network->vertex[i].id, agglomeration(network, i));
 
 }
 
