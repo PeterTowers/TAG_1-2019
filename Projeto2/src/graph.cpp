@@ -161,11 +161,11 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
 
 // Method neighbors() receives a vertex's id and returns its neighbors' ids
 template <class T>
-std::vector<unsigned int> digraph<T>::neighbors(unsigned int i) {
+std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
     std::vector<unsigned int> output;
 
     for(int i = 0; i < edges.size(); i++)
-        if(edges[i].first == nodes[i])
+        if(edges[i].first == nodes[index])
             output.push_back(i);
 
         return output;
