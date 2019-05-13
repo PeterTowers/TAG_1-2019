@@ -133,10 +133,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     for (int i = 0; i < ordered.size(); i++){   // Iterates through vector ordered
         outputFile << '\t' << ordered[i]->id;   // Insert indentation
 
-        int index = 0;  // Sets variable to find node's index inside 'nodes' vector
-
-        while (ordered[i]->id != nodes[index]->id)
-            index++;
+        int index = find_node_by_id(ordered[i]->id);  // Look for node's index inside 'nodes' vector
 
         auto neighborhood = neighbors(index);   // Look for node's neighbors
 
@@ -242,7 +239,9 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
     std::vector<unsigned int> maxPath;
 
     // Iterates through node's neighbors
-    for (auto neighbor : neighborhood) {
+    for (auto edge : neighborhood) {
+        unsigned int neighbor = edges[edge].second->id;
+        neighbor = find_node_by_id(neighbor);
         // Recursively call method onto neighbors passing updated values
         criticalPath = path_finder(criticalPath, visited, neighbor, weight);
 
@@ -251,10 +250,10 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
         // If current calculated weight is greater than max, we have a new critical path
         if (auxWeight > maxWeight) {
             maxWeight = auxWeight;  // Set new maximal weight
-            auxWeight = weight;     // Resets auxWeight to default value for next comparisons
 
             maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
         }
+        auxWeight = weight;     // Resets auxWeight to default value for next comparisons
     }
 
     // After checking all neighbors, we'll have a critical path for the node
@@ -282,6 +281,8 @@ void digraph<T>::critical_path() {
     int maxWeight = 0;
 
     std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
+    graphCriticalPaths.resize(nodes.size());
+
     std::pair<std::vector<unsigned int>, int> theCriticalPath;
 
     for (int i = 0; i < nodes.size(); i++) {
@@ -311,6 +312,16 @@ void digraph<T>::critical_path() {
     }
     std::cout << "\nSum of nodes weight: " << theCriticalPath.second << std::endl;
 
+}
+
+template <class T>
+unsigned int digraph<T>::find_node_by_id(unsigned int id) {
+    int index = 0;
+
+    while (nodes[index]->id != id)
+        index++;
+
+    return index;
 }
 
 // TODO: Função de busca em profundidade num grafo
