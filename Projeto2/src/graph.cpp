@@ -133,10 +133,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     for (int i = 0; i < ordered.size(); i++){   // Iterates through vector ordered
         outputFile << '\t' << ordered[i]->id;   // Insert indentation
 
-        int index = 0;  // Sets variable to find node's index inside 'nodes' vector
-
-        while (ordered[i]->id != nodes[index]->id)
-            index++;
+        int index = find_node_by_id(ordered[i]->id);  // Look for node's index inside 'nodes' vector
 
         auto neighborhood = neighbors(index);   // Look for node's neighbors
 
@@ -159,7 +156,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     outputFile.close(); // Closes the file
 }
 
-// Method neighbors() receives a vertex's id and returns its neighbors' ids
+// Method neighbors() receives a vertex's index and returns its neighbors' indices
 template <class T>
 std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
     std::vector<unsigned int> output;
@@ -174,7 +171,7 @@ std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
 // Recursive method orderred() implements digraph's topological sort
 template <class T>
 std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {
-  
+
   // Initializes visited array on the method call
   if (visited.empty())
     for(auto node : nodes)
@@ -193,7 +190,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
     if(std::find(output.begin(), output.end(), node) != output.end()) continue;
 
     for(auto neighbor : neighbors(i)) { // Visit node's adjacent nodes
-      
+
       // 2. Se G contém uma aresta retorno (v, w) (i.e., se f[w] > f[v]) , reportar erro ;
       // If digraph has a cycle, prints an error and exit with condition "-1"
       if(visited[neighbor]) {
@@ -213,8 +210,132 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 }
 
 template <class T>
-std::vector<T*> digraph<T>::critical_path(std::vector<bool> visited, std::vector<T*> output) {
+std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
+        std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
+        unsigned int index) {
+    // Checks if node has been visited before, if so, its critical path is already calculated
+    if (visited[index])
+        return criticalPath;
 
+    // Otherwise, set node as visited
+    visited[index] = true;
+
+    // Find node's adjacent veterxes
+    std::vector<unsigned int> neighborhood = neighbors(index);
+
+    // If node has no neighbors, then its critical path is set as itself, with its own weight (credits)
+    if (neighborhood.empty()) {
+        criticalPath[index].first.push_back(index);
+        criticalPath[index].second = nodes[index]->credits;
+        return criticalPath;
+    }
+
+    // Setting auxiliary variables to track max calculated weight, current calculated weight and current path
+    int maxWeight, auxWeight;
+    maxWeight = auxWeight = 0;
+    std::vector<unsigned int> maxPath;
+
+    // Iterates through node's neighbors
+    for (auto edge : neighborhood) {
+        // Finds adjacent nodes' id from 'edges' vector and finds node's position in 'nodes' vector
+        unsigned int neighbor = edges[edge].second->id;
+        neighbor = find_node_by_id(neighbor);
+
+        // Recursively call method onto neighbors passing updated values
+        criticalPath = path_finder(criticalPath, visited, neighbor);
+
+        auxWeight += criticalPath[neighbor].second; // Sets current weight to self plus that of a given path
+
+        // If current calculated weight is greater than max, we have a new critical path
+        if (auxWeight > maxWeight) {
+            maxWeight = auxWeight;  // Set new maximal weight
+            maxPath = criticalPath[neighbor].first; // Save path in auxiliary variable
+        }
+        auxWeight = 0;     // Resets auxWeight to default value for next comparisons
+    }
+
+    // After checking all neighbors, we'll have a critical path for the node
+    criticalPath[index].first = maxPath;                                        // Saves path for current node
+    criticalPath[index].first.insert(criticalPath[index].first.begin(), index); // Insert current node into path
+
+    criticalPath[index].second = maxWeight + nodes[index]->credits; // Save this node's critical path weight as the sum of the path's weights
+
+    return criticalPath;    // Returns vector containing calculated critical path
+}
+
+template <class T>
+void digraph<T>::critical_path() {
+    // Checks if graph has edges. pos == 0 means it'll check only on the first method call
+    if (edges.empty()) {
+        std::cout << "Error: graph has no edges." << std::endl;
+        exit(-2); // TODO: quit method instead of ending the whole program?
+    }
+
+    std::vector<bool> visited;
+
+    for(auto node : nodes)
+        visited.push_back(false);
+
+    int maxWeight = 0;
+
+    std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
+    graphCriticalPaths.resize(nodes.size());
+
+    for (int i = 0; i < nodes.size(); i++) {
+        if (visited[i])
+            continue;
+
+        graphCriticalPaths = path_finder(graphCriticalPaths, visited, i);
+    }
+
+    unsigned int index = find_critical_path(graphCriticalPaths);
+
+    std::pair<std::vector<unsigned int>, int> theCriticalPath = graphCriticalPaths[index];
+
+    // printf() debugging
+
+    std::cout << "Critical path is:" << std::endl;
+    for (auto node : theCriticalPath.first) {
+        std::cout << nodes[node]->id << " -> ";
+    }
+    std::cout << "\nSum of nodes weight: " << theCriticalPath.second << std::endl;
+
+}
+
+template <class T>
+unsigned int digraph<T>::find_node_by_id(unsigned int id) {
+    int index = 0;
+
+    while (nodes[index]->id != id)
+        index++;
+
+    return index;
+}
+
+template <class T>
+unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
+    int maxWeight = 0;
+    std::vector<unsigned int> path;
+
+    for (int i = 0; i < criticalPaths.size(); i++)
+        if (criticalPaths[i].second >= maxWeight) {
+            maxWeight = criticalPaths[i].second;
+            path.push_back(i);
+        }
+
+    if (path.size() > 1) {
+        unsigned  int index = path[0];
+
+        for (int i = 0; i < (path.size() - 1); i++) {
+            if (criticalPaths[path[i]].first.size() < criticalPaths[path[i+1]].first.size())
+                index = path[i+1];
+        }
+
+        return index;
+    }
+
+    else
+        return path[0];
 }
 
 // TODO: Função de busca em profundidade num grafo
