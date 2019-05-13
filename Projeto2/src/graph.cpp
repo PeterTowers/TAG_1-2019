@@ -103,11 +103,11 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
     auto ordered = this->ordered(); // Sets a variable to receive the output of method ordered()
 
 // ----------------------------------- Prints to screen on terminal -----------------------------------
-    for (int i = 0; i < ordered.size(); i++){
-        std::cout << "node: ";
-        print_node(*nodes[i]);
-        std::cout << std::endl;
-    }
+//    for (int i = 0; i < ordered.size(); i++){
+//        std::cout << "node: ";
+//        print_node(*nodes[i]);
+//        std::cout << std::endl;
+//    }
 // ----------------------------------------------------------------------------------------------------
 // -------------- Prints to 'topological_order.dot' file, located at '../data/' directory -------------
 
