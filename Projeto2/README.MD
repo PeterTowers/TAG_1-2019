@@ -23,7 +23,7 @@ dot -T<output file format> <path to .dot file> -o <desired output file name>
 ```
 
 We recommend `.svg` file format (`-Tsvg`). If you don't want to bother with an output file name, it's possible to use
-`-O` (capital `O`) flag instead of '-o'.
+`-O` (capital `O`) flag instead of `-o`.
 
 # Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
 Este programa utiliza o arquivo './data/materias.txt' para montar um dígrafo com peso, utilizando lista de
