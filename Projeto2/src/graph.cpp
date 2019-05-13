@@ -281,26 +281,16 @@ void digraph<T>::critical_path() {
     std::vector<std::pair<std::vector<unsigned int>, int>> graphCriticalPaths = { { } };
     graphCriticalPaths.resize(nodes.size());
 
-    std::pair<std::vector<unsigned int>, int> theCriticalPath;
-
     for (int i = 0; i < nodes.size(); i++) {
-        if (visited[i]) {
-            if (graphCriticalPaths[i].second > maxWeight) {
-                maxWeight = graphCriticalPaths[i].second;
-                theCriticalPath.first = graphCriticalPaths[i].first;
-                theCriticalPath.second = maxWeight;
-            }
+        if (visited[i])
             continue;
-        }
 
         graphCriticalPaths = path_finder(graphCriticalPaths, visited, i);
-
-        if (graphCriticalPaths[i].second > maxWeight) {
-            maxWeight = graphCriticalPaths[i].second;
-            theCriticalPath.first = graphCriticalPaths[i].first;
-            theCriticalPath.second = maxWeight;
-        }
     }
+
+    unsigned int index = find_critical_path(graphCriticalPaths);
+
+    std::pair<std::vector<unsigned int>, int> theCriticalPath = graphCriticalPaths[index];
 
     // printf() debugging
 
@@ -320,6 +310,32 @@ unsigned int digraph<T>::find_node_by_id(unsigned int id) {
         index++;
 
     return index;
+}
+
+template <class T>
+unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
+    int maxWeight = 0;
+    std::vector<unsigned int> path;
+
+    for (int i = 0; i < criticalPaths.size(); i++)
+        if (criticalPaths[i].second >= maxWeight) {
+            maxWeight = criticalPaths[i].second;
+            path.push_back(i);
+        }
+
+    if (path.size() > 1) {
+        unsigned  int index = path[0];
+
+        for (int i = 0; i < (path.size() - 1); i++) {
+            if (criticalPaths[path[i]].first.size() < criticalPaths[path[i+1]].first.size())
+                index = path[i+1];
+        }
+
+        return index;
+    }
+
+    else
+        return path[0];
 }
 
 // TODO: Função de busca em profundidade num grafo
