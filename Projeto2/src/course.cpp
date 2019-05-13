@@ -13,6 +13,3 @@ course::course(unsigned int id, std::string name, unsigned int credits, std::fun
 
 // Destructor
 course::~course() { }
-
-// Gets credits value from a course
-int cost(course c) { return c.credits; }    // TODO: cleanup?
