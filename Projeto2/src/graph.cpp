@@ -64,7 +64,7 @@ void digraph<T>::print_adj() {
 
     // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
     outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Digraph of UnB's CS course\";\n";
+    outputFile << "\tlabel=\"Digraph of UnB's CS bachelor courses\";\n";
     outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
     for (auto& node : nodes){       // Prints each node's id in 'nodes'...
@@ -127,7 +127,7 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
 
     // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
     outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Topologically ordered digraph of UnB's CS course\";\n";
+    outputFile << "\tlabel=\"Topologically ordered digraph of UnB's CS bachelor courses\";\n";
     outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
     for (int i = 0; i < ordered.size(); i++){   // Iterates through vector ordered
@@ -143,7 +143,10 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node){
         }
         else {                      // If node has neighbors, prints them accordingly and current node's weight to edge
             outputFile << " -> { ";
-            for (auto neighbor : neighborhood) {
+            for (auto edge : neighborhood) {
+                unsigned int neighbor = edges[edge].second->id;
+                neighbor = find_node_by_id(neighbor);
+
                 outputFile << nodes[neighbor]->id << ' ';
             }
             outputFile << "}[label=\"" << nodes[index]->credits << "\",weight=\"" << nodes[index]->credits << "\"];\n";
@@ -300,6 +303,7 @@ void digraph<T>::critical_path() {
     }
     std::cout << "\nSum of nodes weight: " << theCriticalPath.second << std::endl;
 
+    print_critical_path(theCriticalPath.first);
 }
 
 template <class T>
@@ -336,6 +340,35 @@ unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<un
 
     else
         return path[0];
+}
+
+template <class T>
+void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
+
+    std::ofstream print_crit("../data/critical_path.dot", std::ios::trunc);
+    if (!print_crit) {
+        std::cout << "Error: could not open file for critical path." << std::endl;
+        exit(-5);
+    }
+
+    // Prints header as a comment
+    print_crit << "/* ----- UnB's Computer Science course's critical path subgraph ----- */\n";
+
+    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
+    print_crit << "digraph {\n";
+    print_crit << "\tlabel=\"Subgraph containing the critical path of UnB's CS bachelor courses\";\n";
+    print_crit << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
+
+    for (int i = 0; i < (criticalPath.size() - 1); i++){
+        print_crit << '\t' << nodes[criticalPath[i]]->id << " -> " << nodes[criticalPath[i+1]]->id;
+        print_crit << "[label=\"" << nodes[i]->credits << "\",weight=\"" << nodes[i]->credits << "\"];\n";
+    }
+
+    // Prints '}' signifying the graph's end
+    print_crit << '}';
+
+    print_crit.close(); // Closes the file
+
 }
 
 // TODO: Função de busca em profundidade num grafo
