@@ -5,6 +5,10 @@ following features to the digraph:
 2. Critical path; and
 3. Print the digraph on a `.dot` file in order to create an image of it.
 
+## Compiling
+The code can be compiled using `make` - a makefile is available within `cmake-build-debug`. Alternatively, a CMakeLists.txt is available on the root folder, allowing the binary to be generated using CMake.
+Finally, the project has been developed using CLion, which can also be used to open the project and setting it up.
+
 ## Critical path
 The critical path is calculated as the sum of each course's credits (including the last one on the path). If there's a
 tie, it'll select the path with most nodes.
