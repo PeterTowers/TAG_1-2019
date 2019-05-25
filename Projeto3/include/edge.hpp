@@ -1,20 +1,26 @@
 #pragma once
 #include <iostream>
+#include "node.hpp"
 
 
 // TODO: Implement class properly
 template <class T> class edge {
   private:
-    T* source;
-    T* target;
-
+    // `Private` props
+    node<T>* source;
+    node<T>* target;
     unsigned int weight;
 
   public:
-    edge(T* source, T* target) : 
-      source(source)
-      target(target) {};
+    // Public methods
+    edge(node<T>* source, node<T>* target, unsigned int weight = 0) : 
+      source(source),
+      target(target),
+      weight(weight) {};
+    ~edge();
 
-    T* source(){ return source; };
-    T* target(){ return target; };
-}
+    node<T> from();
+    node<T> to();
+    bool involves(unsigned int id);
+    bool involves(node<T> node);
+};

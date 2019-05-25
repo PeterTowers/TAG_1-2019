@@ -8,30 +8,30 @@
 #include <stack>
 
 
+#include "../include/edge.hpp"
+#include "../include/node.hpp"
+
 // Class for a polymorphic graph
 template <class T> class graph {
 private:
-    std::vector<T*> nodes;       // Vector for all nodes in graph
+    std::vector<node<T*>> nodes; // Vector for all nodes in graph
     std::vector<edge<T>> edges;  // Vector for all the edges between nodes in graph
-
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
-    graph(std::vector<T*> nodes = std::vector<T*>(),
-            std::vector<std::pair<T*, T*>> edges = std::vector<std::pair<T*, T*>>())
+    graph(std::vector<T*>                nodes = std::vector<T*>(),
+          std::vector<std::pair<T*, T*>> edges = std::vector<std::pair<T*, T*>>(),
+          bool                           directed = false)
       : nodes(nodes),
         edges(edges),
-        directed(false) { };
+        directed(directed) { };
 
     // Destructor method
     ~graph() { nodes.clear(); edges.clear(); };
 
-
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
-    bool connect(unsigned int, // source node
-                 unsigned int, // targed node
-                 std::function<unsigned int(T)> get_id = [](T a){ return a; });
+    bool connect(unsigned int, unsigned int);
 
     /* graph::find_node_by_id
         Receives a node's id and locates its index in 'nodes' vector,

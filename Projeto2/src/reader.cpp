@@ -88,7 +88,7 @@ digraph<course>* build(std::vector<std::string> stream) {
           */
         for(auto prereq : consumable)
             if (comment(consumable.front())) continue;
-            else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id, [](course a){ return a.id; });
+            else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id);
     }
     return output;
 }
