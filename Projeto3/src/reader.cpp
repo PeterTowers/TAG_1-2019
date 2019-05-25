@@ -41,14 +41,14 @@ std::vector<std::string> prep(std::string input){
     return output;
 }
 
-// build: Parses an array of strings into a digraph
-digraph<course>* build(std::vector<std::string> stream) {
+// build: Parses an array of strings into a graph
+graph<course>* build(std::vector<std::string> stream) {
 
     // Check input
     if (stream.empty()) return nullptr;
 
-    // Instantiate the digraph
-    digraph<course> *output = new digraph<course>();
+    // Instantiate the graph
+    graph<course> *output = new graph<course>();
 
     // Run through file
     for(auto line : stream) {
@@ -96,7 +96,7 @@ digraph<course>* build(std::vector<std::string> stream) {
 
 
 // build overload: receives a filename, and call its homonim with the input properly split
-digraph<course>* build(std::string filename) {
+graph<course>* build(std::string filename) {
     // Loads file
     std::ifstream input(filename.c_str()); 
 

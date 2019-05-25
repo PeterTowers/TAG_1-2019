@@ -35,10 +35,10 @@ int main(int argc, char const *argv[])
 {
     auto print_course = [](course c){ std::cout << c.name; };
 
-    // Builds the digraph onto object 'graph'
-    digraph<course>* graph = build("../data/materias.txt");
+    // Builds the graph onto object 'graph'
+    graph<course>* graph = build("../data/materias.txt");
 
-    // Prints digraph onscreen in terminal
+    // Prints graph onscreen in terminal
     graph->print_adj();
 
     // Prints sorted graph (sorted by topological sorting)

@@ -4,7 +4,7 @@
 
 // Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
-bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsigned int(T)> get_id) {
+bool graph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsigned int(T)> get_id) {
     T *c1 = nullptr, *c2 = nullptr;     // Declares and initializes auxiliary variables to nullptr
 
     for(auto&& c : nodes){              // Search whole graph for received nodes
@@ -22,7 +22,7 @@ bool digraph<T>::connect(unsigned int id1, unsigned int id2, std::function<unsig
 
 // Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
 template <class T>
-unsigned int digraph<T>::find_node_by_id(unsigned int id) {
+unsigned int graph<T>::find_node_by_id(unsigned int id) {
     int index = 0;
 
     // Iterates through 'nodes' vector and find a node's index using its id
@@ -34,7 +34,7 @@ unsigned int digraph<T>::find_node_by_id(unsigned int id) {
 
 // Method find_critical_path() returns the index of the critical path on 'criticalPaths' vector
 template <class T>
-unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
+unsigned int graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
     int maxWeight = 0;              // Auxiliary variable to store a path's sum of weights
     std::vector<unsigned int> path; // path stores indices of critical paths with the same sum of weights
 
@@ -66,13 +66,13 @@ unsigned int digraph<T>::find_critical_path(std::vector<std::pair<std::vector<un
 
 // Method push() adds a node to the graph
 template <class T>
-void digraph<T>::push(T* value) {
+void graph<T>::push(T* value) {
     nodes.push_back(value);
 }
 
 // Method print_adj() prints adjacency list
 template <class T>
-void digraph<T>::print_adj() {
+void graph<T>::print_adj() {
 
     // Variable for file handling
     std::ofstream outputFile;
@@ -87,11 +87,11 @@ void digraph<T>::print_adj() {
     }
 
     // Prints header as a comment
-    outputFile << "/* ----- UnB's Computer Science course's digraph ----- */\n";
+    outputFile << "/* ----- UnB's Computer Science course's graph ----- */\n";
 
-    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
-    outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Digraph of UnB's CS bachelor courses\";\n";
+    // Print the type of graph (graph) followed by a title (label) to be displayed within the image
+    outputFile << "graph {\n";
+    outputFile << "\tlabel=\"graph of UnB's CS bachelor courses\";\n";
 
     // Builds graph with left-to-right orientation
     outputFile << "\trankdir=LR;\n";
@@ -136,7 +136,7 @@ void digraph<T>::print_adj() {
 
 // Method print_ordered() prints a topologically-ordered version of the graph
 template <class T>
-void digraph<T>::print_ordered(std::function<void(T)> print_node) {
+void graph<T>::print_ordered(std::function<void(T)> print_node) {
     // Instantiates a variable to receive the output of method ordered()
     auto ordered = this->ordered();
 
@@ -153,11 +153,11 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node) {
     }
 
     // Prints header as a comment
-    outputFile << "/* ----- UnB's Computer Science course's topologically ordered digraph ----- */\n";
+    outputFile << "/* ----- UnB's Computer Science course's topologically ordered graph ----- */\n";
 
-    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
-    outputFile << "digraph {\n";
-    outputFile << "\tlabel=\"Topologically ordered digraph of UnB's CS bachelor courses\";\n";
+    // Print the type of graph (graph) followed by a title (label) to be displayed within the image
+    outputFile << "graph {\n";
+    outputFile << "\tlabel=\"Topologically ordered graph of UnB's CS bachelor courses\";\n";
     outputFile << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
     for (int i = 0; i < ordered.size(); i++){   // Iterates through vector ordered
@@ -189,9 +189,9 @@ void digraph<T>::print_ordered(std::function<void(T)> print_node) {
     outputFile.close(); // Closes the file
 }
 
-// Method critical_path() finds the digraph's critical path and prints it to file
+// Method critical_path() finds the graph's critical path and prints it to file
 template <class T>
-void digraph<T>::critical_path() {
+void graph<T>::critical_path() {
     // Checks if graph has edges. If it doesn't, exits with code '-2'.
     if (edges.empty()) {
         std::cout << "Error: graph has no edges." << std::endl;
@@ -231,7 +231,7 @@ void digraph<T>::critical_path() {
 }
 
 template <class T>
-void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
+void graph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
     /* Sets a variable for file handling and opens file in WRITE mode, passing 'trunc' parameter so that if there's a
        previous file, it'll be ERRASED
      */
@@ -246,8 +246,8 @@ void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
     // Prints header as a comment
     print_crit << "/* ----- UnB's Computer Science course's critical path subgraph ----- */\n";
 
-    // Print the type of graph (digraph) followed by a title (label) to be displayed within the image
-    print_crit << "digraph {\n";
+    // Print the type of graph (graph) followed by a title (label) to be displayed within the image
+    print_crit << "graph {\n";
     print_crit << "\tlabel=\"Subgraph containing the critical path of UnB's CS bachelor courses\";\n";
     print_crit << "\trankdir=LR;\n";    // Builds graph with left-to-right orientation
 
@@ -266,7 +266,7 @@ void digraph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
 
 // Method neighbors() receives a vertex's id and returns the positions of its edges on the edges array
 template <class T>
-std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
+std::vector<unsigned int> graph<T>::neighbors(unsigned int index) {
     // Variable that will receive
     std::vector<unsigned int> output;
 
@@ -278,15 +278,15 @@ std::vector<unsigned int> digraph<T>::neighbors(unsigned int index) {
     return output;
 }
 
-// Recursive method orderred() implements digraph's topological sort
+// Recursive method orderred() implements graph's topological sort
 template <class T>
-std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {
+std::vector<T*> graph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {
   // Initializes visited array on the method call
   if (visited.empty())
     for(auto node : nodes)
       visited.push_back(false);
 
-  // Implements a DFS on digraph in order to...
+  // Implements a DFS on graph in order to...
   for (int i = 0; i < nodes.size(); i++){
     // if(output.count() == nodes.count()) break; // All nodes have been visited
 
@@ -299,9 +299,9 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 
     // Visit node's adjacent nodes
     for(auto neighbor : neighbors(i)) {
-      // Cycle Detection: If digraph has a cycle, prints an error and exit with condition "-1"
+      // Cycle Detection: If graph has a cycle, prints an error and exit with condition "-1"
       if(visited[neighbor]) {
-        std::cout << "[digraph::ordered] error: found cycle (" << i << ',' << neighbor << ')' << std::endl;
+        std::cout << "[graph::ordered] error: found cycle (" << i << ',' << neighbor << ')' << std::endl;
         exit(-1);
       }
 
@@ -321,7 +321,7 @@ std::vector<T*> digraph<T>::ordered(std::vector<bool> visited, std::vector<T*> o
 
 // Method path_finder() calculates a critical path for every node
 template <class T>
-std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
+std::vector<std::pair<std::vector<unsigned int>, int>> graph<T>::path_finder(
         std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
         unsigned int index) {
     // Checks if node has been visited before, if so, its critical path is already calculated
@@ -375,4 +375,4 @@ std::vector<std::pair<std::vector<unsigned int>, int>> digraph<T>::path_finder(
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
- template class digraph<course>;
+ template class graph<course>;
