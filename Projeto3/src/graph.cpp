@@ -5,11 +5,11 @@
 // Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
 bool graph<T>::connect(unsigned int id1, unsigned int id2) {
-    T *c1 = nullptr, *c2 = nullptr;     // Declares and initializes auxiliary variables to nullptr
+    node<T> *c1 = nullptr, *c2 = nullptr;     // Declares and initializes auxiliary variables to nullptr
 
     for(auto&& c : nodes){              // Search whole graph for received nodes
-        if (c.id == id1) c1 = c;
-        if (c.id == id2) c2 = c;
+        if (c.id == id1) c1 = &c;
+        if (c.id == id2) c2 = &c;
     }
 
     if (c1 == nullptr || c2 == nullptr) return false;   // If one of them doesn't exist, returns false
@@ -272,7 +272,7 @@ std::vector<unsigned int> graph<T>::neighbors(unsigned int index) {
     std::vector<unsigned int> output;
 
     for(int i = 0; i < edges.size(); i++)   // Iterates through each edge
-        if(edges[i].first == nodes[index])  // If the edge's source is the requested node
+        if(directed == true ? edges[i].from() == nodes[index] : edges[i].involves(nodes[index]))  // If the edge's source is the requested node
             output.push_back(i);            // Save that edge
 
     // Returns the saved edges
