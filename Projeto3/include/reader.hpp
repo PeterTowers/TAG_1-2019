@@ -1,6 +1,12 @@
 #pragma once
-#include "graph.hpp"
-#include "course.hpp"
+
+#include <fstream>
+#include <vector>
+#include <string>
+#include <regex>
+
+#include "../include/graph.hpp"
+#include "../include/Teacher.hpp"
 
 /** READER MODULE
  * This module implements the ability to construct a graph of courses from
@@ -16,7 +22,7 @@
  * Returns:
  *  - The constructed graph
 */
-graph<course>* build(std::vector<std::string>);   // Read from stream
+void build(std::vector<std::string>);   // Read from stream
 
 /** build
  * Creates a courses DAG from text representation
@@ -25,4 +31,4 @@ graph<course>* build(std::vector<std::string>);   // Read from stream
  * Returns:
  *  - The constructed graph
 */
-graph<course>* build(std::string);                // Read from file
+void build(std::string);                // Read from file
