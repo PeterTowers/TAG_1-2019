@@ -1,20 +1,20 @@
+#include <algorithm>
 #include "../include/graph.hpp"
 #include "../include/course.hpp"
 
-
 // Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
-bool graph<T>::connect(unsigned int id1, unsigned int id2) {
-    node<T> *c1 = nullptr, *c2 = nullptr;     // Declares and initializes auxiliary variables to nullptr
+bool graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
+    unsigned int source = -1, target = -1;     // Declares and initializes auxiliary variables to nullptr
 
-    for(auto&& c : nodes){              // Search whole graph for received nodes
-        if (c.id == id1) c1 = &c;
-        if (c.id == id2) c2 = &c;
+    for(auto c : nodes){              // Search whole graph for received nodes
+      if (c.id == id1) source = c - nodes.begin();
+      if (c.id == id2) target = c - nodes.begin();
     }
 
-    if (c1 == nullptr || c2 == nullptr) return false;   // If one of them doesn't exist, returns false
+    if (source < 0 || target < 0) return false;   // If one of them doesn't exist, returns false
 
-    edges.emplace_back(c1, c2);        // Sets edge between vertexes and end method returning true
+    edges.emplace_back(c1, c2, weight);        // Sets edge between vertexes and end method returning true
 
     return true;
 }
@@ -68,7 +68,7 @@ unsigned int graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsi
 // Method push() adds a node to the graph
 template <class T>
 void graph<T>::push(T* value) {
-    nodes.push_back(value);
+    nodes.emplace_back(value, nodes.size());
 }
 
 // Method print_adj() prints adjacency list
@@ -265,15 +265,27 @@ void graph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
 
 }
 
-// Method neighbors() receives a vertex's id and returns the positions of its edges on the edges array
+// Method neighbors() receives a vertex's id and returns the positions of its neighbors on the nodes array
 template <class T>
 std::vector<unsigned int> graph<T>::neighbors(unsigned int index) {
     // Variable that will receive
     std::vector<unsigned int> output;
 
-    for(int i = 0; i < edges.size(); i++)   // Iterates through each edge
-        if(directed == true ? edges[i].from() == nodes[index] : edges[i].involves(nodes[index]))  // If the edge's source is the requested node
-            output.push_back(i);            // Save that edge
+
+    // Edges which depart from current node
+    for(auto edge : edges) // Iterates through each edge
+        if(edge.from(index))      // If the edge's source is the requested node
+            output.push_back(edge.to());          // Save that edge
+            
+
+    // Edges which terminate at current node, if the graph is not directed
+    if (!directed)
+      for(auto edge : edges) // Iterates through each edge
+        if(edge.to(index))      // If the edge's target is the requested node
+          output.push_back(edge.from());
+
+
+    output.erase(std::unique(output.begin(), output.end()), output.end());
 
     // Returns the saved edges
     return output;

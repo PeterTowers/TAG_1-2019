@@ -9,7 +9,6 @@ template <class T> class node {
   public:
     unsigned int id;
 
-
     // Public methods
     node(T* data, unsigned int id) : id(id), data(data) {};
     ~node();

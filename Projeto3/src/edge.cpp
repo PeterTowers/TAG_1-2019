@@ -1,10 +1,16 @@
 #include "../include/edge.hpp"
 
 template <class T>
-unsigned int edge<T>::from(){ return *source; };
+unsigned int edge<T>::from(){ return source; };
 
 template <class T>
-unsigned int edge<T>::to(){ return *target; };
+unsigned int edge<T>::to(){ return target; };
+
+template <class T>
+bool edge<T>::from(unsigned int index){ return source == index; };
+
+template <class T>
+bool edge<T>::to(unsigned int index){ return target == index; };
 
 template <class T>
 bool edge<T>::involves(unsigned int id) {

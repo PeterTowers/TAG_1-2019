@@ -22,7 +22,7 @@ public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
     graph(std::vector<node<T>> nodes = std::vector<node<T>>(),
           std::vector<edge<T>> edges = std::vector<edge<T>>(),
-          bool                           directed = false)
+          bool                 directed = false)
       : nodes(nodes),
         edges(edges),
         directed(directed) { };
@@ -31,7 +31,7 @@ public:
     ~graph() { nodes.clear(); edges.clear(); };
 
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
-    bool connect(unsigned int, unsigned int);
+    bool connect(unsigned int, unsigned int, int = 0);
 
     /* graph::find_node_by_id
         Receives a node's id and locates its index in 'nodes' vector,

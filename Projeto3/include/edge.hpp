@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <functional>
 #include "node.hpp"
 
 
@@ -14,15 +15,21 @@ template <class T> class edge {
 
   public:
     // Public methods
-    edge(node<T>* source, node<T>* target, int weight = 0, std::function<node<T>*(unsigned int)> getNode = [](unsigned int index){ return nullptr; }) : 
-      source(source),
-      target(target),
-      weight(weight) {};
+    edge(unsigned int source, unsigned int target, int weight = 0, std::function<node<T>*(unsigned int)> getNode = [](unsigned int index){ return nullptr; })
+      : source(source),
+        target(target),
+        weight(weight),
+        getNode(getNode) {};
     ~edge();
 
     // These return the IDs of the objects
     unsigned int from();
     unsigned int to();
+
+
+    // These indicate whether an edge starts or ends at a particular index
+    bool from(unsigned int);
+    bool to(unsigned int);
 
     // These return the actual node references
     node<T>* sourceNode(){ return getNode(from()); };
