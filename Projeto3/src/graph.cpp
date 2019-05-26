@@ -2,35 +2,59 @@
 #include "../include/graph.hpp"
 #include "../include/course.hpp" // FIXME: This is an antipattern
 
-// Connects two nodes, by id. Requires a function that determines the unique id of a given node
+template <class T>
+bool graph<T>::connected(unsigned int target, unsigned int source){
+  bool are = false;
+
+  // Iterate over edges
+  for (auto &&edge : edges)
+    if (edge.from(source) && edge.to(target) //  Check if the edge matches requested nodes
+    || (directed ? false : edge.involves(source) && edge.involves(target))) // Check it reversed if the graph is not directed
+      are = true;
+  
+  return are;
+}
+
+// Connects two nodes, by id.
 template <class T>
 bool graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
-    unsigned int source = -1, target = -1;     // Declares and initializes auxiliary variables to nullptr
-
-    for (unsigned int i = 0; i < nodes.size(); i++){
-      auto& node = nodes[i];
-      if (node.id == id1) source = i;
-      if (node.id == id2) target = i;
-    }
+    int source = find_node_by_id(id1);
+    int target = find_node_by_id(id2);
 
     if (source < 0 || target < 0) return false; // If one of them doesn't exist, returns false
 
-    edges.emplace_back(source, target, weight); // Sets edge between vertexes and end method returning true
+    edges.emplace_back((unsigned int) source, (unsigned int) target, weight); // Sets edge between vertexes and end method returning true
 
     return true;
 }
 
 // Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
 template <class T>
-unsigned int graph<T>::find_node_by_id(unsigned int id) {
-    int index = 0;
+int graph<T>::find_node_by_id(unsigned int id) {
+    for (int i = 0; i < nodes.size(); i++)
+      if (nodes[i].id == id) return i;
 
-    // Iterates through 'nodes' vector and find a node's index using its id
-    while (nodes[index].id != id)
-        index++;
-
-    return index;
+    return -1;
 }
+
+// Method print_adj() prints adjacency list
+template <class T>
+void graph<T>::inspect(std::function<void(node<T>)> print) {
+
+
+    for (int i = 0; i < nodes.size(); i++){
+      auto& node = nodes[i];
+      print(node);
+
+      std::cout << " -> { ";
+
+      for (auto& neighbor : neighbors(i))
+        print(nodes[neighbor]);
+
+      std::cout << " } " << std::endl;
+    }
+}
+
 
 // Method find_critical_path() returns the index of the critical path on 'criticalPaths' vector
 template <class T>
@@ -66,10 +90,10 @@ unsigned int graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsi
     return 0;
 }
 
-// Method push() adds a node to the graph
+// Method push() adds a node to the graph. IMPORTANT: If an ID is not provided, it will default to using the actual array index.
 template <class T>
-void graph<T>::push(T* value) {
-    nodes.emplace_back(value, nodes.size());
+void graph<T>::push(T* value, int id) {
+    nodes.emplace_back(value, (id < 0) ? nodes.size() : id);
 }
 
 // Method print_adj() prints adjacency list

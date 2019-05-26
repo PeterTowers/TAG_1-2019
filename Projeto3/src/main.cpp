@@ -24,6 +24,7 @@
  * ---------------------------------------------------------------------------------------------------------------------
  * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
  * TODO: esse campo é necessário?
+ *
  * ---------------------------------------------------------------------------------------------------------------------
  */
 
@@ -38,12 +39,14 @@ int main(int argc, char const *argv[])
     // Builds the graph onto object 'graph'
     graph<course>* graph = build("../data/old-data.txt");
 
-    // Prints graph onscreen in terminal
-    graph->print_adj();
+    graph->inspect();
 
-    // Prints sorted graph (sorted by topological sorting)
-    graph->print_ordered(print_course);
-    graph->critical_path();
+    // // Prints graph onscreen in terminal
+    // graph->print_adj();
+
+    // // Prints sorted graph (sorted by topological sorting)
+    // graph->print_ordered(print_course);
+    // graph->critical_path();
 
     return 0;
 }

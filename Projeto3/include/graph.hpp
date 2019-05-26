@@ -31,12 +31,21 @@ public:
     ~graph() { nodes.clear(); edges.clear(); };
 
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
+    /* graph::connect
+        Receives two node ids, searches for the requested ids and
+     */
     bool connect(unsigned int, unsigned int, int = 0);
 
-    /* graph::find_node_by_id
-        Receives a node's id and locates its index in 'nodes' vector,
+    /* graph::connected
+        Receives two node ids, returns whether these nodes are connected
      */
-    unsigned int find_node_by_id(unsigned int id);
+    bool connected(unsigned int, unsigned int);
+
+    /* graph::find_node_by_id
+        Receives a node's id and locates its index in 'nodes' vector
+        Returns -1 if not found
+     */
+    int find_node_by_id(unsigned int id);
 
     /* graph::find_critical_path
         Finds the index of all the critical paths (according to the sum of their weights) and, if there's a tie, selects
@@ -49,7 +58,7 @@ public:
         Receives:
           - A reference to the object to be inserted
       */
-    void push(T*);
+    void push(T*, int = -1);
 
     /* graph::print_adj
         Prints graph's adjacency list
@@ -60,6 +69,10 @@ public:
         Prints a topologically-ordered version of the graph
       */
     void print_ordered(std::function<void(T)> = [](T a){ std::cout << a; });
+
+    
+
+    void inspect(std::function<void(node<T>)> = [](node<T> node){ std::cout << node.id; });
 
     /* graph::critical_path
         Calculates graph's critical path using path_finder() and prints it

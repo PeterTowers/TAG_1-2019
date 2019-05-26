@@ -10,8 +10,8 @@ template <class T> class node {
     unsigned int id;
 
     // Public methods
-    node(T* data, unsigned int id) : id(id), data(data) {};
-    ~node(){ delete data; };
+    node(T* data, unsigned int id) : data(data), id(id) {};
+    ~node(){ }; // FIXME: Should this call "data" destructor?
 
     T    get();
     void set(T data);
