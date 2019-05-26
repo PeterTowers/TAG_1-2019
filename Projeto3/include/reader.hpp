@@ -6,7 +6,9 @@
 #include <regex>
 
 #include "../include/graph.hpp"
+#include "../include/course.hpp"
 #include "../include/Teacher.hpp"
+#include "../include/School.hpp"
 
 /** READER MODULE
  * This module implements the ability to construct a graph of courses from
