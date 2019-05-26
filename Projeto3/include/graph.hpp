@@ -74,7 +74,7 @@ public:
 
     void inspect(std::function<void(node<T>)> = [](node<T> node){ std::cout << node.id; }, std::string = ", ");
 
-    /* graph::critical_path
+    /* graph::critical_path  
         Calculates graph's critical path using path_finder() and prints it
       */
     void critical_path();

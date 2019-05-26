@@ -39,7 +39,7 @@ int graph<T>::find_node_by_id(unsigned int id) {
     return -1;
 }
 
-// Method print_adj() prints adjacency list
+// Prints the graph in human-readable format
 template <class T>
 void graph<T>::inspect(std::function<void(node<T>)> print, std::string separator) {
     for (int i = 0; i < nodes.size(); i++){

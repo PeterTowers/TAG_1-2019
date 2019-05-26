@@ -31,15 +31,18 @@
 #include <iostream>
 #include "../include/reader.hpp"
 #include "../include/graph.hpp"
+#include "../include/matrix.hpp"
 
 int main(int argc, char const *argv[])
 {
     auto print_course = [](course c){ std::cout << c.name; };
 
     // Builds the graph onto object 'graph'
-    graph<course>* graph = build("../data/old-data.txt");
+    // graph<course>* graph = build("../data/old-data.txt");
+    // graph->inspect();
 
-    graph->inspect();
+    matrix<course> *m = new matrix<course>();
+    m->inspect();
 
     // // Prints graph onscreen in terminal
     // graph->print_adj();

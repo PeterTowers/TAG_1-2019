@@ -42,4 +42,6 @@ template <class T> class edge {
 
     bool involves(unsigned int id);
     bool involves(node<T> node);
+
+    int getWeight();
 };

@@ -21,4 +21,7 @@ bool edge<T>::involves(unsigned int id) {
 template <class T>
 bool edge<T>::involves(node<T> node) { return involves(node.id); }
 
+template <class T>
+int edge<T>::getWeight() { return weight; };
+
 template class edge<course>;
