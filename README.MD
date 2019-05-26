@@ -10,4 +10,7 @@ UnB) during the 1st semester of 2019. The projects are separated under directori
 project, each with its own documentation, only summarized here.
 
 ## Projeto 1 - Modelagem e conceitos fundamentais de grafos
-Disponível no diretório de nome ```Projeto1```.
+Disponível no diretório [Projeto1](https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto1).
+
+## Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
+Disponível no diretório [Projeto2](https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2).

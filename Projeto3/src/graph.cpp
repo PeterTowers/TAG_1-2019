@@ -1,35 +1,65 @@
+#include <algorithm>
 #include "../include/graph.hpp"
-#include "../include/course.hpp"
+#include "../include/course.hpp" // FIXME: This is an antipattern
 
-
-// Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
-bool graph<T>::connect(unsigned int id1, unsigned int id2) {
-    T *c1 = nullptr, *c2 = nullptr;     // Declares and initializes auxiliary variables to nullptr
+bool graph<T>::connected(unsigned int target, unsigned int source){
+  bool are = false;
 
-    for(auto&& c : nodes){              // Search whole graph for received nodes
-        if (c.id == id1) c1 = c;
-        if (c.id == id2) c2 = c;
-    }
+  // Iterate over edges
+  for (auto &&edge : edges)
+    if (edge.from(source) && edge.to(target) //  Check if the edge matches requested nodes
+    || (directed ? false : edge.involves(source) && edge.involves(target))) // Check it reversed if the graph is not directed
+      are = true;
+  
+  return are;
+}
 
-    if (c1 == nullptr || c2 == nullptr) return false;   // If one of them doesn't exist, returns false
+// Connects two nodes, by id.
+template <class T>
+bool graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
+    int source = find_node_by_id(id1);
+    int target = find_node_by_id(id2);
 
-    edges.emplace_back(c1, c2);        // Sets edge between vertexes and end method returning true
+    if (source < 0 || target < 0) return false; // If one of them doesn't exist, returns false
+
+    edges.emplace_back((unsigned int) source, (unsigned int) target, weight); // Sets edge between vertexes and end method returning true
 
     return true;
 }
 
 // Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
 template <class T>
-unsigned int graph<T>::find_node_by_id(unsigned int id) {
-    int index = 0;
+int graph<T>::find_node_by_id(unsigned int id) {
+    
 
-    // Iterates through 'nodes' vector and find a node's index using its id
-    while (nodes[index].id != id)
-        index++;
+    for (int i = 0; i < nodes.size(); i++)
+      if (nodes[i].id == id) return i;
 
-    return index;
+    return -1;
 }
+
+// Method print_adj() prints adjacency list
+template <class T>
+void graph<T>::inspect(std::function<void(node<T>)> print, std::string separator) {
+    for (int i = 0; i < nodes.size(); i++){
+      auto& node = nodes[i];
+      bool first = true;
+
+      print(node);
+
+      std::cout << " -> { ";
+
+      for (auto& neighbor : neighbors(i)){
+        if (!first) std::cout << separator;
+        print(nodes[neighbor]);
+        first = false;
+      }
+
+      std::cout << " } " << std::endl;
+    }
+}
+
 
 // Method find_critical_path() returns the index of the critical path on 'criticalPaths' vector
 template <class T>
@@ -65,10 +95,10 @@ unsigned int graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsi
     return 0;
 }
 
-// Method push() adds a node to the graph
+// Method push() adds a node to the graph. IMPORTANT: If an ID is not provided, it will default to using the actual array index.
 template <class T>
-void graph<T>::push(T* value) {
-    nodes.push_back(value);
+void graph<T>::push(T* value, int id) {
+    nodes.emplace_back(value, (id < 0) ? nodes.size() : id);
 }
 
 // Method print_adj() prints adjacency list
@@ -265,15 +295,27 @@ void graph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
 
 }
 
-// Method neighbors() receives a vertex's id and returns the positions of its edges on the edges array
+// Method neighbors() receives a vertex's id and returns the positions of its neighbors on the nodes array
 template <class T>
 std::vector<unsigned int> graph<T>::neighbors(unsigned int index) {
     // Variable that will receive
     std::vector<unsigned int> output;
 
-    for(int i = 0; i < edges.size(); i++)   // Iterates through each edge
-        if(edges[i].first == nodes[index])  // If the edge's source is the requested node
-            output.push_back(i);            // Save that edge
+
+    // Edges which depart from current node
+    for(auto edge : edges) // Iterates through each edge
+        if(edge.from(index))      // If the edge's source is the requested node
+            output.push_back(edge.to());          // Save that edge
+            
+
+    // Edges which terminate at current node, if the graph is not directed
+    if (!directed)
+      for(auto edge : edges) // Iterates through each edge
+        if(edge.to(index))      // If the edge's target is the requested node
+          output.push_back(edge.from());
+
+
+    output.erase(std::unique(output.begin(), output.end()), output.end());
 
     // Returns the saved edges
     return output;
@@ -376,4 +418,5 @@ std::vector<std::pair<std::vector<unsigned int>, int>> graph<T>::path_finder(
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
- template class graph<course>;
+
+template class graph<course>; // FIXME: This is an antipattern

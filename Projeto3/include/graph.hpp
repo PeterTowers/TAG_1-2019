@@ -14,15 +14,15 @@
 // Class for a polymorphic graph
 template <class T> class graph {
 private:
-    std::vector<node<T*>> nodes; // Vector for all nodes in graph
+    std::vector<node<T>> nodes; // Vector for all nodes in graph
     std::vector<edge<T>> edges;  // Vector for all the edges between nodes in graph
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
-    graph(std::vector<T*>                nodes = std::vector<T*>(),
-          std::vector<std::pair<T*, T*>> edges = std::vector<std::pair<T*, T*>>(),
-          bool                           directed = false)
+    graph(std::vector<node<T>> nodes = std::vector<node<T>>(),
+          std::vector<edge<T>> edges = std::vector<edge<T>>(),
+          bool                 directed = false)
       : nodes(nodes),
         edges(edges),
         directed(directed) { };
@@ -31,12 +31,21 @@ public:
     ~graph() { nodes.clear(); edges.clear(); };
 
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
-    bool connect(unsigned int, unsigned int);
+    /* graph::connect
+        Receives two node ids, searches for the requested ids and
+     */
+    bool connect(unsigned int, unsigned int, int = 0);
+
+    /* graph::connected
+        Receives two node ids, returns whether these nodes are connected
+     */
+    bool connected(unsigned int, unsigned int);
 
     /* graph::find_node_by_id
-        Receives a node's id and locates its index in 'nodes' vector,
+        Receives a node's id and locates its index in 'nodes' vector
+        Returns -1 if not found
      */
-    unsigned int find_node_by_id(unsigned int id);
+    int find_node_by_id(unsigned int id);
 
     /* graph::find_critical_path
         Finds the index of all the critical paths (according to the sum of their weights) and, if there's a tie, selects
@@ -49,7 +58,7 @@ public:
         Receives:
           - A reference to the object to be inserted
       */
-    void push(T*);
+    void push(T*, int = -1);
 
     /* graph::print_adj
         Prints graph's adjacency list
@@ -60,6 +69,10 @@ public:
         Prints a topologically-ordered version of the graph
       */
     void print_ordered(std::function<void(T)> = [](T a){ std::cout << a; });
+
+    
+
+    void inspect(std::function<void(node<T>)> = [](node<T> node){ std::cout << node.id; }, std::string = ", ");
 
     /* graph::critical_path
         Calculates graph's critical path using path_finder() and prints it
