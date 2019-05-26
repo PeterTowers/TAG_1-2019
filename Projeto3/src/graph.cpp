@@ -31,6 +31,8 @@ bool graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
 // Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
 template <class T>
 int graph<T>::find_node_by_id(unsigned int id) {
+    
+
     for (int i = 0; i < nodes.size(); i++)
       if (nodes[i].id == id) return i;
 
@@ -39,17 +41,20 @@ int graph<T>::find_node_by_id(unsigned int id) {
 
 // Method print_adj() prints adjacency list
 template <class T>
-void graph<T>::inspect(std::function<void(node<T>)> print) {
-
-
+void graph<T>::inspect(std::function<void(node<T>)> print, std::string separator) {
     for (int i = 0; i < nodes.size(); i++){
       auto& node = nodes[i];
+      bool first = true;
+
       print(node);
 
       std::cout << " -> { ";
 
-      for (auto& neighbor : neighbors(i))
+      for (auto& neighbor : neighbors(i)){
+        if (!first) std::cout << separator;
         print(nodes[neighbor]);
+        first = false;
+      }
 
       std::cout << " } " << std::endl;
     }
