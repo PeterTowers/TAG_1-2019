@@ -18,40 +18,56 @@ void build(std::vector<std::string> stream) {
 //    graph<course> *output = new graph<course>();
 
     std::vector<Teacher> teachers;
+    std::vector<School> schools;
 
     // Run through file
     for(auto line : stream) {
         // Eat comments
         if ( comment(line.front()) ) continue;
 
-        std::regex exp("(\\d+)"), exp2("P");
+        // Define regexes for digits, teachers (professor) and schools
+        std::regex regexDigits("(\\d+)"), regexProfessor("P"), regexSchool("^\\(E");
+
+        // Store regex's matches
         std::smatch match;
 
+        // Iterator to find multiple matches in a string
         std::string::const_iterator searchStart(line.cbegin());
 
+        // Counts iterations to find where to place data
         int i = 0;
-        int id, skills;
-        std::vector<int> desiredSchools;
 
-        while ( std::regex_search(searchStart, line.cend(), match, exp) ) {
-            if (std::regex_match(line, exp2)) {
+        // Stores the id and the number of skills a teacher have or a schoool desires
+        int id, skills;
+
+        // Stores a teacher's desired schools or the number of skills required by a school
+        std::vector<int> desired;
+
+        while ( std::regex_search(searchStart, line.cend(), match, regexDigits) ) {
+            if (std::regex_search(line, regexProfessor)) {
                 if (i == 0)
                     id = std::stoi(match[0]);
                 else if (i == 1)
                     skills = std::stoi(match[0]);
                 else
-                    desiredSchools.push_back(std::stoi(match[0]));
+                    desired.push_back(std::stoi(match[0]));
             }
-            else
-                std::cout << ( searchStart == line.cbegin() ? "" : " ") << match[0];
-
+            else {
+                if (i == 0)
+                    id = std::stoi(match[0]);
+                else
+                    desired.push_back(std::stoi(match[0]));
+            }
             i++;
             searchStart = match.suffix().first;
         }
-        std::cout << std::endl;
-        if (std::regex_match(line, exp2)) {
-            Teacher teacher(id, skills, desiredSchools);
+        if (std::regex_search(line, regexProfessor)) {
+            Teacher teacher(id, skills, desired);
             teachers.push_back(teacher);
+        }
+        else {
+            School school(id, desired);
+            schools.push_back(school);
         }
     }
 
@@ -62,7 +78,18 @@ void build(std::vector<std::string> stream) {
         for (auto school : teacher.get_schools())
             std::cout << school << ' ';
 
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl;
+    }
+
+    for (auto school : schools) {
+        std::cout << "School's id: " << school.get_id();
+        std::cout << "\tAvailable positions: " << school.getRequirements().size() << std::endl;
+        std::cout << "Number of desired skills for each position: ";
+        for (auto number : school.getRequirements()) {
+            std::cout << number << "; ";
+        }
+
+        std::cout << std::endl << std::endl;
     }
 
 }
@@ -75,7 +102,8 @@ void build(std::string filename) {
     // Catches bad input
     if (!input){
         std::cout << "[read] no input!";
-        return nullptr;
+        exit(-666); // TODO: correct this accordingly
+//        return nullptr;
     }
 
     // Builds the stream
@@ -87,5 +115,5 @@ void build(std::string filename) {
     while(std::getline(input, temp)) res.push_back(std::string(temp.c_str()));
 
     // Passes output into homonim
-    return build(res);
+    build(res);
 }
