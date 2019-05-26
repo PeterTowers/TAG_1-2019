@@ -1,20 +1,21 @@
 #include <algorithm>
 #include "../include/graph.hpp"
-#include "../include/course.hpp"
+#include "../include/course.hpp" // FIXME: This is an antipattern
 
 // Connects two nodes, by id. Requires a function that determines the unique id of a given node
 template <class T>
 bool graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
     unsigned int source = -1, target = -1;     // Declares and initializes auxiliary variables to nullptr
 
-    for(auto c : nodes){              // Search whole graph for received nodes
-      if (c.id == id1) source = c - nodes.begin();
-      if (c.id == id2) target = c - nodes.begin();
+    for (unsigned int i = 0; i < nodes.size(); i++){
+      auto& node = nodes[i];
+      if (node.id == id1) source = i;
+      if (node.id == id2) target = i;
     }
 
-    if (source < 0 || target < 0) return false;   // If one of them doesn't exist, returns false
+    if (source < 0 || target < 0) return false; // If one of them doesn't exist, returns false
 
-    edges.emplace_back(c1, c2, weight);        // Sets edge between vertexes and end method returning true
+    edges.emplace_back(source, target, weight); // Sets edge between vertexes and end method returning true
 
     return true;
 }
@@ -388,4 +389,5 @@ std::vector<std::pair<std::vector<unsigned int>, int>> graph<T>::path_finder(
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
- template class graph<course>;
+
+template class graph<course>; // FIXME: This is an antipattern

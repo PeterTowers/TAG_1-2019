@@ -4,7 +4,7 @@
 #include "node.hpp"
 
 
-// TODO: Implement class properly
+// TODO: Implement comparison operators <, >
 template <class T> class edge {
   private:
     unsigned int source;
@@ -20,7 +20,7 @@ template <class T> class edge {
         target(target),
         weight(weight),
         getNode(getNode) {};
-    ~edge();
+    ~edge(){};
 
     // These return the IDs of the objects
     unsigned int from();
@@ -37,7 +37,7 @@ template <class T> class edge {
 
     // These check for edge equality
     bool operator==(edge<T> rhs){
-      return this.from() == rhs.from() && this.to() == rhs.to();
+      return this->from() == rhs.from() && this->to() == rhs.to();
     };
 
     bool involves(unsigned int id);

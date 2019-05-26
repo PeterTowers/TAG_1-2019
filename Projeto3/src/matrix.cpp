@@ -3,7 +3,7 @@
 template<class T>
 matrix<T>::matrix(std::vector<edge<T>> edges, std::vector<node<T>> nodes){
   // Initialize clear matrix
-  for (auto& node : nodes) cells.emplace_back({})
+  for (auto& node : nodes) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)
     for (auto& line : nodes)
       row.emplace_back(-1);
@@ -21,5 +21,5 @@ bool matrix<T>::contains(const unsigned int i, const unsigned int j){
 
 template<class T>
 void matrix<T>::set(edge<T> edge){
-  if contains(edge.from(), edge.to()) cells[i][j] = edge.weight;
+  if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.weight;
 };

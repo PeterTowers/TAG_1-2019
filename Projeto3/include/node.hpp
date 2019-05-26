@@ -11,7 +11,7 @@ template <class T> class node {
 
     // Public methods
     node(T* data, unsigned int id) : id(id), data(data) {};
-    ~node();
+    ~node(){ delete data; };
 
     T    get();
     void set(T data);

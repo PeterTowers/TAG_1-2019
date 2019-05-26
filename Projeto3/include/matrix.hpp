@@ -20,8 +20,8 @@ template <class T> class matrix {
     void set(edge<T> edge);
 
     // Access (getter) operators
-    int operator[](const unsigned int i, const unsigned int j) {
+    int operator()(const unsigned int i, const unsigned int j) {
       return contains(i, j) ? cells[i][j] : -1;
     };
-    int operator[](edge<T> edge) { return this[edge.from(), edge.to()]; };
+    int operator()(edge<T> edge) { return this[edge.from(), edge.to()]; };
 };

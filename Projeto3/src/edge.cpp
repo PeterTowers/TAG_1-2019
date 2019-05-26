@@ -1,4 +1,5 @@
 #include "../include/edge.hpp"
+#include "../include/course.hpp" // FIXME: This is an antipattern
 
 template <class T>
 unsigned int edge<T>::from(){ return source; };
@@ -14,8 +15,10 @@ bool edge<T>::to(unsigned int index){ return target == index; };
 
 template <class T>
 bool edge<T>::involves(unsigned int id) {
-  return (from().id == id || to().id == id)
+  return (from() == id || to() == id);
 }
 
 template <class T>
-bool edge<T>::involves(node<T> node) { return involves(node.id) }
+bool edge<T>::involves(node<T> node) { return involves(node.id); }
+
+template class edge<course>;
