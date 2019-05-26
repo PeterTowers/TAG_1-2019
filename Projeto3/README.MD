@@ -1,9 +1,9 @@
 # Project 2 - Topological sort and critical path in a DAG
-This project constructs a weighted digraph using '/data/materias.txt' file, utilizing adjacency list. We implemented the
-following features to the digraph:
+This project constructs a weighted graph using '/data/materias.txt' file, utilizing adjacency list. We implemented the
+following features to the graph:
 1. Topological sorting;
 2. Critical path; and
-3. Print the digraph on a `.dot` file in order to create an image of it.
+3. Print the graph on a `.dot` file in order to create an image of it.
 
 ## Compiling
 The code can be compiled using `make` - a makefile is available within `cmake-build-debug`. Alternatively, a CMakeLists.txt is available on the root folder, allowing the binary to be generated using CMake.
@@ -15,8 +15,8 @@ tie, it'll select the path with most nodes.
 
 ## Printing the graph as an image
 This program creates `.dot` files of:
-1. The digraph (`/data/adjacency_list.dot`);
-2. The digraph topologically ordered (`/data/topological_order.dot`);
+1. The graph (`/data/adjacency_list.dot`);
+2. The graph topologically ordered (`/data/topological_order.dot`);
 3. It's critical path (`/data/critical_path.dot`).
 In order to create each image, it's necessary to use [Graphviz](http://www.graphviz.org/). You can create the images
 on Graphviz's pocket guide [website](https://graphs.grevian.org/graph) or using their software. In order to do so with

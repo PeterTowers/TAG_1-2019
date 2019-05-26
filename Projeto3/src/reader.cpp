@@ -41,14 +41,14 @@ std::vector<std::string> prep(std::string input){
     return output;
 }
 
-// build: Parses an array of strings into a digraph
-digraph<course>* build(std::vector<std::string> stream) {
+// build: Parses an array of strings into a graph
+graph<course>* build(std::vector<std::string> stream) {
 
     // Check input
     if (stream.empty()) return nullptr;
 
-    // Instantiate the digraph
-    digraph<course> *output = new digraph<course>();
+    // Instantiate the graph
+    graph<course> *output = new graph<course>();
 
     // Run through file
     for(auto line : stream) {
@@ -79,16 +79,16 @@ digraph<course>* build(std::vector<std::string> stream) {
         unsigned int credits = (unsigned int) std::stoul(consumable.front(), nullptr, 0);
         consumable.erase(consumable.begin());
         
-        // Push parsed node into the graph
-        output->push(new course(id, name, credits));
+        // Push parsed node into the graph. Notice we must pass the id along with the actual data.
+        output->push(new course(id, name, credits), id);
 
 
         /** Parse (consume) trailing parameters from the buffer (other course IDs),
           *   from which the edges of the graph are then constructed
           */
         for(auto prereq : consumable)
-            if (comment(consumable.front())) continue;
-            else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id);
+          if (comment(consumable.front())) continue;
+          else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id);
     }
     return output;
 }
@@ -96,7 +96,7 @@ digraph<course>* build(std::vector<std::string> stream) {
 
 
 // build overload: receives a filename, and call its homonim with the input properly split
-digraph<course>* build(std::string filename) {
+graph<course>* build(std::string filename) {
     // Loads file
     std::ifstream input(filename.c_str()); 
 
