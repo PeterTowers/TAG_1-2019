@@ -1,17 +1,4 @@
 #include "../include/reader.hpp"
-#include <string>
-#include <sstream>
-
-// Split: divides a string into substrings, provided a given separator
-std::vector<std::string> split(const std::string& s, char delimiter) {
-    std::vector<std::string> tokens;    // Output container: array of parsed tokens
-    std::string token;                  // Token buffer
-    std::istringstream tokenStream(s);  // Input Stream
-
-    // Grab tokens from the stream, passing the delimiter
-    while (std::getline(tokenStream, token, delimiter)) tokens.push_back(token);
-    return tokens;
-}
 
 /** comment: Tells wether a given string is a comment or not
  *    Receives:
@@ -19,91 +6,118 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
  *    Returns:
  *      - true if the string is a comment, ie, starts with '#'
  */
-bool comment(std::string str) { return str.front() == '#'; }
-
-/** prep: Prepare strings to be consumed by the parser
- *    Receives:
- *      - A string, representing a line in the input data file
- *    Returns:
- *      - An array of strings, comprised of the input string
- *        split into tokens, with comments ignored.
- */
-std::vector<std::string> prep(std::string input){
-    std::vector<std::string> output;
-
-    // If token represents a comment, skip entire line
-    for (auto element : split(input, ' ')) if (comment(element)) break;
-
-    // If token represents data, push it into the array
-    for (auto element : split(input, ' ')) if (element > "")     output.push_back(element);
-
-    // Return the treated array of strings
-    return output;
-}
+bool comment(char c) { return c == '#'; }
 
 // build: Parses an array of strings into a graph
-graph<course>* build(std::vector<std::string> stream) {
+void build(std::vector<std::string> stream) {
 
     // Check input
-    if (stream.empty()) return nullptr;
+    if (stream.empty()) exit(-666); // TODO: correct this accordingly
 
-    // Instantiate the graph
-    graph<course> *output = new graph<course>();
+    // TODO: Instantiate return type
+//    graph<course> *output = new graph<course>();
+
+    std::vector<Teacher> teachers;
+    std::vector<School> schools;
 
     // Run through file
     for(auto line : stream) {
-        
-        // Create temporary buffer, which will be consumed
-        std::vector<std::string> consumable(prep(line));
-
         // Eat comments
-        if (comment(consumable.front())) continue;
+        if ( comment(line.front()) ) continue;
 
-        // Catch bad input
-        if (consumable.size() < 3){
-            std::cout << "[build] bad input: "
-                      << line
-                      << std::endl;
-            continue;
+        // Define regexes for digits, teachers (professor) and schools ( if needed, it's here: regexSchool("^\\(E") )
+        std::regex regexDigits("(\\d+)"), regexProfessor("P");
+
+        // Store regex's matches
+        std::smatch match;
+
+        // Iterator to find multiple matches in a string
+        std::string::const_iterator searchStart(line.cbegin());
+
+        // Counts iterations to find where to place data
+        int i = 0;
+
+        // Stores the id and the number of skills a teacher has
+        int id, skills;
+
+        // Stores a teacher's desired schools or the number of skills required by a school
+        std::vector<int> desired;
+
+        // Iterates through a line in order to find all the digits it contains
+        while ( std::regex_search(searchStart, line.cend(), match, regexDigits) ) {
+
+            // If given line relates to a teacher, stores its data accordingly
+            if (std::regex_search(line, regexProfessor)) {
+                if (i == 0)                     // The first digit is the teacher's id
+                    id = std::stoi(match[0]);
+                else if (i == 1)                // The second, their number of skills
+                    skills = std::stoi(match[0]);
+                else                            // The others are their desired schools
+                    desired.push_back(std::stoi(match[0]));
+            }
+
+            // If it's not related to a teacher, then, it's a school
+            else {
+                if (i == 0)                     // The first digit is the school's id
+                    id = std::stoi(match[0]);
+                else                            // The others are the number of skills required for each position
+                    desired.push_back(std::stoi(match[0]));
+            }
+
+            // Make the changes needed to iterate through data and line
+            i++;
+            searchStart = match.suffix().first;
         }
 
-        // Parse (consume) 1st field: Course ID (integer)
-        unsigned int id = (unsigned int) std::stoul(consumable.front(), nullptr, 0);
-        consumable.erase(consumable.begin());
-
-        // Parse (consume) 2nd field: Course Name (string)
-        std::string name = consumable.front();
-        consumable.erase(consumable.begin());
-
-        // Parse (consume) 3rd field: Course Credits (integer)
-        unsigned int credits = (unsigned int) std::stoul(consumable.front(), nullptr, 0);
-        consumable.erase(consumable.begin());
-        
-        // Push parsed node into the graph. Notice we must pass the id along with the actual data.
-        output->push(new course(id, name, credits), id);
-
-
-        /** Parse (consume) trailing parameters from the buffer (other course IDs),
-          *   from which the edges of the graph are then constructed
-          */
-        for(auto prereq : consumable)
-          if (comment(consumable.front())) continue;
-          else output->connect((unsigned int) std::stoul(prereq, nullptr, 0), id);
+        // If line relates to a teacher, store teacher's data in an object and add it to 'teachers' vector
+        if (std::regex_search(line, regexProfessor)) {
+            Teacher teacher(id, skills, desired);
+            teachers.push_back(teacher);
+        }
+        // Else, stores accordingly
+        else {
+            School school(id, desired);
+            schools.push_back(school);
+        }
     }
-    return output;
+
+    /* ~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*
+     * ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~* GLORIOUS printf() DEBUGGING *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
+     * *=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~
+     */
+    for (auto teacher : teachers) {
+        std::cout << "Teacher's id: " << teacher.get_id();
+        std::cout << "\tNumber of skills: " << teacher.get_skills() << std::endl;
+        std::cout << "Desired school(s): ";
+        for (auto school : teacher.get_schools())
+            std::cout << school << ' ';
+
+        std::cout << std::endl << std::endl;
+    }
+
+    for (auto school : schools) {
+        std::cout << "School's id: " << school.get_id();
+        std::cout << "\tAvailable positions: " << school.getRequirements().size() << std::endl;
+        std::cout << "Number of desired skills for each position: ";
+        for (auto number : school.getRequirements()) {
+            std::cout << number << "; ";
+        }
+
+        std::cout << std::endl << std::endl;
+    }
+    /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
 }
 
-
-
 // build overload: receives a filename, and call its homonim with the input properly split
-graph<course>* build(std::string filename) {
+void build(std::string filename) {
     // Loads file
     std::ifstream input(filename.c_str()); 
 
     // Catches bad input
     if (!input){
         std::cout << "[read] no input!";
-        return nullptr;
+        exit(-666); // TODO: correct this accordingly
+//        return nullptr;
     }
 
     // Builds the stream
@@ -115,5 +129,5 @@ graph<course>* build(std::string filename) {
     while(std::getline(input, temp)) res.push_back(std::string(temp.c_str()));
 
     // Passes output into homonim
-    return build(res);
+    build(res);
 }

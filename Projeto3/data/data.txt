@@ -1,6 +1,5 @@
-// lista de professores e preferencias
-// formato (codigo professor, habilitacoes): (Escolas em ordem decrescente de prioridade)
-
+# lista de professores e preferencias
+# formato (codigo professor, habilitacoes): (Escolas em ordem decrescente de prioridade)
 (P1, 3): (E10, E20, E1, E3)
 (P2, 2): (E10, E20, E2,  E5)
 (P3, 2): (E10, E20, E3,  E7)
@@ -101,9 +100,8 @@
 (P98, 2): (E4, E48, E1)
 (P99, 2): (E2, E49, E1)
 (P100, 3): (E1, E4, E50, E10)
-
-//escolas e preferencias em termos de habilitacoes 
-// formato (codigo escola):(habilitacoes pretendidas):(vagas)
+# escolas e preferencias em termos de habilitacoes
+# formato (codigo escola):(habilitacoes pretendidas):(habilitacoes pretendidas, se houver segunda vaga)
 (E1):(2)
 (E2):(2)
 (E3):(3)
@@ -154,7 +152,3 @@
 (E48):(1)
 (E49):(3)
 (E50):(2):(2)
-(E48):(2):(3)
-(E49):(2):(1)
-(E50):(2):(1)
-
