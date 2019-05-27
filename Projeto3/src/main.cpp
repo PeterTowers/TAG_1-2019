@@ -37,9 +37,12 @@ int main(int argc, char const *argv[])
 //    auto print_course = [](course c){ std::cout << c.name; };
 
     // Builds the graph onto object 'graph'
-    build("data/data.txt");
+    Graph* graph = new Graph;
+    Matrix<Node>* matrix = new Matrix<Node>({});
 
-//    graph->inspect();
+    build("data/data.txt", graph, matrix);
+
+    graph->inspect();
 
     // // Prints graph onscreen in terminal
     // graph->print_adj();

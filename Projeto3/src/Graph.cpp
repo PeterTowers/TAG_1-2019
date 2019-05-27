@@ -89,7 +89,7 @@ unsigned int Graph::find_critical_path(std::vector<std::pair<std::vector<unsigne
 
 // Method push() adds a node to the graph. IMPORTANT: If an ID is not provided, it will default to using the actual array index.
 void Graph::push(Node& value) {
-    nodes.push_back(value );
+    nodes.push_back(value);
 }
 
 // Method print_adj() prints adjacency list
