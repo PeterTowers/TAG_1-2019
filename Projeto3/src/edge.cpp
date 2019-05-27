@@ -19,6 +19,6 @@ bool edge<T>::involves(unsigned int id) {
 }
 
 template <class T>
-bool edge<T>::involves(node<T> node) { return involves(node.id); }
+bool edge<T>::involves(Node node) { return involves(node.id); }
 
 template class edge<course>;

@@ -41,7 +41,7 @@ int graph<T>::find_node_by_id(unsigned int id) {
 
 // Method print_adj() prints adjacency list
 template <class T>
-void graph<T>::inspect(std::function<void(node<T>)> print, std::string separator) {
+void graph<T>::inspect(std::function<void(Node)> print, std::string separator) {
     for (int i = 0; i < nodes.size(); i++){
       auto& node = nodes[i];
       bool first = true;

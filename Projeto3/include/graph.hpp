@@ -14,13 +14,13 @@
 // Class for a polymorphic graph
 template <class T> class graph {
 private:
-    std::vector<node<T>> nodes; // Vector for all nodes in graph
+    std::vector<Node> nodes; // Vector for all nodes in graph
     std::vector<edge<T>> edges;  // Vector for all the edges between nodes in graph
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
-    graph(std::vector<node<T>> nodes = std::vector<node<T>>(),
+    graph(std::vector<Node> nodes = std::vector<Node>(),
           std::vector<edge<T>> edges = std::vector<edge<T>>(),
           bool                 directed = false)
       : nodes(nodes),
@@ -72,7 +72,7 @@ public:
 
     
 
-    void inspect(std::function<void(node<T>)> = [](node<T> node){ std::cout << node.id; }, std::string = ", ");
+    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.id; }, std::string = ", ");
 
     /* graph::critical_path
         Calculates graph's critical path using path_finder() and prints it

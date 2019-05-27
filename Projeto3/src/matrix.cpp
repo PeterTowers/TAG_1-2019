@@ -1,7 +1,7 @@
 #include "../include/matrix.hpp"
 
 template<class T>
-matrix<T>::matrix(std::vector<edge<T>> edges, std::vector<node<T>> nodes){
+matrix<T>::matrix(std::vector<edge<T>> edges, std::vector<Node> nodes){
   // Initialize clear matrix
   for (auto& node : nodes) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)

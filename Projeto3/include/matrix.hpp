@@ -11,7 +11,7 @@ template <class T> class matrix {
 
   public:
     matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    matrix(std::vector<edge<T>> edges, std::vector<node<T>> nodes);
+    matrix(std::vector<edge<T>> edges, std::vector<Node> nodes);
 
     // Checks whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
