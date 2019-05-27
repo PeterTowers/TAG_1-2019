@@ -1,7 +1,7 @@
 #include "../include/Matrix.hpp"
 
-template<class T>
-Matrix<T>::Matrix(std::vector<Node> leftGroup, std::vector<Node> rightGroup, std::vector<Edge<T>> edges){
+template<class T, class U>
+Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge<T>> edges){
   // Initialize clear matrix
   for (auto& node : leftGroup) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)
@@ -12,29 +12,29 @@ Matrix<T>::Matrix(std::vector<Node> leftGroup, std::vector<Node> rightGroup, std
   for (auto& edge : edges) set(edge);
 };
 
-template<class T>
-std::vector<std::vector<int>> Matrix<T>::rows(){ return cells; }
+template<class T, class U>
+std::vector<std::vector<int>> Matrix<T,U>::rows(){ return cells; }
 
-template<class T>
-bool Matrix<T>::contains(const unsigned int i, const unsigned int j){
+template<class T, class U>
+bool Matrix<T,U>::contains(const unsigned int i, const unsigned int j){
   if (i < 0 || i >= cells.size())    return false;
   if (j < 0 || j >= cells[i].size()) return false;
   return true;
 }
 
-template<class T>
-bool Matrix<T>::empty(){
+template<class T, class U>
+bool Matrix<T,U>::empty(){
   return left.empty() || right.empty();
 }
 
-template<class T>
-void Matrix<T>::set(Edge<T> edge){
+template<class T, class U>
+void Matrix<T,U>::set(Edge<T> edge){
   if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
 
-template<class T>
-unsigned int Matrix<T>::minimum(unsigned int index, bool columnwise){
+template<class T, class U>
+unsigned int Matrix<T,U>::minimum(unsigned int index, bool columnwise){
   auto array = columnwise ? (*this)|index : (*this)[index];
 
   return array.empty() ? 0 : *std::min_element(array.begin(), array.end());
@@ -43,46 +43,50 @@ unsigned int Matrix<T>::minimum(unsigned int index, bool columnwise){
 
 // TODO: Finish
 // Clones itself, except for the specified rows and columns
-template<class T>
-Matrix<T> Matrix<T>::without(std::vector<unsigned int> rows, std::vector<unsigned int> columns){
-    Matrix<T> result = {};
+template<class T, class U>
+Matrix<T,U> Matrix<T,U>::without(std::vector<unsigned int> rows, std::vector<unsigned int> columns){
+    Matrix<T,U> result = {};
 
     return result;
 }
 
 // TODO: Finish
-template<class T>
-Matrix<T> Matrix<T>::filter(std::function<bool(std::vector<int>)> predicate, bool bothDirections){
+template<class T, class U>
+Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate, bool bothDirections){
   if (bothDirections)
     return this->filter(predicate, false)
                 .flipped()
                 .filter(predicate, false)
                 .flipped();
 
-  auto left = this->left;
-  auto cells = this->cells;
-
   int i = 0;
   auto wrapped_predicate = [=](auto it){ return predicate(cells[i]); };
 
-  std::remove_if(left.begin(), left.end(), wrapped_predicate);
-  std::remove_if(cells.begin(), cells.end(), predicate);
+  std::vector<T> left(this->left);
+  std::vector<std::vector<int>> cells(this->cells);
+
+  left.erase(std::remove_if(left.begin(), left.end(), wrapped_predicate), left.end());
+  cells.erase(std::remove_if(cells.begin(), cells.end(), predicate), cells.end());
+
+  // myList.erase(
+  //   std::remove_if(myList.begin(), myList.end(), IsMarkedToDelete),
+  //   myList.end());
 
   std::vector<Edge<T>> edges = {};
+  for (i = 0; i < cells.size(); i++)
+    for (int j = 0; j < cells[i].size(); j++)
+      edges.emplace_back(i, j, cells[i][j]);
 
-    for (i = 0; i < cells.size(); i++)
-      for (int j = 0; j < cells[i].size(); j++)
-        edges.emplace_back(i, j, cells[i][j]);
-
-  return Matrix<T>(left, this->right, edges);
+  Matrix<T,U> result(left, this->right, edges);
+  return result;
 }
 
 /* Returns a version of itself where every row and column is subtracted
   to the point where the minimum value is zero.
 */
-template<class T>
-Matrix<T> Matrix<T>::minimized(){
-    Matrix<T> result(*this);
+template<class T, class U>
+Matrix<T,U> Matrix<T,U>::minimized(){
+    Matrix<T,U> result(*this);
     int min = 0;
     auto subtract_minimum = [=](int weight){ return weight - min; };
 
@@ -104,8 +108,8 @@ Matrix<T> Matrix<T>::minimized(){
 }
 
 
-template<class T>
-std::vector<Edge<T>> Matrix<T>::zeroes(){
+template<class T, class U>
+std::vector<Edge<T>> Matrix<T,U>::zeroes(){
     std::vector<Edge<T>> edges;
 
     // Create edges from inverted cells
@@ -118,8 +122,8 @@ std::vector<Edge<T>> Matrix<T>::zeroes(){
     return edges;
 }
 
-template<class T>
-Matrix<T> Matrix<T>::flipped(){
+template<class T, class U>
+Matrix<U,T> Matrix<T,U>::flipped(){
     std::vector<Edge<T>> edges;
 
     // Create edges from inverted cells
@@ -128,12 +132,12 @@ Matrix<T> Matrix<T>::flipped(){
         edges.emplace_back(j, i, cells[i][j]);
 
     // Create and return result matrix
-    return Matrix<T>(right, left, edges);
+    return Matrix<U,T>(this->right, this->left, edges);
 }
 
 
-template<class T>
-std::vector<Edge<T>> Matrix<T>::pairing(){
+template<class T, class U>
+std::vector<Edge<T>> Matrix<T,U>::pairing(){
   std::vector<Edge<T>> result = {};
   if (empty()) return result;
 
@@ -144,7 +148,7 @@ std::vector<Edge<T>> Matrix<T>::pairing(){
   };
 
   // 1. De cada linha e coluna, subtrair seu elemento minimo
-  Matrix<T> min = this->minimized();
+  Matrix<T,U> min = this->minimized();
 
   // 2. Achar Zeros Independentes
   result = min.zeroes();
@@ -158,11 +162,11 @@ std::vector<Edge<T>> Matrix<T>::pairing(){
 
 
 
-template <class T>
-void Matrix<T>::inspect(std::function<void(Node)> print) {
+template <class T, class U>
+void Matrix<T,U>::inspect(std::function<void(Node)> print) {
     std::cout << "test";
     // Print left group and edge costs
-    for (int i = 0; i < left.size(); i++){
+    for (int i = 0; i < this->left.size(); i++){
       auto& node = left[i];
       print(node);
 
@@ -180,7 +184,31 @@ void Matrix<T>::inspect(std::function<void(Node)> print) {
     }
 
     // Print right group
-    for (auto& node : right) print(node);
+    for (auto& node : this->right) print(node);
     std::cout << std::endl;
 }
 
+
+template <class T, class U>
+void Matrix<T,U>::push(T row){
+  this->left.push_back(row);
+
+  cells.push_back({});
+  auto newedges = cells[cells.size()-1];
+  
+  for (auto node : this->right)
+    newedges.push_back(-1);
+}
+
+template <class T, class U>
+void Matrix<T,U>::push(U col){
+  this->right.push_back(col);
+
+  for (auto row : this->cells) row.push_back(-1);
+}
+
+
+// FIXME: ANTIPATTERN WARNING
+#include "../include/Teacher.hpp"
+#include "../include/School.hpp"
+template class Matrix<Teacher, School>;

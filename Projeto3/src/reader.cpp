@@ -9,8 +9,7 @@
 bool comment(char c) { return c == '#'; }
 
 // build: Parses an array of strings into a graph
-void build(std::vector<std::string> stream) {
-
+void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Check input
     if (stream.empty()) exit(-666); // TODO: correct this accordingly
 
@@ -84,6 +83,9 @@ void build(std::vector<std::string> stream) {
      * *=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~
      */
     for (auto teacher : teachers) {
+        if (graph != nullptr) graph->push(teacher);
+        if (matrix != nullptr) matrix->push(teacher);
+
         std::cout << "Teacher's id: " << teacher.get_id();
         std::cout << "\tNumber of skills: " << teacher.get_skills() << std::endl;
         std::cout << "Desired school(s): ";
@@ -94,6 +96,9 @@ void build(std::vector<std::string> stream) {
     }
 
     for (auto school : schools) {
+        if (graph != nullptr) graph->push(school);
+        if (matrix != nullptr) matrix->push(school);
+
         std::cout << "School's id: " << school.get_id();
         std::cout << "\tAvailable positions: " << school.getRequirements().size() << std::endl;
         std::cout << "Number of desired skills for each position: ";
@@ -104,10 +109,11 @@ void build(std::vector<std::string> stream) {
         std::cout << std::endl << std::endl;
     }
     /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
+
 }
 
 // build overload: receives a filename, and call its homonim with the input properly split
-void build(std::string filename) {
+void build(std::string filename, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Loads file
     std::ifstream input(filename.c_str()); 
 
@@ -127,5 +133,5 @@ void build(std::string filename) {
     while(std::getline(input, temp)) res.push_back(std::string(temp.c_str()));
 
     // Passes output into homonim
-    build(res);
+    return build(res, graph, matrix);
 }

@@ -6,6 +6,7 @@
 #include <regex>
 
 #include "../include/Graph.hpp"
+#include "../include/Matrix.hpp"
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
 
@@ -23,7 +24,7 @@
  * Returns:
  *  - The constructed graph
 */
-void build(std::vector<std::string>);   // Read from stream
+void build(std::vector<std::string>, Graph* = nullptr, Matrix<Teacher, School>* = nullptr);   // Read from stream
 
 /** build
  * Creates a courses DAG from text representation
@@ -32,4 +33,4 @@ void build(std::vector<std::string>);   // Read from stream
  * Returns:
  *  - The constructed graph
 */
-void build(std::string);                // Read from file
+void build(std::string, Graph* = nullptr, Matrix<Teacher, School>* = nullptr);                // Read from file

@@ -33,14 +33,17 @@
 #include "../include/Graph.hpp"
 #include "../include/Matrix.hpp"
 
-int main(int argc, char const *argv[])
-{
-//    auto print_course = [](course c){ std::cout << c.name; };
+int main(int argc, char const *argv[]){
 
     // Builds the graph onto object 'graph'
-    build("data/data.txt");
+    Graph* graph = new Graph;
+    Matrix<Teacher, School>* matrix = new Matrix<Teacher, School>();
 
-//    graph->inspect();
+    build("data/data.txt", graph, matrix);
+
+    graph->inspect();
+
+    matrix->inspect();
 
     // // Prints graph onscreen in terminal
     // graph->print_adj();

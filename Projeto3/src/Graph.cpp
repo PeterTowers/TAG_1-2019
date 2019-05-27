@@ -1,9 +1,7 @@
 #include <algorithm>
 #include "../include/Graph.hpp"
-#include "../include/Node.hpp" // FIXME: This is an antipattern
 
-template <class T>
-bool Graph<T>::connected(unsigned int target, unsigned int source){
+bool Graph::connected(unsigned int target, unsigned int source){
   bool are = false;
 
   // Iterate over edges
@@ -16,8 +14,7 @@ bool Graph<T>::connected(unsigned int target, unsigned int source){
 }
 
 // Connects two nodes, by id.
-template <class T>
-bool Graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
+bool Graph::connect(unsigned int id1, unsigned int id2, int weight) {
     int source = find_node_by_id(id1);
     int target = find_node_by_id(id2);
 
@@ -29,19 +26,15 @@ bool Graph<T>::connect(unsigned int id1, unsigned int id2, int weight) {
 }
 
 // Method find_node_by_id() returns a node's index on 'nodes' vector by searching for its id
-template <class T>
-int Graph<T>::find_node_by_id(unsigned int id) {
-    
-
+int Graph::find_node_by_id(unsigned int id) {
     for (int i = 0; i < nodes.size(); i++)
       if (nodes[i].get_id() == id) return i;
 
     return -1;
 }
 
-// Prints the graph in human-readable format
-template <class T>
-void Graph<T>::inspect(std::function<void(Node)> print, std::string separator) {
+// Method print_adj() prints adjacency list
+void Graph::inspect(std::function<void(Node)> print, std::string separator) {
     for (int i = 0; i < nodes.size(); i++){
       auto& node = nodes[i];
       bool first = true;
@@ -62,8 +55,7 @@ void Graph<T>::inspect(std::function<void(Node)> print, std::string separator) {
 
 
 // Method find_critical_path() returns the index of the critical path on 'criticalPaths' vector
-template <class T>
-unsigned int Graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
+unsigned int Graph::find_critical_path(std::vector<std::pair<std::vector<unsigned int>, int>> criticalPaths) {
     // int maxWeight = 0;              // Auxiliary variable to store a path's sum of weights
     // std::vector<unsigned int> path; // path stores indices of critical paths with the same sum of weights
 
@@ -96,14 +88,12 @@ unsigned int Graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsi
 }
 
 // Method push() adds a node to the graph. IMPORTANT: If an ID is not provided, it will default to using the actual array index.
-template <class T>
-void Graph<T>::push(Node& value) {
-    nodes.push_back(value );
+void Graph::push(Node& value) {
+    nodes.push_back(value);
 }
 
 // Method print_adj() prints adjacency list
-template <class T>
-void Graph<T>::print_adj() {
+void Graph::print_adj() {
 
     // Variable for file handling
     std::ofstream outputFile;
@@ -166,8 +156,7 @@ void Graph<T>::print_adj() {
 }
 
 // Method print_ordered() prints a topologically-ordered version of the graph
-template <class T>
-void Graph<T>::print_ordered(std::function<void(T)> print_node) {
+void Graph::print_ordered(std::function<void(Node)> print_node) {
     // Instantiates a variable to receive the output of method ordered()
     auto ordered = this->ordered();
 
@@ -221,8 +210,7 @@ void Graph<T>::print_ordered(std::function<void(T)> print_node) {
 }
 
 // Method critical_path() finds the graph's critical path and prints it to file
-template <class T>
-void Graph<T>::critical_path() {
+void Graph::critical_path() {
     // // Checks if graph has edges. If it doesn't, exits with code '-2'.
     // if (edges.empty()) {
     //     std::cout << "Error: graph has no edges." << std::endl;
@@ -261,8 +249,7 @@ void Graph<T>::critical_path() {
     // print_critical_path(theCriticalPath.first);
 }
 
-template <class T>
-void Graph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
+void Graph::print_critical_path(std::vector<unsigned int> criticalPath) {
     // /* Sets a variable for file handling and opens file in WRITE mode, passing 'trunc' parameter so that if there's a
     //    previous file, it'll be ERRASED
     //  */
@@ -296,8 +283,7 @@ void Graph<T>::print_critical_path(std::vector<unsigned int> criticalPath) {
 }
 
 // Method neighbors() receives a vertex's id and returns the positions of its neighbors on the nodes array
-template <class T>
-std::vector<unsigned int> Graph<T>::neighbors(unsigned int index) {
+std::vector<unsigned int> Graph::neighbors(unsigned int index) {
     // Variable that will receive
     std::vector<unsigned int> output;
 
@@ -322,8 +308,7 @@ std::vector<unsigned int> Graph<T>::neighbors(unsigned int index) {
 }
 
 // Recursive method orderred() implements graph's topological sort
-template <class T>
-std::vector<T*> Graph<T>::ordered(std::vector<bool> visited, std::vector<T*> output) {
+std::vector<Node> Graph::ordered(std::vector<bool> visited, std::vector<Node> output) {
   // // Initializes visited array on the method call
   // if (visited.empty())
   //   for(auto node : nodes)
@@ -363,8 +348,7 @@ std::vector<T*> Graph<T>::ordered(std::vector<bool> visited, std::vector<T*> out
 }
 
 // Method path_finder() calculates a critical path for every node
-template <class T>
-std::vector<std::pair<std::vector<unsigned int>, int>> Graph<T>::path_finder(
+std::vector<std::pair<std::vector<unsigned int>, int>> Graph::path_finder(
         std::vector<std::pair<std::vector<unsigned int>, int>> criticalPath, std::vector<bool> visited,
         unsigned int index) {
     // Checks if node has been visited before, if so, its critical path is already calculated
@@ -418,5 +402,3 @@ std::vector<std::pair<std::vector<unsigned int>, int>> Graph<T>::path_finder(
 
     return criticalPath;    // Returns vector containing calculated critical path
 }
-
-template class Graph<Node>; // FIXME: This is an antipattern

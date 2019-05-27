@@ -7,22 +7,22 @@
 #include "Edge.hpp"
 #include "Node.hpp"
 
-template <class T> class Matrix {
+template <class T, class U> class Matrix {
   private:
     std::vector<std::vector<int>> cells;
 
-    std::vector<Node> left;
-    std::vector<Node> right;
+    std::vector<T> left;
+    std::vector<U> right;
 
   public:
     Matrix() : cells({}), left({}), right({}) {};
-    // matrix(Matrix<T> data)
+    // matrix(Matrix<T,U> data)
     //   : cells(data.cells),
     //     left(data.left),
     //     right(data.right) {};
 
     Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    Matrix(std::vector<Node>, std::vector<Node>, std::vector<Edge<T>> = {});
+    Matrix(std::vector<T>, std::vector<U>, std::vector<Edge<T>> = {});
 
     // Indicates whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
@@ -33,22 +33,22 @@ template <class T> class Matrix {
     // Sets the weight of an edge
     void set(Edge<T> edge);
 
-    // Sets the weight of an edge
-    void push(Node, bool = false); // TODO: implement
+    void push(T); // Push a new row
+    void push(U); // Push a new column
 
     // Clones itself, except for the specified rows and columns
-    Matrix<T> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
+    Matrix<T,U> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
 
     // Clones itself, except for rows and columns which do not comply to the selector predicate
-    Matrix<T> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
+    Matrix<T,U> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
 
     // Clones itself, swapping rows and columns
-    Matrix<T> flipped();
+    Matrix<U,T> flipped();
 
     /* Returns a version of itself where every row and column is subtracted
       to the point where the minimum value is zero.
     */
-    Matrix<T> minimized();
+    Matrix<T,U> minimized();
 
     // Calculates the optimal graph pairing
     std::vector<Edge<T>> pairing();
@@ -91,7 +91,7 @@ template <class T> class Matrix {
     };
 
     // Prints data in human-readable format
-    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.id; });
+    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.get_id(); });
 
     // Cell getter operator overload. Usage: matrix(edge);
     int operator()(Edge<T> edge) { return this->cells[edge.from()][edge.to()]; };
