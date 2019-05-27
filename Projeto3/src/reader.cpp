@@ -25,8 +25,8 @@ void build(std::vector<std::string> stream) {
         // Eat comments
         if ( comment(line.front()) ) continue;
 
-        // Define regexes for digits, teachers (professor) and schools
-        std::regex regexDigits("(\\d+)"), regexProfessor("P"), regexSchool("^\\(E");
+        // Define regexes for digits, teachers (professor) and schools ( if needed, it's here: regexSchool("^\\(E") )
+        std::regex regexDigits("(\\d+)"), regexProfessor("P");
 
         // Store regex's matches
         std::smatch match;
@@ -37,40 +37,54 @@ void build(std::vector<std::string> stream) {
         // Counts iterations to find where to place data
         int i = 0;
 
-        // Stores the id and the number of skills a teacher have or a schoool desires
+        // Stores the id and the number of skills a teacher has
         int id, skills;
 
         // Stores a teacher's desired schools or the number of skills required by a school
         std::vector<int> desired;
 
+        // Iterates through a line in order to find all the digits it contains
         while ( std::regex_search(searchStart, line.cend(), match, regexDigits) ) {
+
+            // If given line relates to a teacher, stores its data accordingly
             if (std::regex_search(line, regexProfessor)) {
-                if (i == 0)
+                if (i == 0)                     // The first digit is the teacher's id
                     id = std::stoi(match[0]);
-                else if (i == 1)
+                else if (i == 1)                // The second, their number of skills
                     skills = std::stoi(match[0]);
-                else
+                else                            // The others are their desired schools
                     desired.push_back(std::stoi(match[0]));
             }
+
+            // If it's not related to a teacher, then, it's a school
             else {
-                if (i == 0)
+                if (i == 0)                     // The first digit is the school's id
                     id = std::stoi(match[0]);
-                else
+                else                            // The others are the number of skills required for each position
                     desired.push_back(std::stoi(match[0]));
             }
+
+            // Make the changes needed to iterate through data and line
             i++;
             searchStart = match.suffix().first;
         }
+
+        // If line relates to a teacher, store teacher's data in an object and add it to 'teachers' vector
         if (std::regex_search(line, regexProfessor)) {
             Teacher teacher(id, skills, desired);
             teachers.push_back(teacher);
         }
+        // Else, stores accordingly
         else {
             School school(id, desired);
             schools.push_back(school);
         }
     }
 
+    /* ~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*
+     * ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~* GLORIOUS printf() DEBUGGING *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
+     * *=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~
+     */
     for (auto teacher : teachers) {
         std::cout << "Teacher's id: " << teacher.get_id();
         std::cout << "\tNumber of skills: " << teacher.get_skills() << std::endl;
@@ -91,7 +105,7 @@ void build(std::vector<std::string> stream) {
 
         std::cout << std::endl << std::endl;
     }
-
+    /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
 }
 
 // build overload: receives a filename, and call its homonim with the input properly split
