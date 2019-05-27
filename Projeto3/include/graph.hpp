@@ -8,20 +8,20 @@
 #include <stack>
 
 
-#include "../include/edge.hpp"
+#include "../include/Edge.hpp"
 #include "../include/Node.hpp"
 
 // Class for a polymorphic graph
 template <class T> class graph {
 private:
     std::vector<Node> nodes; // Vector for all nodes in graph
-    std::vector<edge<T>> edges;  // Vector for all the edges between nodes in graph
+    std::vector<Edge<T>> edges;  // Vector for all the edges between nodes in graph
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
     graph(std::vector<Node> nodes = std::vector<Node>(),
-          std::vector<edge<T>> edges = std::vector<edge<T>>(),
+          std::vector<Edge<T>> edges = std::vector<Edge<T>>(),
           bool                 directed = false)
       : nodes(nodes),
         edges(edges),

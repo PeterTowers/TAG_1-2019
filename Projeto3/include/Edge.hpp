@@ -5,7 +5,7 @@
 
 
 // TODO: Implement comparison operators <, >
-template <class T> class edge {
+template <class T> class Edge {
   private:
     unsigned int source;
     unsigned int target;
@@ -15,12 +15,12 @@ template <class T> class edge {
 
   public:
     // Public methods
-    edge(unsigned int source, unsigned int target, int weight = 0, std::function<Node*(unsigned int)> getNode = [](unsigned int index){ return nullptr; })
+    Edge(unsigned int source, unsigned int target, int weight = 0, std::function<Node*(unsigned int)> getNode = [](unsigned int index){ return nullptr; })
       : source(source),
         target(target),
         weight(weight),
         getNode(getNode) {};
-    ~edge(){};
+    ~Edge(){};
 
     // These return the IDs of the objects
     unsigned int from();
@@ -36,7 +36,7 @@ template <class T> class edge {
     Node* targetNode(){ return getNode(to()); };
 
     // These check for edge equality
-    bool operator==(edge<T> rhs){
+    bool operator==(Edge<T> rhs){
       return this->from() == rhs.from() && this->to() == rhs.to();
     };
 
