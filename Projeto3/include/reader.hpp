@@ -5,7 +5,7 @@
 #include <string>
 #include <regex>
 
-#include "../include/graph.hpp"
+#include "../include/Graph.hpp"
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
 

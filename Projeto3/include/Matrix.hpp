@@ -5,13 +5,13 @@
 #include "Edge.hpp"
 #include "Node.hpp"
 
-template <class T> class matrix {
+template <class T> class Matrix {
   private:
     std::vector<std::vector<int>> cells;
 
   public:
-    matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes);
+    Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
+    Matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes);
 
     // Checks whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);

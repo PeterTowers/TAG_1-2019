@@ -12,7 +12,7 @@
 #include "../include/Node.hpp"
 
 // Class for a polymorphic graph
-template <class T> class graph {
+template <class T> class Graph {
 private:
     std::vector<Node> nodes; // Vector for all nodes in graph
     std::vector<Edge<T>> edges;  // Vector for all the edges between nodes in graph
@@ -20,7 +20,7 @@ private:
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
-    graph(std::vector<Node> nodes = std::vector<Node>(),
+    Graph(std::vector<Node> nodes = std::vector<Node>(),
           std::vector<Edge<T>> edges = std::vector<Edge<T>>(),
           bool                 directed = false)
       : nodes(nodes),
@@ -28,7 +28,7 @@ public:
         directed(directed) { };
 
     // Destructor method
-    ~graph() { nodes.clear(); edges.clear(); };
+    ~Graph() { nodes.clear(); edges.clear(); };
 
     // Connects two nodes, by id. Requires a function that determines the unique id of a given node
     /* graph::connect

@@ -1,7 +1,7 @@
-#include "../include/matrix.hpp"
+#include "../include/Matrix.hpp"
 
 template<class T>
-matrix<T>::matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes){
+Matrix<T>::Matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes){
   // Initialize clear matrix
   for (auto& node : nodes) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)
@@ -13,13 +13,13 @@ matrix<T>::matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes){
 };
 
 template<class T>
-bool matrix<T>::contains(const unsigned int i, const unsigned int j){
+bool Matrix<T>::contains(const unsigned int i, const unsigned int j){
   if (i < 0 || i >= cells.size())    return false;
   if (j < 0 || j >= cells[i].size()) return false;
   return true;
 }
 
 template<class T>
-void matrix<T>::set(Edge<T> edge){
+void Matrix<T>::set(Edge<T> edge){
   if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.weight;
 };

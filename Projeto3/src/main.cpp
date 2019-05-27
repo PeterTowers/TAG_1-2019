@@ -30,7 +30,7 @@
 
 #include <iostream>
 #include "../include/reader.hpp"
-#include "../include/graph.hpp"
+#include "../include/Graph.hpp"
 
 int main(int argc, char const *argv[])
 {
