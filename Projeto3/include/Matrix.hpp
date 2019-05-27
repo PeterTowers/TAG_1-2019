@@ -24,4 +24,6 @@ template <class T> class Matrix {
       return contains(i, j) ? cells[i][j] : -1;
     };
     int operator()(Edge<T> edge) { return this[edge.from(), edge.to()]; };
+
+    void push(Node& node){};
 };
