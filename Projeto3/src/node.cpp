@@ -1,4 +1,4 @@
-#include "../include/node.hpp"
+#include "../include/Node.hpp"
 #include "../include/course.hpp" // FIXME: This is an antipattern
 
 template <class T>

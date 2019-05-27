@@ -1,14 +1,13 @@
 //
 // Created by pedro on 25/05/19.
 //
-
-#ifndef PROJETO_3_TEACHER_HPP
-#define PROJETO_3_TEACHER_HPP
+#pragma once
 
 #include <vector>
 #include "../include/School.hpp"
+#include "./Node.hpp"
 
-class Teacher {
+class Teacher : public Node {
 private:
     int id, skills;
     std::vector<int> desiredSchools;
@@ -38,5 +37,3 @@ public:
 
 
 };
-
-#endif //PROJETO_3_TEACHER_HPP

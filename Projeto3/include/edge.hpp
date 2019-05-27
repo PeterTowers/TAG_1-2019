@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <functional>
-#include "node.hpp"
+#include "Node.hpp"
 
 
 // TODO: Implement comparison operators <, >

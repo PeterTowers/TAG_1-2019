@@ -9,7 +9,7 @@
 
 
 #include "../include/edge.hpp"
-#include "../include/node.hpp"
+#include "../include/Node.hpp"
 
 // Class for a polymorphic graph
 template <class T> class graph {

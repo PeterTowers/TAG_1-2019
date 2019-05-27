@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "edge.hpp"
-#include "node.hpp"
+#include "Node.hpp"
 
 template <class T> class matrix {
   private:

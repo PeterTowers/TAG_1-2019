@@ -1,13 +1,12 @@
 //
 // Created by pedro on 25/05/19.
 //
+#pragma once
 
-#ifndef PROJETO_3_SCHOOL_HPP
-#define PROJETO_3_SCHOOL_HPP
-
+#include "./Node.hpp"
 #include <vector>
 
-class School {
+class School : public Node {
 private:
     int id;
     std::vector<int> skillRequirements;
@@ -30,5 +29,3 @@ public:
      */
     std::vector<int> getRequirements() { return skillRequirements; };
 };
-
-#endif //PROJETO_3_SCHOOL_HPP
