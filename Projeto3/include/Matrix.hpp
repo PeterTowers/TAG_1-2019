@@ -2,26 +2,26 @@
 #include <iostream>
 #include <vector>
 
-#include "edge.hpp"
-#include "node.hpp"
+#include "Edge.hpp"
+#include "Node.hpp"
 
-template <class T> class matrix {
+template <class T> class Matrix {
   private:
     std::vector<std::vector<int>> cells;
 
   public:
-    matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    matrix(std::vector<edge<T>> edges, std::vector<node<T>> nodes);
+    Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
+    Matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes);
 
     // Checks whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
 
     // Sets the weight of an edge
-    void set(edge<T> edge);
+    void set(Edge<T> edge);
 
     // Access (getter) operators
     int operator()(const unsigned int i, const unsigned int j) {
       return contains(i, j) ? cells[i][j] : -1;
     };
-    int operator()(edge<T> edge) { return this[edge.from(), edge.to()]; };
+    int operator()(Edge<T> edge) { return this[edge.from(), edge.to()]; };
 };

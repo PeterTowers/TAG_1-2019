@@ -1,30 +1,24 @@
 //
 // Created by pedro on 25/05/19.
 //
-
-#ifndef PROJETO_3_TEACHER_HPP
-#define PROJETO_3_TEACHER_HPP
+#pragma once
 
 #include <vector>
 #include "../include/School.hpp"
+#include "./Node.hpp"
 
-class Teacher {
+class Teacher : public Node {
 private:
-    int id, skills;
+    int skills;
     std::vector<int> desiredSchools;
 
 public:
     /*
      * Constructor & destructor
      */
-    Teacher(int id, int skills, std::vector<int> desired): id(id), skills(skills), desiredSchools(desired) {};
+    Teacher(int id, int skills, std::vector<int> desired): Node(id), skills(skills), desiredSchools(desired) {};
 
     ~Teacher() {};
-
-    /*
-     * Method get_id returns the teacher's id
-     */
-    int get_id() { return id; };
 
     /*
      * Method get_skills returns how many skills the teacher has
@@ -38,5 +32,3 @@ public:
 
 
 };
-
-#endif //PROJETO_3_TEACHER_HPP

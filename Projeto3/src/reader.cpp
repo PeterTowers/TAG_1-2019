@@ -14,8 +14,6 @@ void build(std::vector<std::string> stream) {
     // Check input
     if (stream.empty()) exit(-666); // TODO: correct this accordingly
 
-    // TODO: Instantiate return type
-//    graph<course> *output = new graph<course>();
 
     std::vector<Teacher> teachers;
     std::vector<School> schools;
