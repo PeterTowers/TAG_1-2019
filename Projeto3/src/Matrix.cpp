@@ -85,7 +85,7 @@ Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate,
   to the point where the minimum value is zero.
 */
 template<class T, class U>
-Matrix<T,U> Matrix<T,U>::minimized(){
+Matrix<T,U> Matrix<T,U>::minimized(bool bothDirections){
     Matrix<T,U> result(*this);
     int min = 0;
     auto subtract_minimum = [=](int weight){ return weight - min; };
@@ -96,15 +96,10 @@ Matrix<T,U> Matrix<T,U>::minimized(){
         std::transform(row.begin(), row.end(), row.begin(), subtract_minimum);
     }
 
-    result = result.flipped();
-
-    // 2. Minimize matrix column-wise
-    for (auto row : result.rows()){
-        min = *std::min_element(row.begin(), row.end());
-        std::transform(row.begin(), row.end(), row.begin(), subtract_minimum);
-    }
-
-    return result = result.flipped();
+    // 2. If the requested minimization requires both directions, the algorithm is called once more.
+    return bothDirections
+      ? result.flipped().minimized(false).flipped()
+      : result;
 }
 
 

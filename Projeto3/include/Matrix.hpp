@@ -48,7 +48,7 @@ template <class T, class U> class Matrix {
     /* Returns a version of itself where every row and column is subtracted
       to the point where the minimum value is zero.
     */
-    Matrix<T,U> minimized();
+    Matrix<T,U> minimized(bool = true);
 
     // Calculates the optimal graph pairing
     std::vector<Edge> pairing();

@@ -15,4 +15,4 @@ bool Edge::involves(unsigned int id) {
 
 bool Edge::involves(Node node) { return involves(node.get_id()); }
 
-template class Edge;
+int Edge::getWeight(){ return weight; }
