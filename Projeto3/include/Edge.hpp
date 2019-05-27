@@ -5,7 +5,7 @@
 
 
 // TODO: Implement comparison operators <, >
-template <class T> class Edge {
+class Edge {
   private:
     unsigned int source;
     unsigned int target;
@@ -36,7 +36,7 @@ template <class T> class Edge {
     Node* targetNode(){ return getNode(to()); };
 
     // These check for edge equality
-    bool operator==(Edge<T> rhs){
+    bool operator==(Edge rhs){
       return this->from() == rhs.from() && this->to() == rhs.to();
     };
 

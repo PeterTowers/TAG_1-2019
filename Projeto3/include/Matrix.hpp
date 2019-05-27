@@ -22,7 +22,7 @@ template <class T, class U> class Matrix {
     //     right(data.right) {};
 
     Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    Matrix(std::vector<T>, std::vector<U>, std::vector<Edge<T>> = {});
+    Matrix(std::vector<T>, std::vector<U>, std::vector<Edge> = {});
 
     // Indicates whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
@@ -31,7 +31,7 @@ template <class T, class U> class Matrix {
     bool empty();
 
     // Sets the weight of an edge
-    void set(Edge<T> edge);
+    void set(Edge edge);
 
     void push(T); // Push a new row
     void push(U); // Push a new column
@@ -51,10 +51,10 @@ template <class T, class U> class Matrix {
     Matrix<T,U> minimized();
 
     // Calculates the optimal graph pairing
-    std::vector<Edge<T>> pairing();
+    std::vector<Edge> pairing();
 
     // Returns zero-weighed edges
-    std::vector<Edge<T>> zeroes();
+    std::vector<Edge> zeroes();
 
     /* Returns the minimum value within a line, unless 'flipped' is set to true,
         in which case it returns the minimum value within column
@@ -94,5 +94,5 @@ template <class T, class U> class Matrix {
     void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.get_id(); });
 
     // Cell getter operator overload. Usage: matrix(edge);
-    int operator()(Edge<T> edge) { return this->cells[edge.from()][edge.to()]; };
+    int operator()(Edge edge) { return this->cells[edge.from()][edge.to()]; };
 };

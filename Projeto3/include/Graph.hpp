@@ -15,13 +15,13 @@
 class Graph {
 private:
     std::vector<Node> nodes; // Vector for all nodes in graph
-    std::vector<Edge<Node>> edges;  // Vector for all the edges between nodes in graph
+    std::vector<Edge> edges;  // Vector for all the edges between nodes in graph
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
     Graph(std::vector<Node> nodes = std::vector<Node>(),
-          std::vector<Edge<Node>> edges = std::vector<Edge<Node>>(),
+          std::vector<Edge> edges = std::vector<Edge> (),
           bool                 directed = false)
       : nodes(nodes),
         edges(edges),

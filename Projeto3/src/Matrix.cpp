@@ -1,7 +1,7 @@
 #include "../include/Matrix.hpp"
 
 template<class T, class U>
-Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge<T>> edges){
+Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges){
   // Initialize clear matrix
   for (auto& node : leftGroup) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)
@@ -28,7 +28,7 @@ bool Matrix<T,U>::empty(){
 }
 
 template<class T, class U>
-void Matrix<T,U>::set(Edge<T> edge){
+void Matrix<T,U>::set(Edge edge){
   if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
@@ -72,7 +72,7 @@ Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate,
   //   std::remove_if(myList.begin(), myList.end(), IsMarkedToDelete),
   //   myList.end());
 
-  std::vector<Edge<T>> edges = {};
+  std::vector<Edge> edges = {};
   for (i = 0; i < cells.size(); i++)
     for (int j = 0; j < cells[i].size(); j++)
       edges.emplace_back(i, j, cells[i][j]);
@@ -109,8 +109,8 @@ Matrix<T,U> Matrix<T,U>::minimized(){
 
 
 template<class T, class U>
-std::vector<Edge<T>> Matrix<T,U>::zeroes(){
-    std::vector<Edge<T>> edges;
+std::vector<Edge> Matrix<T,U>::zeroes(){
+    std::vector<Edge> edges;
 
     // Create edges from inverted cells
     for (int i = 0; i < cells.size(); i++)
@@ -124,7 +124,7 @@ std::vector<Edge<T>> Matrix<T,U>::zeroes(){
 
 template<class T, class U>
 Matrix<U,T> Matrix<T,U>::flipped(){
-    std::vector<Edge<T>> edges;
+    std::vector<Edge> edges;
 
     // Create edges from inverted cells
     for (int i = 0; i < cells.size(); i++)
@@ -137,8 +137,8 @@ Matrix<U,T> Matrix<T,U>::flipped(){
 
 
 template<class T, class U>
-std::vector<Edge<T>> Matrix<T,U>::pairing(){
-  std::vector<Edge<T>> result = {};
+std::vector<Edge> Matrix<T,U>::pairing(){
+  std::vector<Edge> result = {};
   if (empty()) return result;
 
   // Filtering function, which detects independent zeroes
