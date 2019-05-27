@@ -4,25 +4,25 @@
 #include <algorithm>
 #include <functional>
 
-#include "edge.hpp"
-#include "node.hpp"
+#include "Edge.hpp"
+#include "Node.hpp"
 
-template <class T> class matrix {
+template <class T> class Matrix {
   private:
     std::vector<std::vector<int>> cells;
 
-    std::vector<node<T>> left;
-    std::vector<node<T>> right;
+    std::vector<Node> left;
+    std::vector<Node> right;
 
   public:
-    matrix() : cells({}), left({}), right({}) {};
-    // matrix(matrix<T> data)
+    Matrix() : cells({}), left({}), right({}) {};
+    // matrix(Matrix<T> data)
     //   : cells(data.cells),
     //     left(data.left),
     //     right(data.right) {};
 
-    matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    matrix(std::vector<node<T>>, std::vector<node<T>>, std::vector<edge<T>> = {});
+    Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
+    Matrix(std::vector<Node>, std::vector<Node>, std::vector<Edge<T>> = {});
 
     // Indicates whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
@@ -31,30 +31,30 @@ template <class T> class matrix {
     bool empty();
 
     // Sets the weight of an edge
-    void set(edge<T> edge);
+    void set(Edge<T> edge);
 
     // Sets the weight of an edge
-    void push(node<T>, bool = false); // TODO: implement
+    void push(Node, bool = false); // TODO: implement
 
     // Clones itself, except for the specified rows and columns
-    matrix<T> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
+    Matrix<T> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
 
     // Clones itself, except for rows and columns which do not comply to the selector predicate
-    matrix<T> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
+    Matrix<T> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
 
     // Clones itself, swapping rows and columns
-    matrix<T> flipped();
+    Matrix<T> flipped();
 
     /* Returns a version of itself where every row and column is subtracted
       to the point where the minimum value is zero.
     */
-    matrix<T> minimized();
+    Matrix<T> minimized();
 
     // Calculates the optimal graph pairing
-    std::vector<edge<T>> pairing();
+    std::vector<Edge<T>> pairing();
 
     // Returns zero-weighed edges
-    std::vector<edge<T>> zeroes();
+    std::vector<Edge<T>> zeroes();
 
     /* Returns the minimum value within a line, unless 'flipped' is set to true,
         in which case it returns the minimum value within column
@@ -71,8 +71,6 @@ template <class T> class matrix {
         : -1;
     };
 
-    // Cell getter operator overload. Usage: matrix(edge);
-    int operator()(edge<T> edge) { return this->cells[edge.from()][edge.to()]; };
 
     // Row getter operator. Usage: matrix[i]
     std::vector<int> operator[](const unsigned int i) {
@@ -93,8 +91,8 @@ template <class T> class matrix {
     };
 
     // Prints data in human-readable format
-    void inspect(std::function<void(node<T>)> = [](node<T> node){ std::cout << node.id; });
+    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.id; });
 
-    // Cell-setting operator. Usage: matrix = edge
-//    void operator=(std::vector<edge<T>> edges) { for (auto& edge : edges) set(edge); }
+    // Cell getter operator overload. Usage: matrix(edge);
+    int operator()(Edge<T> edge) { return this->cells[edge.from()][edge.to()]; };
 };

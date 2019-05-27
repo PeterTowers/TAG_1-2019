@@ -30,19 +30,17 @@
 
 #include <iostream>
 #include "../include/reader.hpp"
-#include "../include/graph.hpp"
-#include "../include/matrix.hpp"
+#include "../include/Graph.hpp"
+#include "../include/Matrix.hpp"
 
 int main(int argc, char const *argv[])
 {
-    auto print_course = [](course c){ std::cout << c.name; };
+//    auto print_course = [](course c){ std::cout << c.name; };
 
     // Builds the graph onto object 'graph'
-    // graph<course>* graph = build("../data/old-data.txt");
-    // graph->inspect();
+    build("data/data.txt");
 
-    matrix<course> *m = new matrix<course>();
-    m->inspect();
+//    graph->inspect();
 
     // // Prints graph onscreen in terminal
     // graph->print_adj();
