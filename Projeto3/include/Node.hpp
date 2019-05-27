@@ -3,18 +3,17 @@
 
 // TODO: Implement class properly
 class Node {
-  private:
-    unsigned int id;
+  protected:
+    int id;
 
   public:
   
     // Public methods
-    Node(unsigned int id);
-    ~Node();
+    Node(int id) : id(id){};
+    ~Node() {};
 
-    Node get();
-    void set(Node data);
+    int get_id() { return id; };
 
     // Node operator()(){ return get(); }
-    bool operator==(Node rhs){ return rhs.id == id; }
+    bool operator==(Node rhs){ return rhs.get_id() == get_id(); }
 };

@@ -1,5 +1,5 @@
 #include "../include/edge.hpp"
-#include "../include/course.hpp" // FIXME: This is an antipattern
+#include "../include/Node.hpp" // FIXME: This is an antipattern
 
 template <class T>
 unsigned int edge<T>::from(){ return source; };
@@ -19,6 +19,6 @@ bool edge<T>::involves(unsigned int id) {
 }
 
 template <class T>
-bool edge<T>::involves(Node node) { return involves(node.id); }
+bool edge<T>::involves(Node node) { return involves(node.get_id()); }
 
-template class edge<course>;
+template class edge<Node>;

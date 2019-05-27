@@ -8,14 +8,13 @@
 
 class School : public Node {
 private:
-    int id;
     std::vector<int> skillRequirements;
 
 public:
     /*
      * Constructor & destructor
      */
-    School(int id, std::vector<int> requires): id(id), skillRequirements(requires) {};
+    School(int id, std::vector<int> requires) : Node(id), skillRequirements(requires) { };
 
     ~School() {};
 

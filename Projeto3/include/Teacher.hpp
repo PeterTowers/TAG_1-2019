@@ -9,21 +9,16 @@
 
 class Teacher : public Node {
 private:
-    int id, skills;
+    int skills;
     std::vector<int> desiredSchools;
 
 public:
     /*
      * Constructor & destructor
      */
-    Teacher(int id, int skills, std::vector<int> desired): id(id), skills(skills), desiredSchools(desired) {};
+    Teacher(int id, int skills, std::vector<int> desired): Node(id), skills(skills), desiredSchools(desired) {};
 
     ~Teacher() {};
-
-    /*
-     * Method get_id returns the teacher's id
-     */
-    int get_id() { return id; };
 
     /*
      * Method get_skills returns how many skills the teacher has

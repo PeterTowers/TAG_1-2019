@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "../include/graph.hpp"
-#include "../include/course.hpp" // FIXME: This is an antipattern
+#include "../include/Node.hpp" // FIXME: This is an antipattern
 
 template <class T>
 bool graph<T>::connected(unsigned int target, unsigned int source){
@@ -34,7 +34,7 @@ int graph<T>::find_node_by_id(unsigned int id) {
     
 
     for (int i = 0; i < nodes.size(); i++)
-      if (nodes[i].id == id) return i;
+      if (nodes[i].get_id() == id) return i;
 
     return -1;
 }
@@ -97,8 +97,8 @@ unsigned int graph<T>::find_critical_path(std::vector<std::pair<std::vector<unsi
 
 // Method push() adds a node to the graph. IMPORTANT: If an ID is not provided, it will default to using the actual array index.
 template <class T>
-void graph<T>::push(T* value, int id) {
-    nodes.emplace_back(value, (id < 0) ? nodes.size() : id);
+void graph<T>::push(Node& value) {
+    nodes.push_back(value );
 }
 
 // Method print_adj() prints adjacency list
@@ -419,4 +419,4 @@ std::vector<std::pair<std::vector<unsigned int>, int>> graph<T>::path_finder(
     return criticalPath;    // Returns vector containing calculated critical path
 }
 
-template class graph<course>; // FIXME: This is an antipattern
+template class graph<Node>; // FIXME: This is an antipattern

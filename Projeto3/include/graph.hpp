@@ -58,7 +58,7 @@ public:
         Receives:
           - A reference to the object to be inserted
       */
-    void push(T*, int = -1);
+    void push(Node&);
 
     /* graph::print_adj
         Prints graph's adjacency list
@@ -72,7 +72,7 @@ public:
 
     
 
-    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.id; }, std::string = ", ");
+    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.get_id(); }, std::string = ", ");
 
     /* graph::critical_path
         Calculates graph's critical path using path_finder() and prints it
