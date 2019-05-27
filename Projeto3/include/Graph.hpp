@@ -12,16 +12,16 @@
 #include "../include/Node.hpp"
 
 // Class for a polymorphic graph
-template <class T> class Graph {
+class Graph {
 private:
     std::vector<Node> nodes; // Vector for all nodes in graph
-    std::vector<Edge<T>> edges;  // Vector for all the edges between nodes in graph
+    std::vector<Edge<Node>> edges;  // Vector for all the edges between nodes in graph
     bool directed;
 
 public:
     // Constructor method. Initializes both 'nodes' and 'edges' to { } (empty set) by default
     Graph(std::vector<Node> nodes = std::vector<Node>(),
-          std::vector<Edge<T>> edges = std::vector<Edge<T>>(),
+          std::vector<Edge<Node>> edges = std::vector<Edge<Node>>(),
           bool                 directed = false)
       : nodes(nodes),
         edges(edges),
@@ -68,7 +68,7 @@ public:
     /* graph::print_ordered
         Prints a topologically-ordered version of the graph
       */
-    void print_ordered(std::function<void(T)> = [](T a){ std::cout << a; });
+    void print_ordered(std::function<void(Node)> = [](Node node){ std::cout << node; });
 
     
 
@@ -103,8 +103,8 @@ public:
         Returns:
           - An array of references to the graph's nodes, ordered as expected
       */
-    std::vector<T*> ordered(std::vector<bool> visited = std::vector<bool>(),
-                            std::vector<T*> output = std::vector<T*>());
+    std::vector<Node> ordered(std::vector<bool> visited = std::vector<bool>(),
+                            std::vector<Node> output = std::vector<Node>());
 
     /* graph::path_finder
         Recursively calculates a critical path for all nodes. If a course is disconnected, its path is set as itself and
