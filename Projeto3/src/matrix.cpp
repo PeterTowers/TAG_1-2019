@@ -63,14 +63,15 @@ matrix<T> matrix<T>::filter(std::function<bool(std::vector<int>)> predicate, boo
   auto left = this->left;
   auto cells = this->cells;
 
-  auto wrapped_predicate = [=](auto it){ return predicate(cells[std::distance(left.begin(), it)]); };
+  int i = 0;
+  auto wrapped_predicate = [=](auto it){ return predicate(cells[i]); };
 
   std::remove_if(left.begin(), left.end(), wrapped_predicate);
   std::remove_if(cells.begin(), cells.end(), predicate);
 
   std::vector<edge<T>> edges = {};
 
-    for (int i = 0; i < cells.size(); i++)
+    for (i = 0; i < cells.size(); i++)
       for (int j = 0; j < cells[i].size(); j++)
         edges.emplace_back(i, j, cells[i][j]);
 
@@ -103,6 +104,20 @@ matrix<T> matrix<T>::minimized(){
     return result = result.flipped();
 }
 
+
+template<class T>
+std::vector<edge<T>> matrix<T>::zeroes(){
+    std::vector<edge<T>> edges;
+
+    // Create edges from inverted cells
+    for (int i = 0; i < cells.size(); i++)
+      for (int j = 0; j < cells[i].size(); j++)
+        if (cells[i][j] == 0)
+          edges.emplace_back(i, j, cells[i][j]);
+
+    // Create and return result matrix
+    return edges;
+}
 
 template<class T>
 matrix<T> matrix<T>::flipped(){
@@ -146,7 +161,7 @@ std::vector<edge<T>> matrix<T>::pairing(){
 
 template <class T>
 void matrix<T>::inspect(std::function<void(node<T>)> print) {
-
+    std::cout << "test";
     // Print left group and edge costs
     for (int i = 0; i < left.size(); i++){
       auto& node = left[i];

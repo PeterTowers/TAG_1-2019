@@ -72,7 +72,7 @@ template <class T> class matrix {
     };
 
     // Cell getter operator overload. Usage: matrix(edge);
-    int operator()(edge<T> edge) { return this[edge.from(), edge.to()]; };
+    int operator()(edge<T> edge) { return this->cells[edge.from()][edge.to()]; };
 
     // Row getter operator. Usage: matrix[i]
     std::vector<int> operator[](const unsigned int i) {
