@@ -41,7 +41,6 @@ unsigned int Matrix<T,U>::minimum(unsigned int index, bool columnwise){
 }
 
 
-// TODO: Finish
 // Clones itself, except for the specified rows and columns
 template<class T, class U>
 Matrix<T,U> Matrix<T,U>::without(std::vector<unsigned int> rows, std::vector<unsigned int> columns){
@@ -50,7 +49,6 @@ Matrix<T,U> Matrix<T,U>::without(std::vector<unsigned int> rows, std::vector<uns
     return result;
 }
 
-// TODO: Finish
 template<class T, class U>
 Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate, bool bothDirections){
   if (bothDirections)
@@ -159,27 +157,31 @@ std::vector<Edge> Matrix<T,U>::pairing(){
 
 template <class T, class U>
 void Matrix<T,U>::inspect(std::function<void(Node)> print) {
-    std::cout << "test";
     // Print left group and edge costs
     for (int i = 0; i < this->left.size(); i++){
       auto& node = left[i];
       print(node);
 
-      std::cout << " : [ ";
+      std::cout << " : \t[ ";
       auto edges = (*this)[i];
 
       // Print edges within given row
       for (auto& edge : edges){
         std::cout << edge;
-        // if (neighbot+1 == (*this).end()) std::cout << ", " << '\t';
+        // if (neighbor+1 == (*this).end()) std::cout << ", " << '\t';
         std::cout << ", " << '\t';
       }
 
       std::cout << " ] " << std::endl;
     }
 
+    std::cout << std::endl;
+
     // Print right group
-    for (auto& node : this->right) print(node);
+    for (auto& node : this->right){
+      print(node);
+      std::cout << " ";
+    };
     std::cout << std::endl;
 }
 
@@ -207,3 +209,4 @@ void Matrix<T,U>::push(U col){
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
 template class Matrix<Teacher, School>;
+template class Matrix<School, Teacher>;
