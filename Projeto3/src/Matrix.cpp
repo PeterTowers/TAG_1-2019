@@ -1,7 +1,9 @@
 #include "../include/Matrix.hpp"
 
 template<class T, class U>
-Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges){
+Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges)
+  : left(leftGroup),
+    right(rightGroup){
   // Initialize clear matrix
   for (auto& node : leftGroup) cells.emplace_back(std::vector<int>());
   for (auto& row : cells)
@@ -29,6 +31,10 @@ bool Matrix<T,U>::empty(){
 
 template<class T, class U>
 void Matrix<T,U>::set(Edge edge){
+  std::cout << "setting edge: (" << edge.from() << "," << edge.to() << ") | "
+            << (contains(edge.from(), edge.to()) ? "contained" : "not contained")
+            << " within [(0" << left.size() << "), (0, " << right.size() << ")]"
+            << std::endl;
   if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
@@ -59,21 +65,35 @@ Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate,
                 .filter(predicate, false)
                 .flipped();
 
-  int i = 0;
-  auto wrapped_predicate = [=](auto it){ return predicate(cells[i]); };
+  std::vector<unsigned int> toremove = {};
 
+
+  // Specify which lines must be deleted
+  int i = 0;
+  for(auto& row : cells){
+    if (predicate(row)) toremove.push_back(i);
+    i++;
+  }
+
+  // Instaniate output
   std::vector<T> left(this->left);
   std::vector<std::vector<int>> cells(this->cells);
 
-  left.erase(std::remove_if(left.begin(), left.end(), wrapped_predicate), left.end());
-  cells.erase(std::remove_if(cells.begin(), cells.end(), predicate), cells.end());
+  // Delete elements
+  for(auto index : toremove){
+    left.erase(left.begin() + index);
+    cells.erase(cells.begin() + index);
+  }
+
+  
+  
 
   // myList.erase(
   //   std::remove_if(myList.begin(), myList.end(), IsMarkedToDelete),
   //   myList.end());
 
   std::vector<Edge> edges = {};
-  for (i = 0; i < cells.size(); i++)
+  for (int i = 0; i < cells.size(); i++)
     for (int j = 0; j < cells[i].size(); j++)
       edges.emplace_back(i, j, cells[i][j]);
 
@@ -121,13 +141,36 @@ template<class T, class U>
 Matrix<U,T> Matrix<T,U>::flipped(){
     std::vector<Edge> edges;
 
+    std::cout << "info: ";
+    std::cout << "- length: " << right.size() << " | " << std::endl;
+    std::cout << "- height: " << left.size() << " | " << std::endl;
+
     // Create edges from inverted cells
     for (int i = 0; i < cells.size(); i++)
       for (int j = 0; j < cells[i].size(); j++)
         edges.emplace_back(j, i, cells[i][j]);
 
     // Create and return result matrix
-    return Matrix<U,T>(this->right, this->left, edges);
+
+
+
+    
+    // Initialize output
+    std::vector<U> newright = { };
+    std::vector<T> newleft = { };
+
+    for (auto e : this->right) newright.push_back(e);
+    for (auto e : this->left) newleft.push_back(e);
+
+
+    std::cout << "info: ";
+    std::cout << "- newlength: " << newright.size() << " | " << std::endl;
+    std::cout << "- newheight: " << newleft.size()  << " | " << std::endl;
+
+    Matrix<U,T> result(newright, newleft, edges);
+    result.inspect();
+
+    return result;
 }
 
 
@@ -159,7 +202,9 @@ std::vector<Edge> Matrix<T,U>::pairing(){
 
 template <class T, class U>
 void Matrix<T,U>::inspect(std::function<void(Node)> print) {
-    std::cout << "test";
+    std::cout << "info: ";
+    std::cout << "- length: " << right.size() << " | " << std::endl;
+    std::cout << "- height: " << left.size() << " | " << std::endl;
     // Print left group and edge costs
     for (int i = 0; i < this->left.size(); i++){
       auto& node = left[i];
@@ -172,7 +217,7 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
       for (auto& edge : edges){
         std::cout << edge;
         // if (neighbot+1 == (*this).end()) std::cout << ", " << '\t';
-        std::cout << ", " << '\t';
+        std::cout << ", ";
       }
 
       std::cout << " ] " << std::endl;
@@ -207,3 +252,4 @@ void Matrix<T,U>::push(U col){
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
 template class Matrix<Teacher, School>;
+template class Matrix<School, Teacher>;

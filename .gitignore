@@ -163,3 +163,5 @@ Projeto1/.idea/proj1.iml
 *.ps
 *.svg
 Projeto3/misc
+*/build
+*/runner
