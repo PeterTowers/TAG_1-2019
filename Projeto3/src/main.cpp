@@ -43,8 +43,7 @@ int main(int argc, char const *argv[]){
 
     graph->inspect();
 
-    auto f = matrix->flipped();
-    f.inspect();
+    matrix->flipped().inspect();
 
     // // Prints graph onscreen in terminal
     // graph->print_adj();

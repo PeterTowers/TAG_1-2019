@@ -110,6 +110,21 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
     }
     /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
 
+
+
+  // Construct Matrix
+  // FIXME: This is not taking into account the schools requirements
+  for(int teacher_index = 0; teacher_index < teachers.size(); teacher_index++){
+    int priority = 0;
+    for (auto desired : teachers[teacher_index].get_schools()) {
+      std::cout << " | teacher_index: " << teacher_index
+                << " | desired: "       << desired
+                << " | priority: "      << priority
+                << std::endl;
+      matrix->set(teacher_index , desired - 1, priority);
+      priority++;
+    }
+  }
 }
 
 // build overload: receives a filename, and call its homonim with the input properly split
