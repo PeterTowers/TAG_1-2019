@@ -117,17 +117,10 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
   for(int teacher_index = 0; teacher_index < teachers.size(); teacher_index++){
     int priority = 0;
     for (auto desired : teachers[teacher_index].get_schools()) {
-      matrix->set(Edge(teacher_index, desired, priority));
+      matrix->set(teacher_index, desired, priority);
       priority++;
     }
   }
-
-  // for (auto teacher : teachers){
-  //   for (auto desired : teacher.get_schools()){
-  //     matrix->set()
-  //   }
-  //   for(int i = 0; i < teacher.; i++)
-  // }
 }
 
 // build overload: receives a filename, and call its homonim with the input properly split

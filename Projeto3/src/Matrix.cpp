@@ -5,10 +5,17 @@ Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::ve
   : left(leftGroup),
     right(rightGroup){
   // Initialize clear matrix
-  for (auto& node : leftGroup) cells.emplace_back(std::vector<int>());
-  for (auto& row : cells)
+  for (int i = 0; i < leftGroup.size(); i++){
+    cells.emplace_back(std::vector<int>());
     for (auto& line : rightGroup)
-      row.emplace_back(-1);
+      cells[i].emplace_back(-1);
+  }
+
+  // for (auto& node : leftGroup)
+  // cells.emplace_back(std::vector<int>());
+  // for (auto& row : cells)
+  //   for (auto& line : rightGroup)
+  //     row.emplace_back(-1);
 
   // Setting weights accordingly
   for (auto& edge : edges) set(edge);
@@ -19,8 +26,8 @@ std::vector<std::vector<int>> Matrix<T,U>::rows(){ return cells; }
 
 template<class T, class U>
 bool Matrix<T,U>::contains(const unsigned int i, const unsigned int j){
-  if (i < 0 || i >= cells.size())    return false;
-  if (j < 0 || j >= cells[i].size()) return false;
+  if (i < 0 || i >= left.size())  return false;
+  if (j < 0 || j >= right.size()) return false;
   return true;
 }
 
@@ -36,6 +43,16 @@ void Matrix<T,U>::set(Edge edge){
             << " within [(0" << left.size() << "), (0, " << right.size() << ")]"
             << std::endl;
   if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
+};
+
+template<class T, class U>
+void Matrix<T,U>::set(unsigned int a, unsigned int b, int weight){
+  std::cout << "cells: (" << cells.size() << "," << cells[0].size() << ")" << std::endl;
+  // if (contains(a, b)) cells[a][b] = weight;
+  std::cout << "setting edge: (" << a << "," << b << ") \t| "
+            << (contains(a, b) ? "contained" : "not contained")
+            << " within [(0, " << left.size() << "), (0, " << right.size() << ")]"
+            << std::endl;
 };
 
 

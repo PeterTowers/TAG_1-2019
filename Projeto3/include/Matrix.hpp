@@ -32,6 +32,7 @@ template <class T, class U> class Matrix {
 
     // Sets the weight of an edge
     void set(Edge edge);
+    void set(unsigned int, unsigned int, int);
 
     void push(T); // Push a new row
     void push(U); // Push a new column
