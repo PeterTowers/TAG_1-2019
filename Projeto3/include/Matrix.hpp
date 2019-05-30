@@ -1,29 +1,99 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <functional>
 
 #include "Edge.hpp"
 #include "Node.hpp"
 
-template <class T> class Matrix {
+template <class T, class U> class Matrix {
   private:
     std::vector<std::vector<int>> cells;
 
-  public:
-    Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
-    Matrix(std::vector<Edge<T>> edges, std::vector<Node> nodes);
+    std::vector<T> left;
+    std::vector<U> right;
 
-    // Checks whether the passed indices are within the matrix's range
+  public:
+    Matrix() : cells({}), left({}), right({}) {};
+    // matrix(Matrix<T,U> data)
+    //   : cells(data.cells),
+    //     left(data.left),
+    //     right(data.right) {};
+
+    Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
+    Matrix(std::vector<T>, std::vector<U>, std::vector<Edge> = {});
+
+    // Indicates whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);
 
+    // Indicates whether the matrix's left or right group are empty
+    bool empty();
+
     // Sets the weight of an edge
-    void set(Edge<T> edge);
+    void set(Edge edge);
+    void set(unsigned int, unsigned int, int);
 
-    // Access (getter) operators
+    void push(T); // Push a new row
+    void push(U); // Push a new column
+
+    // Clones itself, except for the specified rows and columns
+    Matrix<T,U> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
+
+    // Clones itself, except for rows and columns which do not comply to the selector predicate
+    Matrix<T,U> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
+
+    // Clones itself, swapping rows and columns
+    Matrix<U,T> flipped();
+
+    /* Returns a version of itself where every row and column is subtracted
+      to the point where the minimum value is zero.
+    */
+    Matrix<T,U> minimized(bool = true);
+
+    // Calculates the optimal graph pairing
+    std::vector<Edge> pairing();
+
+    // Returns zero-weighed edges
+    std::vector<Edge> zeroes();
+
+    /* Returns the minimum value within a line, unless 'flipped' is set to true,
+        in which case it returns the minimum value within column
+    */
+    unsigned int minimum(unsigned int, bool = false);
+
+    // Getter function
+    std::vector<std::vector<int>> rows();
+
+    // Cell getter operator. Usage: matrix(i, j);
     int operator()(const unsigned int i, const unsigned int j) {
-      return contains(i, j) ? cells[i][j] : -1;
+      return contains(i, j)
+        ? cells[i][j]
+        : -1;
     };
-    int operator()(Edge<T> edge) { return this[edge.from(), edge.to()]; };
 
-    void push(Node& node){};
+
+    // Row getter operator. Usage: matrix[i]
+    std::vector<int> operator[](const unsigned int i) {
+      return contains(i, 0)
+        ? cells[i]
+        : std::vector<int>();
+    };
+
+    // Column getter operator. Usage: matrix | j
+    std::vector<int> operator|(const unsigned int j) {
+      std::vector<int> result = {};
+
+      if (contains(0, j))
+        std::transform(cells.begin(), cells.end(), result.begin(),
+              [=](std::vector<int> row){ return row[j]; } );
+
+      return result;
+    };
+
+    // Prints data in human-readable format
+    void inspect(std::function<void(Node)> = [](Node node){ std::cout << node.get_id(); });
+
+    // Cell getter operator overload. Usage: matrix(edge);
+    int operator()(Edge edge) { return this->cells[edge.from()][edge.to()]; };
 };

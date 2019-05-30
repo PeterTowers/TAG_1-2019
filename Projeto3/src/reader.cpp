@@ -9,7 +9,7 @@
 bool comment(char c) { return c == '#'; }
 
 // build: Parses an array of strings into a graph
-void build(std::vector<std::string> stream, Graph* graph, Matrix<Node>* matrix) {
+void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Check input
     if (stream.empty()) exit(-666); // TODO: correct this accordingly
 
@@ -110,10 +110,25 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Node>* matrix) 
     }
     /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
 
+
+
+  // Construct Matrix
+  // FIXME: This is not taking into account the schools requirements
+  for(int teacher_index = 0; teacher_index < teachers.size(); teacher_index++){
+    int priority = 0;
+    for (auto desired : teachers[teacher_index].get_schools()) {
+      std::cout << " | teacher_index: " << teacher_index
+                << " | desired: "       << desired
+                << " | priority: "      << priority
+                << std::endl;
+      matrix->set(teacher_index , desired - 1, priority);
+      priority++;
+    }
+  }
 }
 
 // build overload: receives a filename, and call its homonim with the input properly split
-void build(std::string filename, Graph* graph, Matrix<Node>* matrix) {
+void build(std::string filename, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Loads file
     std::ifstream input(filename.c_str()); 
 

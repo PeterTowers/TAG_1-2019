@@ -24,7 +24,7 @@
  * Returns:
  *  - The constructed graph
 */
-void build(std::vector<std::string>, Graph* = nullptr, Matrix<Node>* = nullptr);   // Read from stream
+void build(std::vector<std::string>, Graph* = nullptr, Matrix<Teacher, School>* = nullptr);   // Read from stream
 
 /** build
  * Creates a courses DAG from text representation
@@ -33,4 +33,4 @@ void build(std::vector<std::string>, Graph* = nullptr, Matrix<Node>* = nullptr);
  * Returns:
  *  - The constructed graph
 */
-void build(std::string, Graph* = nullptr, Matrix<Node>* = nullptr);                // Read from file
+void build(std::string, Graph* = nullptr, Matrix<Teacher, School>* = nullptr);                // Read from file
