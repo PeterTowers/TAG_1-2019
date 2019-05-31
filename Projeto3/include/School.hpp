@@ -9,6 +9,7 @@
 class School : public Node {
 private:
     std::vector<int> skillRequirements;
+    std::vector<Node> teachers = {};
 
 public:
     /*
@@ -28,3 +29,5 @@ public:
      */
     std::vector<int> getRequirements() { return skillRequirements; };
 };
+
+// Evil Coding Incantations

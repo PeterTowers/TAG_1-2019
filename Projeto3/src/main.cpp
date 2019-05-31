@@ -43,14 +43,12 @@ int main(int argc, char const *argv[]){
 
     graph->inspect();
 
-    matrix->flipped().inspect();
+    matrix->inspect();
 
-    // // Prints graph onscreen in terminal
-    // graph->print_adj();
-
-    // // Prints sorted graph (sorted by topological sorting)
-    // graph->print_ordered(print_course);
-    // graph->critical_path();
+    // Printing result
+    // unsigned int school_id = 0;
+    for (auto& edge : matrix->pairing())
+      std::cout << edge.from() << ": " << edge.to() << std::endl;
 
     return 0;
 }

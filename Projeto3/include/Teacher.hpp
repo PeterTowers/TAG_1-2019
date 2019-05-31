@@ -20,6 +20,9 @@ public:
 
     ~Teacher() {};
 
+    // Delete first preference
+    void pop_skill(){ if (!desiredSchools.empty()) this->desiredSchools.erase(desiredSchools.begin()); }
+
     /*
      * Method get_skills returns how many skills the teacher has
      */

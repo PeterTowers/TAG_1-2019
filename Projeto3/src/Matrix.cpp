@@ -185,29 +185,116 @@ Matrix<U,T> Matrix<T,U>::flipped(){
 }
 
 
+
+
+
+
+
+
 template<class T, class U>
 std::vector<Edge> Matrix<T,U>::pairing(){
   std::vector<Edge> result = {};
-  if (empty()) return result;
 
-  // Filtering function, which detects independent zeroes
-  auto nozeroes = [](std::vector<int> line){
-    for(auto& item : line) if(item == 0) return false;
-    return true;
-  };
+  auto schools = left;   // left (schools)   | 50
+  auto teachers = right; // right (teachers) | 100
 
-  // 1. De cada linha e coluna, subtrair seu elemento minimo
-  Matrix<T,U> min = this->minimized();
+  // assign each teacher to be free;
+  std::vector<bool> free = {};
+  for (auto& teacher : teachers) free.push_back(true);
 
-  // 2. Achar Zeros Independentes
-  result = min.zeroes();
+  // assign school to be totally unsubscribed;
+  std::vector<std::vector<unsigned int>> assignments = {};
+  for (auto& school : schools) school.teachers.clear();
 
-  // 3. Se N' = MM eses zeros foram encontrados: retornar os indices e parar
-  for (auto& edge : min.filter(nozeroes).filter(nozeroes, true).pairing())
-    result.push_back(edge);
+  // Checks if there is a free teacher
+  auto findTeacher = [&](){
+    for (int i = 0; i < teachers.size(); i++)
+      if (free[i] && !teachers[i].get_schools().empty())
+        return i;
+
+    return -1;
+  }
+
+  // Get first teacher that meets requirements
+  for (int teacherIndex = 0; teacherIndex > -1; teacherIndex = findTeacher()){
+    auto& teacher = teachers[teacherIndex];
+    
+    // pj = first project on si’s list;
+    auto preferences = teacher.get_schools();
+    auto pref = schools[preferences[0]-1]; // FIXME: is 'id' always index + 1?
+
+    // Provisionally assign si to pj; /* and to lk */
+    auto& assignments = assignments[preferences[0]-1];
+    assignments.push_back(teacherIndex);
+
+    // Treat Exceptions:
+
+    // 1. Over-Assignment
+    if(assignments.size() > pref.getRequirements().size()){
+      
+      // Find worst assigned teacher
+      auto worst = assignments.begin();
+      for(auto a : assignments)
+        if(teachers[*a].get_skills() < teachers[*worst].get_skills())
+          indexOfWorst = a;
+      
+      // Break provisional assignment between sr and pj;
+      assignments.erase(worst);
+
+    //   t = worst teacher assigned to school;
+    //   /* according toLjk*/
+    //     break provisional assignment between sr and pj;
+    //   } else if (lk is over-subscribed){
+    //     sr = worst student assigned to lk;
+    //     pt = project assigned sr;
+    //     break provisional assignment between sr and pt;
+    }
+  }
+  
+
+  // while(some student si is free and si has a non-empty list){
+  //   pj = first project on si’s list;
+  //   lk = lecturer who offers pj; /*si applies to pj*/
+  //   provisionally assign si to pj; /* and to lk*/
+
+  //   if(pj is over-subscribed){
+  //     sr = worst student assigned to pj;
+  //   /* according to Ljk*/
+  //     break provisional assignment between sr and pj;
+  //   } else if (lk is over-subscribed){
+  //     sr = worst student assigned to lk;
+  //     pt = project assigned sr;
+  //     break provisional assignment between sr and pt;
+  //   }
+    
+  //   if (pj is full){
+  //     sr= worst student assigned to pj;
+  //     /* according to Ljk */
+  //     for (each successor st of sr on Ljk)
+  //       delete (st, pj);
+  //     }
+  //     if (lk is full){
+  //       sr= worst student assigned to lk;
+
+  //     for (each successor st of sr on Lk)
+  //       for (each projectpu∈Pk∩At)
+  //         delete (st, pu);
+  //   }
+  // }
+    
+  //   return{ (si, pj) ∈S×P : si is provisionally assigned to pj};
+  // }
+
+
 
   return result;
+
 };
+
+
+
+
+
 
 
 
