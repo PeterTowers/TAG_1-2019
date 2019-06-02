@@ -100,9 +100,9 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
         if (matrix != nullptr) matrix->push(school);
 
         std::cout << "School's id: " << school.get_id();
-        std::cout << "\tAvailable positions: " << school.getRequirements().size() << std::endl;
+        std::cout << "\tAvailable positions: " << school.get_requirements().size() << std::endl;
         std::cout << "Number of desired skills for each position: ";
-        for (auto number : school.getRequirements()) {
+        for (auto number : school.get_requirements()) {
             std::cout << number << "; ";
         }
 
