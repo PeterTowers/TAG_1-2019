@@ -2,17 +2,17 @@
 
 template<class T, class U>
 Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges)
-  : left(leftGroup),
-    right(rightGroup){
-  // Initialize clear matrix
-  for (int i = 0; i < leftGroup.size(); i++){
-    cells.emplace_back(std::vector<int>());
-    for (auto& line : rightGroup)
-      cells[i].emplace_back(-1);
-  }
+        : left(leftGroup),
+          right(rightGroup){
+    // Initialize clear matrix
+    for (int i = 0; i < leftGroup.size(); i++){
+        cells.emplace_back(std::vector<int>());
+        for (auto& line : rightGroup)
+            cells[i].emplace_back(-1);
+    }
 
-  // Setting weights accordingly
-  for (auto& edge : edges) set(edge);
+    // Setting weights accordingly
+    for (auto& edge : edges) set(edge);
 };
 
 template<class T, class U>
@@ -20,43 +20,43 @@ std::vector<std::vector<int>> Matrix<T,U>::rows(){ return cells; }
 
 template<class T, class U>
 bool Matrix<T,U>::contains(const unsigned int i, const unsigned int j){
-  if (i < 0 || i >= left.size())  return false;
-  if (j < 0 || j >= right.size()) return false;
-  return true;
+    if (i < 0 || i >= left.size())  return false;
+    if (j < 0 || j >= right.size()) return false;
+    return true;
 }
 
 template<class T, class U>
 bool Matrix<T,U>::empty(){
-  return left.empty() || right.empty();
+    return left.empty() || right.empty();
 }
 
 template<class T, class U>
 void Matrix<T,U>::set(Edge edge){
-  std::cout << "setting edge: (" << edge.from() << "," << edge.to() << ") | "
-            << (contains(edge.from(), edge.to()) ? "contained" : "not contained")
-            << " within [(0" << left.size() << "), (0, " << right.size() << ")]"
-            << std::endl;
-  if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
+    std::cout << "setting edge: (" << edge.from() << "," << edge.to() << ") | "
+              << (contains(edge.from(), edge.to()) ? "contained" : "not contained")
+              << " within [(0" << left.size() << "), (0, " << right.size() << ")]"
+              << std::endl;
+    if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
 template<class T, class U>
 void Matrix<T,U>::set(unsigned int a, unsigned int b, int weight){
-  std::cout << "cells: (" << cells.size() << "," << cells[0].size() << ")" << std::endl;
-  
-  std::cout << "cells[" << a << "].size()" << cells[a].size() << std::endl;
-  if (contains(a, b)) cells[a][b] = weight;
-  std::cout << "setting edge: (" << a << "," << b << ") \t| "
-            << (contains(a, b) ? "contained" : "not contained")
-            << " within [(0, " << left.size() << "), (0, " << right.size() << ")]"
-            << std::endl;
+    std::cout << "cells: (" << cells.size() << "," << cells[0].size() << ")" << std::endl;
+
+    std::cout << "cells[" << a << "].size()" << cells[a].size() << std::endl;
+    if (contains(a, b)) cells[a][b] = weight;
+    std::cout << "setting edge: (" << a << "," << b << ") \t| "
+              << (contains(a, b) ? "contained" : "not contained")
+              << " within [(0, " << left.size() << "), (0, " << right.size() << ")]"
+              << std::endl;
 };
 
 
 template<class T, class U>
 unsigned int Matrix<T,U>::minimum(unsigned int index, bool columnwise){
-  auto array = columnwise ? (*this)|index : (*this)[index];
+    auto array = columnwise ? (*this)|index : (*this)[index];
 
-  return array.empty() ? 0 : *std::min_element(array.begin(), array.end());
+    return array.empty() ? 0 : *std::min_element(array.begin(), array.end());
 }
 
 
@@ -140,9 +140,9 @@ std::vector<Edge> Matrix<T,U>::zeroes(){
 
     // Create edges from inverted cells
     for (int i = 0; i < cells.size(); i++)
-      for (int j = 0; j < cells[i].size(); j++)
-        if (cells[i][j] == 0)
-          edges.emplace_back(i, j, cells[i][j]);
+        for (int j = 0; j < cells[i].size(); j++)
+            if (cells[i][j] == 0)
+                edges.emplace_back(i, j, cells[i][j]);
 
     // Create and return result matrix
     return edges;
@@ -192,75 +192,113 @@ std::vector<Edge> Matrix<T,U>::zeroes(){
 
 
 template<class T, class U>
-std::vector<Edge> Matrix<T,U>::pairing(){
-  std::vector<Edge> result = {};
+std::vector<Edge> Matrix<T,U>::pairing() {
+    // Create a vector of edges to save and return the result
+    std::vector<Edge> result = {};
 
-  auto schools = right;   // left (schools)   | 50
-  auto teachers = left; // right (teachers) | 100
+    // Assign schools and teachers from a given matrix to a respective data structure in this scope
+    auto schools = right;   // left (schools)   | 50
+    auto teachers = left;   // right (teachers) | 100
 
-  // assign each teacher to be free;
-  std::vector<bool> free = {};
-  for (auto& teacher : teachers) free.push_back(true);
+    std::vector<bool> free = {};                        // Create a vector to represent if a teacher is already paired
+    std::vector<std::vector<int>> teacherDesiredSchools;    // Holds each teacher preference list
+    std::vector<unsigned int> rank;                         // Holds how the teacher ranked the current school in his
+                                                            // preference list
 
-  // assign school to be totally unsubscribed;
-  std::vector<std::vector<unsigned int>> assignments = {};
-  for (auto& school : schools) school.clear_teachers();
-
-  // Checks if there is a free teacher
-  auto findTeacher = [&](){
-    for (int i = 0; i < teachers.size(); i++)
-      if (free[i] && !teachers[i].get_schools().empty())
-        return i;
-
-    return -1;
-  };
-
-  // Get first teacher that meets requirements
-  for (int teacherIndex = 0; teacherIndex > -1; teacherIndex = findTeacher()){
-    auto& teacher = teachers[teacherIndex];
-    
-    // pj = first project on si’s list;
-    auto preferences = teacher.get_schools();
-    auto pref = schools[preferences[0]-1]; // FIXME: is 'id' always index + 1?
-
-    // Provisionally assign si to pj; /* and to lk */
-    auto& assignment = assignments[preferences[0]-1];
-    assignment.push_back(teacherIndex);
-
-    // Treat Exceptions:
-
-    // 1. Over-Assignment
-    if (assignments.size() > pref.getRequirements().size()){
-      
-      // Find worst assigned teacher
-      auto worst = assignments.begin();
-      for(auto a : assignments)
-        if(teachers[*a].get_skills() < teachers[*worst].get_skills())   // Criterio de desempate
-          worst = a;
-      
-      // Break provisional assignment between sr and pj;
-      assignments.erase(worst);
+    // Initialization of above vectors
+    for (int i = 0; i < teachers.size(); i++) {
+        free.push_back(true);                                       // Each teacher is assigned as free
+        teacherDesiredSchools.push_back(teachers[i].get_schools()); // Each teacher have a copy of its preference list
+        rank.push_back(0);                                          // Each teacher's index is set to 0
     }
 
-      if (assignments.size() == pref.getRequirements().size()) {
-          // Find worst assigned teacher
-          auto worst = assignments.begin();
-          for(auto a : assignments)
-              if(teachers[*a].get_skills() < teachers[*worst].get_skills())   // Criterio de desempate
-                  worst = a;
+    // Create a vector that holds the id of the teacher assigned to each of the school's vacancy and clear the data
+    // structure to guarantee it is free of junk, so that all schools have its vacancies
+    std::vector<std::vector<unsigned int>> assignments;
 
-          // Break provisional assignment between sr and pj;
-          for (auto& teacher : teachers) {
-              if (teachers[*teacher].get_skills() < teachers[*worst].get_skills())
-                  teachers[*teacher].pop_desired(pref.id);
-          }
-      }
+    // Sets the size of the array preemptively to avoid out of bounds access
+    assignments.resize(schools.size());
 
-  }
+    for (int i = 0; i < schools.size(); i++) {
+        schools[i].clear_teachers();                                    // Clear data structure to avoid junk
 
-  return result;
+        // Sets each element of the array as 0 so to indicate it as empty
+        for (int j = 0; j < schools[i].get_requirements().size(); j++)
+            assignments[i].push_back(0);
+    }
 
-};
+    // Checks if there's a free teacher and return its index on the array
+    auto find_teacher = [&]() {
+        for (int i = 0; i < teachers.size(); i++)
+            if (free[i] && !teacherDesiredSchools[i].empty())
+                return i;
+
+        return -1;
+    };
+
+    // Iterates through all the available teachers
+    for (int teacherIndex = 0; teacherIndex > -1; teacherIndex = find_teacher()) {
+        // Get first teacher that meets requirements
+        auto& teacher = teachers[teacherIndex];
+
+        // Get the school id from a teacher's given list of preferred schools according to the rank index
+        unsigned int schoolId = teacherDesiredSchools[teacherIndex][rank[teacherIndex]];
+
+        // Assign the school to an object, since its index is always (id - 1)
+        auto preferredSchool = schools[schoolId - 1]; // FIXME: is 'id' always index + 1?
+
+
+        auto& assignment = assignments[schoolId - 1];   // Variable that references a given school's vacancies
+        int assignmentIndex = -1;                       // Variable to hold an index for the variable above
+
+        // Iterates through available vacancies of a given school
+        for (int i = 0; i < preferredSchool.get_requirements().size(); i++) {
+
+            // If the teacher has the skills necessary for a vacancy
+            if (teacher.get_skills() >= preferredSchool.get_requirements()[i] ) {
+                assignmentIndex = i;    // Save the given index
+
+                // If there's a vacancy in school, the teacher can have it
+                if (assignment[assignmentIndex] == 0) {
+                    assignment[assignmentIndex] = teacherIndex;
+                    free[teacherIndex] = false;
+
+                    break;  // Exits loop
+                }
+
+                // Else, if the teacher ranked this school better than the teacher currently assigned to it
+                else if (rank[teacherIndex] < rank[assignment[assignmentIndex]]) {
+                    free[assignment[assignmentIndex]] = true;   // Free assigned teacher. No need to remove this school
+                                                                // from his list yet, because he can run for another
+                                                                // vacancy
+
+                    // Assign teacher to this school and sets him as not free
+                    assignment[assignmentIndex] = teacherIndex;
+                    free[teacherIndex] = false;
+
+                    break;  // Exits loop
+                }
+            }
+        }
+
+        // If 'assignmentIndex' didn't change in the loop above, the teacher isn't suitable for this school,
+        // or, if he is suitable but there's no vacancy for him
+        if (assignmentIndex == -1 || free[teacherIndex]) {
+            // Remove the school from teacher's preference list
+            teacherDesiredSchools[teacherIndex].erase(teacherDesiredSchools[teacherIndex].begin());
+
+            rank[teacherIndex]++; // Updates their rank value increasing it by 1
+        }
+
+    }
+
+    for (int i = 0; i < assignments.size(); i++)
+        for (int j = 0; j < assignments[i].size(); j++)
+            result.emplace_back(i, assignments[i][j]);
+
+    return result;
+
+}
 
 
 
@@ -276,28 +314,28 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
     std::cout << "- height: " << left.size() << " | " << std::endl;
     // Print left group and edge costs
     for (int i = 0; i < this->left.size(); i++){
-      auto& node = left[i];
-      print(node);
+        auto& node = left[i];
+        print(node);
 
-      std::cout << " : \t[ ";
-      auto edges = (*this)[i];
+        std::cout << " : \t[ ";
+        auto edges = (*this)[i];
 
-      // Print edges within given row
-      for (auto& edge : edges){
-        std::cout << edge;
-        // if (neighbot+1 == (*this).end()) std::cout << ", " << '\t';
-        std::cout << ", ";
-      }
+        // Print edges within given row
+        for (auto& edge : edges){
+            std::cout << edge;
+            // if (neighbot+1 == (*this).end()) std::cout << ", " << '\t';
+            std::cout << ", ";
+        }
 
-      std::cout << " ] " << std::endl;
+        std::cout << " ] " << std::endl;
     }
 
     std::cout << std::endl;
 
     // Print right group
     for (auto& node : this->right){
-      print(node);
-      std::cout << " ";
+        print(node);
+        std::cout << " ";
     };
     std::cout << std::endl;
 }
@@ -305,20 +343,20 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
 
 template <class T, class U>
 void Matrix<T,U>::push(T row){
-  this->left.push_back(row);
+    this->left.push_back(row);
 
-  cells.push_back({});
-  auto newedges = cells[cells.size()-1];
-  
-  for (auto& node : this->right)
-    newedges.push_back(-1);
+    cells.push_back({});
+    auto newedges = cells[cells.size()-1];
+
+    for (auto& node : this->right)
+        newedges.push_back(-1);
 }
 
 template <class T, class U>
 void Matrix<T,U>::push(U col){
-  this->right.push_back(col);
+    this->right.push_back(col);
 
-  for (auto& row : this->cells) row.push_back(-1);
+    for (auto& row : this->cells) row.push_back(-1);
 }
 
 
