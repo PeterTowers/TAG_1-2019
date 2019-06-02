@@ -214,7 +214,7 @@ std::vector<Edge> Matrix<T,U>::pairing() {
 
     // Create a vector that holds the id of the teacher assigned to each of the school's vacancy and clear the data
     // structure to guarantee it is free of junk, so that all schools have its vacancies
-    std::vector<std::vector<unsigned int>> assignments;
+    std::vector<std::vector<int>> assignments;
 
     // Sets the size of the array preemptively to avoid out of bounds access
     assignments.resize(schools.size());
@@ -224,7 +224,7 @@ std::vector<Edge> Matrix<T,U>::pairing() {
 
         // Sets each element of the array as 0 so to indicate it as empty
         for (int j = 0; j < schools[i].get_requirements().size(); j++)
-            assignments[i].push_back(0);
+            assignments[i].push_back(-1);
     }
 
     // Checks if there's a free teacher and return its index on the array
@@ -259,7 +259,7 @@ std::vector<Edge> Matrix<T,U>::pairing() {
                 assignmentIndex = i;    // Save the given index
 
                 // If there's a vacancy in school, the teacher can have it
-                if (assignment[assignmentIndex] == 0) {
+                if (assignment[assignmentIndex] == -1) {
                     assignment[assignmentIndex] = teacherIndex;
                     free[teacherIndex] = false;
 
@@ -293,8 +293,12 @@ std::vector<Edge> Matrix<T,U>::pairing() {
     }
 
     for (int i = 0; i < assignments.size(); i++)
-        for (int j = 0; j < assignments[i].size(); j++)
-            result.emplace_back(i, assignments[i][j]);
+        for (int j = 0; j < assignments[i].size(); j++) {
+            if (assignments[i][j] == -1)
+                result.emplace_back(schools[i].get_id(), 0);
+            else
+                result.emplace_back(schools[i].get_id(), teachers[assignments[i][j]].get_id());
+        }
 
     return result;
 
