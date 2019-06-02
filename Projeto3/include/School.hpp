@@ -27,7 +27,7 @@ public:
     /*
      * Method get_requirements returns the school list of required number of skills for each vacancy
      */
-    std::vector<int> getRequirements() { return skillRequirements; };
+    std::vector<int> get_requirements() { return skillRequirements; };
 
     void clear_teachers() { teachers.clear(); }
 };
