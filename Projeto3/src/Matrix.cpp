@@ -184,13 +184,6 @@ std::vector<Edge> Matrix<T,U>::zeroes(){
 //    return result;
 //}
 
-
-
-
-
-
-
-
 template<class T, class U>
 std::vector<Edge> Matrix<T,U>::pairing() {
     // Create a vector of edges to save and return the result
@@ -220,7 +213,8 @@ std::vector<Edge> Matrix<T,U>::pairing() {
     assignments.resize(schools.size());
 
     for (int i = 0; i < schools.size(); i++) {
-        schools[i].clear_teachers();                                    // Clear data structure to avoid junk
+        // Clear data structure to avoid junk stored in memory
+        schools[i].clear_teachers();
 
         // Sets each element of the array as 0 so to indicate it as empty
         for (int j = 0; j < schools[i].get_requirements().size(); j++)
@@ -272,7 +266,28 @@ std::vector<Edge> Matrix<T,U>::pairing() {
                                                                 // from his list yet, because he can run for another
                                                                 // vacancy
 
-                    // Assign teacher to this school and sets him as not free
+                    // Assign teacher to this school and sets him as
+                    // not free
+                    assignment[assignmentIndex] = teacherIndex;
+                    free[teacherIndex] = false;
+
+                    break;  // Exits loop
+                }
+
+                /*
+                 * Else, if both teachers ranked this school equally AND current teacher has lower skills than the
+                 * teacher that's currently assigned to this school
+                */
+                else if (rank[teacherIndex] == rank[assignment[assignmentIndex]] &&
+                            teacher.get_skills() < teachers[assignment[assignmentIndex]].get_skills()) {
+                    /*
+                     * Free assigned teacher. Again, no need to remove this school from his list yet. This is done so we
+                     * don't waste the currently assigned teacher's skills to a school that needs less skills.
+                    */
+                    free[assignment[assignmentIndex]] = true;
+
+                    // Assign teacher to this school and sets him as
+                    // not free
                     assignment[assignmentIndex] = teacherIndex;
                     free[teacherIndex] = false;
 
@@ -303,13 +318,6 @@ std::vector<Edge> Matrix<T,U>::pairing() {
     return result;
 
 }
-
-
-
-
-
-
-
 
 template <class T, class U>
 void Matrix<T,U>::inspect(std::function<void(Node)> print) {
