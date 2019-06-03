@@ -25,9 +25,11 @@
  */
 
 #include <iostream>
+
 #include "../include/reader.hpp"
 #include "../include/Graph.hpp"
 #include "../include/Matrix.hpp"
+#include "../include/printer.hpp"
 
 int main(int argc, char const *argv[]){
 
@@ -42,9 +44,7 @@ int main(int argc, char const *argv[]){
     matrix->inspect();
 
     // Printing result
-    // unsigned int school_id = 0;
-    for (auto& edge : matrix->pairing())
-      std::cout << edge.from() << ": " << edge.to() << std::endl;
+    print_to_console(matrix->pairing());
 
     return 0;
 }
