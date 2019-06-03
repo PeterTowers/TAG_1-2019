@@ -14,3 +14,6 @@ Disponível no diretório [Projeto1](https://github.com/PeterTowers/TAG_1-2019/t
 
 ## Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
 Disponível no diretório [Projeto2](https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2).
+
+## Projeto 3 - Pareamento estável em um grafo bipartido
+Disponível no diretório [Projeto3](https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto3).

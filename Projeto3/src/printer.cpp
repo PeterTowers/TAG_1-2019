@@ -13,8 +13,8 @@ void print_to_console(std::vector<Edge> edges) {
 
     // Iterates through vector of edges
     for (auto& edge : edges) {
-        // std::cout << "from: " << edge.from() << " | last: " << last_school; 
 
+        // If it's a new school, pretty print it
         if ((int) edge.from() > last_school){
           last_school = edge.from();
           std::cout << std::endl
@@ -26,12 +26,6 @@ void print_to_console(std::vector<Edge> edges) {
         std::cout << "P" << edge.to();           // Teacher related
 
         i++;    // Counts printed edges
-
-        // // End line every 2 pair of edges printed or insert a horizontal tab
-        // if ( (i%2) == 0 )
-        //     std::cout << std::endl;
-        // else
-        //     std::cout << " \t";
     }
 }
 

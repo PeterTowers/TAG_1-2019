@@ -39,10 +39,6 @@ int main(int argc, char const *argv[]){
 
     build("data/data.txt", graph, matrix);
 
-    graph->inspect();
-
-    matrix->inspect();
-
     // Printing result
     print_to_console(matrix->pairing());
 

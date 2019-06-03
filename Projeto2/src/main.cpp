@@ -39,11 +39,11 @@ int main(int argc, char const *argv[])
     digraph<course>* graph = build("../data/materias.txt");
 
     // Prints digraph onscreen in terminal
-    graph->print_adj();
+    // graph->print_adj();
 
     // Prints sorted graph (sorted by topological sorting)
-    graph->print_ordered(print_course);
-    graph->critical_path();
+    // graph->print_ordered(print_course);
+    // graph->critical_path();
 
     return 0;
 }
