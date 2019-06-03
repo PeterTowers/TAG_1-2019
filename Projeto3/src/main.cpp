@@ -8,16 +8,9 @@
  * implementamos o cálculo de pareamento utilizando o algoritmo descrito no artigo "Two Algorithms for the
  * Student-Project Allocation Problem" de  ABRAHAM, D. J.; IRVING, R. W.; MANLOVE, D. F.
  *
- * TODO: terminar descrição
- * (1) ordenação topológica;
- * (2) caminho crítico; e
- * (3) impressão dos arquivos '.dot' do:
- *      (3.1) Dígrafo ('../data/adjacency_list.dot');
- *      (3.2) A ordenação topológica do dígrafo ('../data/topological_order');
- *      (3.4) Caminho crítico  do dígrafo ('../data/critical_path').
- *
- * Para maiores informações sobre o cálculo do caminho crítico e sobre a impressão do dígrafo como imagem, leia o
- * arquivo README.MD.
+ * Por uma questão de tempo, não foi possível concluir todos os requisitos desse projeto, portanto, o que é entregue
+ * aqui é um programa que, de acordo com o artigo supracitado, gera um pareamento máximo e estável, favorável aos
+ * professores.
  *
  * Autores:
  * Pedro Lucas Silva Haga Torres - 16/0141575
