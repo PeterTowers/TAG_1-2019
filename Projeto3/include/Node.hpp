@@ -8,10 +8,12 @@ class Node {
 
   public:
   
-    // Public methods
+    // Public constructors
     Node(int id) : id(id){};
     ~Node() {};
 
+
+    // private ID getter
     int get_id() { return id; };
 
     // Node operator()(){ return get(); }
