@@ -2,25 +2,21 @@
  *
  * Disciplina: Teoria e Aplicação de Grafos - Turma A, 01/2019
  *
- * Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
+ * Projeto 3 - Problema de pareamento
  *
- * Este programa utiliza o arquivo './data/materias.txt' para montar um dígrafo com peso, utilizando lista de
- * adjacência. Implementamos as seguintes funções sobre o dígrafo:
- * (1) ordenação topológica;
- * (2) caminho crítico; e
- * (3) impressão dos arquivos '.dot' do:
- *      (3.1) Dígrafo ('../data/adjacency_list.dot');
- *      (3.2) A ordenação topológica do dígrafo ('../data/topological_order');
- *      (3.4) Caminho crítico  do dígrafo ('../data/critical_path').
+ * Este programa utiliza o arquivo './data/data.txt' para montar um grafo não direcionado e sem peso. Sobre esse grafo,
+ * implementamos o cálculo de pareamento utilizando o algoritmo descrito no artigo "Two Algorithms for the
+ * Student-Project Allocation Problem" de  ABRAHAM, D. J.; IRVING, R. W.; MANLOVE, D. F.
  *
- * Para maiores informações sobre o cálculo do caminho crítico e sobre a impressão do dígrafo como imagem, leia o
- * arquivo README.MD.
+ * Por uma questão de tempo, não foi possível concluir todos os requisitos desse projeto, portanto, o que é entregue
+ * aqui é um programa que, de acordo com o artigo supracitado, gera um pareamento máximo e estável, favorável aos
+ * professores.
  *
  * Autores:
  * Pedro Lucas Silva Haga Torres - 16/0141575
  * Thales Gonçalves Grilo        - 14/0163603
  *
- * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2
+ * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto3
  * ---------------------------------------------------------------------------------------------------------------------
  * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
  * TODO: esse campo é necessário?
@@ -43,14 +39,12 @@ int main(int argc, char const *argv[]){
 
     graph->inspect();
 
-    matrix->flipped().inspect();
+    matrix->inspect();
 
-    // // Prints graph onscreen in terminal
-    // graph->print_adj();
-
-    // // Prints sorted graph (sorted by topological sorting)
-    // graph->print_ordered(print_course);
-    // graph->critical_path();
+    // Printing result
+    // unsigned int school_id = 0;
+    for (auto& edge : matrix->pairing())
+      std::cout << edge.from() << ": " << edge.to() << std::endl;
 
     return 0;
 }

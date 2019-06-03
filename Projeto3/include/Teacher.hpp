@@ -20,6 +20,17 @@ public:
 
     ~Teacher() {};
 
+    // Delete first preference
+    void pop_desired(int schoolId) {
+        int i = 0;
+        for (i; i < desiredSchools.size(); i++)
+            if (schoolId == desiredSchools[i])
+                break;
+
+        if (i < desiredSchools.size())
+            desiredSchools.erase(desiredSchools.begin() + i);
+    }
+
     /*
      * Method get_skills returns how many skills the teacher has
      */
