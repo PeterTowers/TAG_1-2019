@@ -9,19 +9,29 @@ void print_to_console(std::vector<Edge> edges) {
     std::cout << "--------------------------------------------------------------------------------\n" << std::endl;
 
     int i = 0;  // Auxiliary variable to count printed edges
+    int last_school = -1;
 
     // Iterates through vector of edges
     for (auto& edge : edges) {
-        std::cout << "Escola: E" << edge.from() << " -> ";  // School related
-        std::cout << "Professor: P" << edge.to();           // Teacher related
+        // std::cout << "from: " << edge.from() << " | last: " << last_school; 
+
+        if ((int) edge.from() > last_school){
+          last_school = edge.from();
+          std::cout << std::endl
+                    << "Escola: E"
+                    << edge.from() << " -> " // School related
+                    << "Professores: ";
+        }
+        else std::cout << ", ";
+        std::cout << "P" << edge.to();           // Teacher related
 
         i++;    // Counts printed edges
 
-        // End line every 2 pair of edges printed or insert a horizontal tab
-        if ( (i%2) == 0 )
-            std::cout << std::endl;
-        else
-            std::cout << " \t";
+        // // End line every 2 pair of edges printed or insert a horizontal tab
+        // if ( (i%2) == 0 )
+        //     std::cout << std::endl;
+        // else
+        //     std::cout << " \t";
     }
 }
 
