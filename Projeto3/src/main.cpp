@@ -2,10 +2,13 @@
  *
  * Disciplina: Teoria e Aplicação de Grafos - Turma A, 01/2019
  *
- * Projeto 2 - Ordernacão topológica e caminho crítico em um DAG
+ * Projeto 3 - Problema de pareamento
  *
- * Este programa utiliza o arquivo './data/materias.txt' para montar um dígrafo com peso, utilizando lista de
- * adjacência. Implementamos as seguintes funções sobre o dígrafo:
+ * Este programa utiliza o arquivo './data/data.txt' para montar um grafo não direcionado e sem peso. Sobre esse grafo,
+ * implementamos o cálculo de pareamento utilizando o algoritmo descrito no artigo "Two Algorithms for the
+ * Student-Project Allocation Problem" de  ABRAHAM, D. J.; IRVING, R. W.; MANLOVE, D. F.
+ *
+ * TODO: terminar descrição
  * (1) ordenação topológica;
  * (2) caminho crítico; e
  * (3) impressão dos arquivos '.dot' do:
@@ -20,7 +23,7 @@
  * Pedro Lucas Silva Haga Torres - 16/0141575
  * Thales Gonçalves Grilo        - 14/0163603
  *
- * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto2
+ * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto3
  * ---------------------------------------------------------------------------------------------------------------------
  * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
  * TODO: esse campo é necessário?
