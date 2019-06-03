@@ -2,9 +2,11 @@
 
 // print_to_console prints the content of a vector of Edges to the console
 void print_to_console(std::vector<Edge> edges) {
-    // Prints message
-    std::cout << "Impressao do pareamento.\nUma escola ou vaga associada ao elemento 'P0' indica ";
-    std::cout << "que ela nao foi pareada a nenhum professor.\n" << std::endl;
+    // Prints a header before the result
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "Impressao do pareamento:\nUma escola ou vaga associada ao elemento 'P0' indica ";
+    std::cout << "que ela nao foi pareada a\nnenhum professor." << std::endl;
+    std::cout << "--------------------------------------------------------------------------------\n" << std::endl;
 
     int i = 0;  // Auxiliary variable to count printed edges
 
