@@ -17,17 +17,9 @@ template <class T, class U> class Matrix {
   public:
     // Constructor methods
     Matrix() : cells({}), left({}), right({}) {};
-    // matrix(Matrix<T,U> data)                     // TODO: Cleanup?
-    //   : cells(data.cells),
-    //     left(data.left),
-    //     right(data.right) {};
-
+  
     Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
     Matrix(std::vector<T>, std::vector<U>, std::vector<Edge> = {});
-
-    /*
-     * TODO: Destructor method?
-     */
 
     // Indicates whether the passed indices are within the matrix's range
     bool contains(const unsigned int i, const unsigned int j);

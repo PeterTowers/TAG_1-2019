@@ -35,28 +35,19 @@ bool Matrix<T,U>::empty(){
 }
 
 // Sets the weight of an edge
-// TODO: Document me, senpai! >_< (method overload?)
 template<class T, class U>
 void Matrix<T,U>::set(Edge edge){
-    std::cout << "setting edge: (" << edge.from() << "," << edge.to() << ") | "
-              << (contains(edge.from(), edge.to()) ? "contained" : "not contained")
-              << " within [(0" << left.size() << "), (0, " << right.size() << ")]"
-              << std::endl;
+
+    // If edge indices are within the matrix range, we set that cell to the give weight value
     if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
-// Sets the weight of an edge
-// TODO: Document me, senpai! >_< (method overload?)
+// (Overload) Sets the weight of an edge, given two indices and a weight value explicitly
 template<class T, class U>
 void Matrix<T,U>::set(unsigned int a, unsigned int b, int weight){
-    std::cout << "cells: (" << cells.size() << "," << cells[0].size() << ")" << std::endl;
-
-    std::cout << "cells[" << a << "].size()" << cells[a].size() << std::endl;
+  
+  // If edge indices are within the matrix range, we set that cell to the give weight value
     if (contains(a, b)) cells[a][b] = weight;
-    std::cout << "setting edge: (" << a << "," << b << ") \t| "
-              << (contains(a, b) ? "contained" : "not contained")
-              << " within [(0, " << left.size() << "), (0, " << right.size() << ")]"
-              << std::endl;
 };
 
 /* Returns the minimum value within a line, unless 'flipped' is set to true, in which case it returns the minimum value
@@ -149,7 +140,7 @@ std::vector<Edge> Matrix<T,U>::pairing() {
         unsigned int schoolId = teacherDesiredSchools[teacherIndex][rank[teacherIndex]];
 
         // Assign the school to an object, since its index is always (id - 1)
-        auto preferredSchool = schools[schoolId - 1]; // FIXME: is 'id' always index + 1?
+        auto preferredSchool = schools[schoolId - 1];
 
 
         auto& assignment = assignments[schoolId - 1];   // Variable that references a given school's vacancies
@@ -217,6 +208,8 @@ std::vector<Edge> Matrix<T,U>::pairing() {
 
     }
 
+
+
     for (int i = 0; i < assignments.size(); i++)
         for (int j = 0; j < assignments[i].size(); j++) {
             if (assignments[i][j] == -1)
@@ -226,7 +219,6 @@ std::vector<Edge> Matrix<T,U>::pairing() {
         }
 
     return result;
-
 }
 
 // Prints data in human-readable format
@@ -246,7 +238,6 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
         // Print edges within given row
         for (auto& edge : edges){
             std::cout << edge;
-            // if (neighbot+1 == (*this).end()) std::cout << ", " << '\t';
             std::cout << ", ";
         }
 
@@ -264,30 +255,29 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
 }
 
 // Push a new row
-// TODO: (Maybe) Document me, senpai! >_<
 template <class T, class U>
 void Matrix<T,U>::push(T row){
+    // Insert a new node at the end of the left partition (new source)
     this->left.push_back(row);
 
+    
+    // Insert a new edge array at the end of the 'cells' array of arrays, matching the new source element
     cells.push_back({});
     auto newedges = cells[cells.size()-1];
-
     for (auto& node : this->right)
         newedges.push_back(-1);
 }
 
-// Push a new row
-// TODO: (Maybe) Document me, senpai! >_<
+// Push a new column into a matrix
 template <class T, class U>
 void Matrix<T,U>::push(U col){
+    // Insert a new node at the end of the right partition (new target)
     this->right.push_back(col);
 
+    // Insert a new element at the end of each row, matching the new target element;
     for (auto& row : this->cells) row.push_back(-1);
 }
 
-// FIXME, senpai! >.< (if there's anything to be fixed, that is)
-// FIXME: ANTIPATTERN WARNING
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
 template class Matrix<Teacher, School>;
-//template class Matrix<School, Teacher>;
