@@ -3,7 +3,6 @@
 #include <functional>
 #include "Node.hpp"
 
-// TODO: Implement comparison operators <, >
 class Edge {
   private:
     unsigned int source; // Source node index

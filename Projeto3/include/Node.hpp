@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 
-// TODO: Implement class properly
 class Node {
   protected:
     int id;

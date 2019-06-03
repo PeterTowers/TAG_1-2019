@@ -14,7 +14,7 @@ bool comment(char c) { return c == '#'; }
 // build: Parses an array of strings into a graph
 void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Check input
-    if (stream.empty()) exit(-666); // TODO: correct this accordingly
+    if (stream.empty()) exit(-9); 
 
 
     std::vector<Teacher> teachers;
