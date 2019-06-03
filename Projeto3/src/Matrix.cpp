@@ -1,5 +1,6 @@
 #include "../include/Matrix.hpp"
 
+// Contructor method
 template<class T, class U>
 Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges)
         : left(leftGroup),
@@ -13,11 +14,13 @@ Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::ve
 
     // Setting weights accordingly
     for (auto& edge : edges) set(edge);
-};
+}
 
+// Getter function for matrix's rows
 template<class T, class U>
 std::vector<std::vector<int>> Matrix<T,U>::rows(){ return cells; }
 
+// Indicates whether the passed indices are within the matrix's range
 template<class T, class U>
 bool Matrix<T,U>::contains(const unsigned int i, const unsigned int j){
     if (i < 0 || i >= left.size())  return false;
@@ -25,11 +28,14 @@ bool Matrix<T,U>::contains(const unsigned int i, const unsigned int j){
     return true;
 }
 
+// Indicates whether the matrix's left or right group are empty
 template<class T, class U>
 bool Matrix<T,U>::empty(){
     return left.empty() || right.empty();
 }
 
+// Sets the weight of an edge
+// TODO: Document me, senpai! >_< (method overload?)
 template<class T, class U>
 void Matrix<T,U>::set(Edge edge){
     std::cout << "setting edge: (" << edge.from() << "," << edge.to() << ") | "
@@ -39,6 +45,8 @@ void Matrix<T,U>::set(Edge edge){
     if (contains(edge.from(), edge.to())) cells[edge.from()][edge.to()] = edge.getWeight();
 };
 
+// Sets the weight of an edge
+// TODO: Document me, senpai! >_< (method overload?)
 template<class T, class U>
 void Matrix<T,U>::set(unsigned int a, unsigned int b, int weight){
     std::cout << "cells: (" << cells.size() << "," << cells[0].size() << ")" << std::endl;
@@ -51,7 +59,9 @@ void Matrix<T,U>::set(unsigned int a, unsigned int b, int weight){
               << std::endl;
 };
 
-
+/* Returns the minimum value within a line, unless 'flipped' is set to true, in which case it returns the minimum value
+ * within column
+ */
 template<class T, class U>
 unsigned int Matrix<T,U>::minimum(unsigned int index, bool columnwise){
     auto array = columnwise ? (*this)|index : (*this)[index];
@@ -68,72 +78,7 @@ Matrix<T,U> Matrix<T,U>::without(std::vector<unsigned int> rows, std::vector<uns
     return result;
 }
 
-//template<class T, class U>
-//Matrix<T,U> Matrix<T,U>::filter(std::function<bool(std::vector<int>)> predicate, bool bothDirections){
-//  if (bothDirections)
-//    return this->filter(predicate, false)
-//                .flipped()
-//                .filter(predicate, false)
-//                .flipped();
-//
-//  std::vector<unsigned int> toremove = {};
-//
-//
-//  // Specify which lines must be deleted
-//  int i = 0;
-//  for(auto& row : cells){
-//    if (predicate(row)) toremove.push_back(i);
-//    i++;
-//  }
-//
-//  // Instaniate output
-//  std::vector<T> left(this->left);
-//  std::vector<std::vector<int>> cells(this->cells);
-//
-//  // Delete elements
-//  for(auto index : toremove){
-//    left.erase(left.begin() + index);
-//    cells.erase(cells.begin() + index);
-//  }
-//
-//
-//
-//
-//  // myList.erase(
-//  //   std::remove_if(myList.begin(), myList.end(), IsMarkedToDelete),
-//  //   myList.end());
-//
-//  std::vector<Edge> edges = {};
-//  for (int i = 0; i < cells.size(); i++)
-//    for (int j = 0; j < cells[i].size(); j++)
-//      edges.emplace_back(i, j, cells[i][j]);
-//
-//  Matrix<T,U> result(left, this->right, edges);
-//  return result;
-//}
-
-/* Returns a version of itself where every row and column is subtracted
-  to the point where the minimum value is zero.
-*/
-//template<class T, class U>
-//Matrix<T,U> Matrix<T,U>::minimized(bool bothDirections){
-//    Matrix<T,U> result(*this);
-//    int min = 0;
-//    auto subtract_minimum = [=](int weight){ return weight - min; };
-//
-//    // 1. Minimize matrix row-wise
-//    for (auto row : result.rows()){
-//        min = *std::min_element(row.begin(), row.end());
-//        std::transform(row.begin(), row.end(), row.begin(), subtract_minimum);
-//    }
-//
-//    // 2. If the requested minimization requires both directions, the algorithm is called once more.
-//    return bothDirections
-//      ? result.flipped().minimized(false).flipped()
-//      : result;
-//}
-
-
+// Returns zero-weighed edges
 template<class T, class U>
 std::vector<Edge> Matrix<T,U>::zeroes(){
     std::vector<Edge> edges = {};
@@ -148,42 +93,7 @@ std::vector<Edge> Matrix<T,U>::zeroes(){
     return edges;
 }
 
-//template<class T, class U>
-//Matrix<U,T> Matrix<T,U>::flipped(){
-//    std::vector<Edge> edges = {};
-//
-//    std::cout << "info: ";
-//    std::cout << "- length: " << right.size() << " | " << std::endl;
-//    std::cout << "- height: " << left.size() << " | " << std::endl;
-//
-//    // Create edges from inverted cells
-//    for (int i = 0; i < cells.size(); i++)
-//      for (int j = 0; j < cells[i].size(); j++)
-//        edges.emplace_back(j, i, cells[i][j]);
-//
-//    // Create and return result matrix
-//
-//
-//
-//
-//    // Initialize output
-//    std::vector<U> newright = { };
-//    std::vector<T> newleft = { };
-//
-//    for (auto e : this->right) newright.push_back(e);
-//    for (auto e : this->left) newleft.push_back(e);
-//
-//
-//    std::cout << "info: ";
-//    std::cout << "- newlength: " << newright.size() << " | " << std::endl;
-//    std::cout << "- newheight: " << newleft.size()  << " | " << std::endl;
-//
-//    Matrix<U,T> result(newright, newleft, edges);
-//    result.inspect();
-//
-//    return result;
-//}
-
+// Calculates the optimal graph pairing and returns a vector of edges
 template<class T, class U>
 std::vector<Edge> Matrix<T,U>::pairing() {
     // Create a vector of edges to save and return the result
@@ -319,6 +229,7 @@ std::vector<Edge> Matrix<T,U>::pairing() {
 
 }
 
+// Prints data in human-readable format
 template <class T, class U>
 void Matrix<T,U>::inspect(std::function<void(Node)> print) {
     std::cout << "info: ";
@@ -352,7 +263,8 @@ void Matrix<T,U>::inspect(std::function<void(Node)> print) {
     std::cout << std::endl;
 }
 
-
+// Push a new row
+// TODO: (Maybe) Document me, senpai! >_<
 template <class T, class U>
 void Matrix<T,U>::push(T row){
     this->left.push_back(row);
@@ -364,6 +276,8 @@ void Matrix<T,U>::push(T row){
         newedges.push_back(-1);
 }
 
+// Push a new row
+// TODO: (Maybe) Document me, senpai! >_<
 template <class T, class U>
 void Matrix<T,U>::push(U col){
     this->right.push_back(col);
@@ -371,7 +285,7 @@ void Matrix<T,U>::push(U col){
     for (auto& row : this->cells) row.push_back(-1);
 }
 
-
+// FIXME, senpai! >.< (if there's anything to be fixed, that is)
 // FIXME: ANTIPATTERN WARNING
 #include "../include/Teacher.hpp"
 #include "../include/School.hpp"
