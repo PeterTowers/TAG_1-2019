@@ -1,6 +1,6 @@
 #include "../include/Matrix.hpp"
 
-#define PRINT_MISSING_REQUIREMENTS
+// #define PRINT_MISSING_REQUIREMENTS
 
 // Contructor method
 template<class T, class U>
@@ -228,10 +228,10 @@ std::vector<Edge> Matrix<T,U>::pairing() {
     // For each resulting assignment list (school)
     for (int schoolIndex = 0; schoolIndex < assignments.size(); schoolIndex++){
 
-      std::cout << "Array with "  << assignments.at(schoolIndex).size() << " positions\n";
-      
       // For each assigned teacher
       for (int teacherIndexPosition = 0;  teacherIndexPosition < assignments.at(schoolIndex).size(); teacherIndexPosition++)
+
+        // If there are less teacher assigned than necessary
         if (assignments.at(schoolIndex).at(teacherIndexPosition) < 0) {
 
           // If there is a free teacher
@@ -245,8 +245,10 @@ std::vector<Edge> Matrix<T,U>::pairing() {
                         << std::endl;
               #endif // PRINT_MISSING_REQUIREMENTS
 
+              // Assign teacher to school
               assignments.at(schoolIndex).at(teacherIndexPosition) = i;
               
+              // Declare that teacher is not free anymore
               free.at(i) = false;
               break;
             }
