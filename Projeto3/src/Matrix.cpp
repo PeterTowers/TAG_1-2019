@@ -1,5 +1,7 @@
 #include "../include/Matrix.hpp"
 
+#define PRINT_MISSING_REQUIREMENTS
+
 // Contructor method
 template<class T, class U>
 Matrix<T,U>::Matrix(std::vector<T> leftGroup, std::vector<U> rightGroup, std::vector<Edge> edges)
@@ -208,8 +210,52 @@ std::vector<Edge> Matrix<T,U>::pairing() {
 
     }
 
+    // // Fixing schools with no teachers
+    // for (unsigned int schoolIndex = 0; schoolIndex < assignments.size(); schoolIndex++){
+    // // for(auto& assignment : assignments){
+    //   auto& assignment = assignments[schoolIndex];
+    //   auto& school = schools[schoolIndex];
+    //   for(auto& allocation : assignment) if (allocation < 0) {
+    //     for(int i = 0; i < free.size(); i++)
+    //       if (free[i]){  
+    //         std::cout << "Fixing missing requirement | S" << schoolIndex << " -> P" << i << std::endl;
+    //         // assignment.push_back(i);
+    //         free[i] = false;
+    //       }
+    //   }
+    // }
+
+    // For each resulting assignment list (school)
+    for (int schoolIndex = 0; schoolIndex < assignments.size(); schoolIndex++){
+
+      std::cout << "Array with "  << assignments.at(schoolIndex).size() << " positions\n";
+      
+      // For each assigned teacher
+      for (int teacherIndexPosition = 0;  teacherIndexPosition < assignments.at(schoolIndex).size(); teacherIndexPosition++)
+        if (assignments.at(schoolIndex).at(teacherIndexPosition) < 0) {
+
+          // If there is a free teacher
+          for(int i = 0; i < free.size(); i++) if (free.at(i)){
+
+              #ifdef PRINT_MISSING_REQUIREMENTS
+              std::cout << "Fixing missing requirement | S"
+                        << schoolIndex
+                        << " -> P"
+                        << i
+                        << std::endl;
+              #endif // PRINT_MISSING_REQUIREMENTS
+
+              assignments.at(schoolIndex).at(teacherIndexPosition) = i;
+              
+              free.at(i) = false;
+              break;
+            }
+      }
+    }
 
 
+
+    // Constructing result
     for (int i = 0; i < assignments.size(); i++)
         for (int j = 0; j < assignments[i].size(); j++) {
             if (assignments[i][j] == -1)
