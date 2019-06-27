@@ -15,12 +15,9 @@ template <class T, class U> class Matrix {
     std::vector<U> right;
 
   public:
+    // Constructor methods
     Matrix() : cells({}), left({}), right({}) {};
-    // matrix(Matrix<T,U> data)
-    //   : cells(data.cells),
-    //     left(data.left),
-    //     right(data.right) {};
-
+  
     Matrix(std::vector<std::vector<int>> cells) : cells(cells) {};
     Matrix(std::vector<T>, std::vector<U>, std::vector<Edge> = {});
 
@@ -40,26 +37,22 @@ template <class T, class U> class Matrix {
     // Clones itself, except for the specified rows and columns
     Matrix<T,U> without(std::vector<unsigned int> = {}, std::vector<unsigned int> = {});
 
-    // Clones itself, except for rows and columns which do not comply to the selector predicate
-    Matrix<T,U> filter(std::function<bool(std::vector<int>)> = [](int x){ return false; }, bool = true);
-
-    // Clones itself, swapping rows and columns
-    Matrix<U,T> flipped();
-
-    /* Returns a version of itself where every row and column is subtracted
-      to the point where the minimum value is zero.
-    */
-    Matrix<T,U> minimized(bool = true);
-
-    // Calculates the optimal graph pairing
+    /* pairing
+     * Calculates the optimal graph pairing using the algorithm described in "Two Algorithms for the Student-Project
+     * Allocation Problem" (ABRAHAM, D. J.; IRVING, R. W.; MANLOVE, D. F), modified for this project's requirements.
+     * If everything was done correctly, the pairing is both maximum and stable, and teacher-oriented.
+     *
+     * Returns:
+     *  - A vector of edges.
+     */
     std::vector<Edge> pairing();
 
     // Returns zero-weighed edges
     std::vector<Edge> zeroes();
 
     /* Returns the minimum value within a line, unless 'flipped' is set to true,
-        in which case it returns the minimum value within column
-    */
+     *  in which case it returns the minimum value within column
+     */
     unsigned int minimum(unsigned int, bool = false);
 
     // Getter function

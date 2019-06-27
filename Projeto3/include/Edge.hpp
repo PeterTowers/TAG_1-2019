@@ -3,18 +3,17 @@
 #include <functional>
 #include "Node.hpp"
 
-
-// TODO: Implement comparison operators <, >
 class Edge {
   private:
-    unsigned int source;
-    unsigned int target;
-    int weight;
+    unsigned int source; // Source node index
+    unsigned int target; // Target node index
+    int weight; // Edge weight
 
     std::function<Node*(unsigned int)> getNode; // A closure that allows a node to acess a graph's nodes and return them
 
   public:
-    // Public methods
+  
+    // Public Constructors
     Edge(unsigned int source, unsigned int target, int weight = 0, std::function<Node*(unsigned int)> getNode = [](unsigned int index){ return nullptr; })
       : source(source),
         target(target),
@@ -37,7 +36,7 @@ class Edge {
 
     // These check for edge equality
     bool operator==(Edge rhs){
-      return this->from() == rhs.from() && this->to() == rhs.to();
+      return this->from(rhs.from()) && this->to(rhs.to());
     };
 
     bool involves(unsigned int id);

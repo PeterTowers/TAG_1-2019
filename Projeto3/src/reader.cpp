@@ -1,5 +1,8 @@
 #include "../include/reader.hpp"
 
+// Data printing directive
+// #define PRINT_INPUT_DATA
+
 /** comment: Tells wether a given string is a comment or not
  *    Receives:
  *      - A string
@@ -11,7 +14,7 @@ bool comment(char c) { return c == '#'; }
 // build: Parses an array of strings into a graph
 void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School>* matrix) {
     // Check input
-    if (stream.empty()) exit(-666); // TODO: correct this accordingly
+    if (stream.empty()) exit(-9); 
 
 
     std::vector<Teacher> teachers;
@@ -78,14 +81,12 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
         }
     }
 
-    /* ~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*~=*
-     * ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~* GLORIOUS printf() DEBUGGING *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
-     * *=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~*=~
-     */
+    // Building Graph and outputting data
     for (auto teacher : teachers) {
         if (graph != nullptr) graph->push(teacher);
         if (matrix != nullptr) matrix->push(teacher);
 
+        #ifdef PRINT_TEACHERS
         std::cout << "Teacher's id: " << teacher.get_id();
         std::cout << "\tNumber of skills: " << teacher.get_skills() << std::endl;
         std::cout << "Desired school(s): ";
@@ -93,12 +94,14 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
             std::cout << school << ' ';
 
         std::cout << std::endl << std::endl;
+        #endif
     }
 
     for (auto school : schools) {
         if (graph != nullptr) graph->push(school);
         if (matrix != nullptr) matrix->push(school);
 
+        #ifdef PRINT_INPUT_DATA
         std::cout << "School's id: " << school.get_id();
         std::cout << "\tAvailable positions: " << school.get_requirements().size() << std::endl;
         std::cout << "Number of desired skills for each position: ";
@@ -107,20 +110,15 @@ void build(std::vector<std::string> stream, Graph* graph, Matrix<Teacher, School
         }
 
         std::cout << std::endl << std::endl;
+        #endif
     }
-    /* ~*~*~*~*~*~*~* ALL HAIL ITS MIGHT! WE ONLY LIVE BECAUSE OF ITS BENEVOLENCE! *~*~*~*~*~*~*~ */
 
 
 
   // Construct Matrix
-  // FIXME: This is not taking into account the schools requirements
   for(int teacher_index = 0; teacher_index < teachers.size(); teacher_index++){
     int priority = 0;
     for (auto desired : teachers[teacher_index].get_schools()) {
-      std::cout << " | teacher_index: " << teacher_index
-                << " | desired: "       << desired
-                << " | priority: "      << priority
-                << std::endl;
       matrix->set(teacher_index , desired - 1, priority);
       priority++;
     }
@@ -135,7 +133,7 @@ void build(std::string filename, Graph* graph, Matrix<Teacher, School>* matrix) 
     // Catches bad input
     if (!input){
         std::cout << "[read] no input!";
-        exit(-666); // TODO: correct this accordingly
+        exit(-10);
 //        return nullptr;
     }
 

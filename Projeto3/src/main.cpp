@@ -17,17 +17,14 @@
  * Thales Gonçalves Grilo        - 14/0163603
  *
  * Código criado em 03/05/2019, disponível em: https://github.com/PeterTowers/TAG_1-2019/tree/master/Projeto3
- * ---------------------------------------------------------------------------------------------------------------------
- * ~~~~~~~~~> ATENÇÃO <~~~~~~~~~
- * TODO: esse campo é necessário?
- *
- * ---------------------------------------------------------------------------------------------------------------------
  */
 
 #include <iostream>
+
 #include "../include/reader.hpp"
 #include "../include/Graph.hpp"
 #include "../include/Matrix.hpp"
+#include "../include/printer.hpp"
 
 int main(int argc, char const *argv[]){
 
@@ -37,14 +34,8 @@ int main(int argc, char const *argv[]){
 
     build("data/data.txt", graph, matrix);
 
-    graph->inspect();
-
-    matrix->inspect();
-
     // Printing result
-    // unsigned int school_id = 0;
-    for (auto& edge : matrix->pairing())
-      std::cout << edge.from() << ": " << edge.to() << std::endl;
+    print_to_console(matrix->pairing());
 
     return 0;
 }
