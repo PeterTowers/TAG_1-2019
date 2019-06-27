@@ -1,9 +1,13 @@
-
+#include <iostream>
+#include <vector>
 
 class Cell {
   int value;
   std::vector<int> neighbors;
-}
+
+  public:
+    Cell(int value = -1) : value(value) {};
+};
 
 class Sudoku {
   private:
@@ -13,6 +17,6 @@ class Sudoku {
   public:
     Sudoku();
     ~Sudoku();
-    void solve()
+    void solve();
     void print();
-}
+};
