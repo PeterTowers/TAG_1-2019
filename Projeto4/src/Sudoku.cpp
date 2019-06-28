@@ -1,4 +1,4 @@
-#include "../include/sudoku.hpp"
+#include "../include/Sudoku.hpp"
 
 // Dummy Init
 Sudoku::Sudoku(){
