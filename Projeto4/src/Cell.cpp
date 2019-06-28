@@ -287,3 +287,9 @@ void Cell::local_neighbors(int index) {
         }
     }
 }
+
+int Cell::getValue(){
+  return value;
+}
+
+Cell::~Cell(){};

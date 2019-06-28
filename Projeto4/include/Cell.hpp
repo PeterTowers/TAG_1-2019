@@ -1,6 +1,7 @@
 #ifndef PROJETO_4_CELL_HPP
 #define PROJETO_4_CELL_HPP
 
+#include <iostream>
 #include <vector>
 
 class Cell {
@@ -14,9 +15,14 @@ private:
 
 public:
     Cell(int index);
-    ~Cell() {};
+    ~Cell();
 
-    int get_value() { return value; };
+    int getValue();
+
+    friend std::ostream& operator<<(std::ostream& os, Cell& cell){
+      os << (cell.getValue() > 0 ? std::to_string(cell.getValue()) : " ");
+      return os;
+    }
     std::vector<int> get_neighbors() { return neighbors; }
 };
 

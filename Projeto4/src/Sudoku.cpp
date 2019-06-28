@@ -1,9 +1,25 @@
 #include "../include/Sudoku.hpp"
 
-// Dummy Init
+#define SIDE 9
+
+
 Sudoku::Sudoku(){
-  for(int i = 0; i < 9*9; i++)
-    nodes.push_back(Cell(0));
+
+  // Example                  0    1    2    3    4    5    6    7    8
+  std::vector<int> init = {  6,   7,   -1,  -1,  -1,  -1,  -1,  8,   -1  // 0
+                          ,  -1,  -1,  4,   2,   -1,  6,   -1,  -1,  3   // 1
+                          ,  -1,  -1,  2,   7,   -1,  1,   6,   9,   -1  // 2
+                          ,  -1,  -1,  1,   -1,  -1,  3,   -1,  6,   -1  // 3
+                          ,  9,   -1,  -1,  1,   -1,  5,   -1,  -1,  7   // 4
+                          ,  -1,  3,   -1,  9,   -1,  -1,  5,   -1,  -1  // 5
+                          ,  -1,  1,   3,   6,   -1,  9,   8,   -1,  -1  // 6
+                          ,  5,   -1,  -1,  8,   -1,  2,   1,   -1,  -1  // 7
+                          ,  -1,  2,   -1,  -1,  -1,  -1,  -1,  3,   9   // 8
+                          };
+
+  // Edition should come here
+  for (auto &&c : init)
+    nodes.push_back(c);
 
   return;
 }
@@ -17,11 +33,16 @@ bool Sudoku::valid_move(int index, int value) {
 
     // Iterates through the cell's neighbors to find a matching value
     for (auto n : neighbors)
-        if (value == nodes[n].get_value())  // If the input was placed elsewhere, the move is not valid
+        if (value == nodes[n].getValue())  // If the input was placed elsewhere, the move is not valid
             return false;
 
     // If the input wasn't placed inside a given cell's neighbors, the move is valid
     return true;
+}
+
+Sudoku::~Sudoku(){
+  nodes.clear();
+  edges.clear();
 }
 
 void Sudoku::print(){
@@ -29,30 +50,34 @@ void Sudoku::print(){
   int column = 0;
 
 
-  for(int line = 0; line < 9; line++){
+  for(int line = 0; line < SIDE; line++){
+    std::cout << ' ';
 
     // Every third line: Print a line
-    if (line%3 == 0){
-      std::cout << "-";
+    if (line > 0 && line % 3 == 0){
+      // std::cout << "-";
 
       // Iterate columns
-      for (int c = 0; c < 9; c++){
-        std::cout << "--";
+      for (int c = 0; c < SIDE; c++){
+        if(c > 0 && c % 3 == 0) std::cout << "+ "; // Print a divisor between clusters
+
+        std::cout << "- ";
       }
 
-      if(column%3 == 0) std::cout << "| "; // Print a divisor between clusters
 
       // Skip a line;
-      std::cout << '\n';
+      std::cout << "\n ";
     }
 
     // Print Row
-    for(int column = 0; column < 9; column++){
-      auto node = nodes[10*line + column];
+    for(int column = 0; column < SIDE; column++){
+      auto node = nodes[SIDE * line + column];
 
-      if(column%3 == 0) std::cout << "| "; // Print a divisor between clusters
+      if(column > 0 && column%3 == 0) std::cout << "| "; // Print a divisor between clusters
 
-      std::cout << (node.get_value() < 0 ? ' ' : node.get_value()); // Print a blank space if the node has not been set
+      std::cout << node;
+
+      std::cout << ' ';
     }
 
     std::cout << '\n';
