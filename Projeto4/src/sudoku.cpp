@@ -1,10 +1,9 @@
 #include "../include/sudoku.hpp"
 
-
 // Dummy Init
 Sudoku::Sudoku(){
   for(int i = 0; i < 9*9; i++)
-    nodes.push_back(-1);
+    nodes.push_back(Cell(i));
 
   return;
 }

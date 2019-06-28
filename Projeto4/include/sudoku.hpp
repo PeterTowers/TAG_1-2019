@@ -1,18 +1,16 @@
+#include <iostream>
+#include <vector>
 
-
-class Cell {
-  int value;
-  std::vector<int> neighbors;
-}
+#include "../include/Cell.hpp"
 
 class Sudoku {
-  private:
-    std::vector<int> nodes;
+private:
+    std::vector<Cell> nodes;
     std::vector<int> edges;
 
-  public:
+public:
     Sudoku();
     ~Sudoku();
-    void solve()
+    void solve();
     void print();
-}
+};
