@@ -8,6 +8,21 @@ Sudoku::Sudoku(){
   return;
 }
 
+/*  valid_move()
+ *  Receives: nodes' index (where you wanna place a number) and the value you want to place there
+ *  Returns: 'true' if a move is valid or 'false' if not.
+ */
+bool Sudoku::valid_move(int index, int value) {
+    std::vector<int> neighbors = nodes[index].get_neighbors();  // Stores a given cell's neighbors
+
+    // Iterates through the cell's neighbors to find a matching value
+    for (auto n : neighbors)
+        if (value == nodes[n].get_value())  // If the input was placed elsewhere, the move is not valid
+            return false;
+
+    // If the input wasn't placed inside a given cell's neighbors, the move is valid
+    return true;
+}
 
 void Sudoku::print(){
   int line = 0;

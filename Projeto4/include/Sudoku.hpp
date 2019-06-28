@@ -14,6 +14,8 @@ private:
 public:
     Sudoku();
     ~Sudoku() {};
+
+    bool valid_move(int index, int value);
     void solve();
     void print();
 };
