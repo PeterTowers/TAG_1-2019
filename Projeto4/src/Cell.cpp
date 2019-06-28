@@ -1,18 +1,18 @@
 #include "../include/Cell.hpp"
 
-Cell::Cell(int i) {
-    value = i;
+Cell::Cell(int index) {
+    value = index;
 
-    neighbor_column(i);
-    neighbor_row(i);
+    neighbor_column(index);
+    neighbor_row(index);
 
 }
 
-void Cell::neighbor_row(int i) {
-    int y = i / 9;  // Calculates a cell's ROW
+void Cell::neighbor_row(int index) {
+    int y = index / 9;  // Calculates a cell's ROW
 
     // This clause calculates the cell's COLUMN, in order to initialize the position of the neighbors in its ROW
-    switch (i % 9) {
+    switch (index % 9) {
         // Cell is located in row 0
         case 0 :
             for (int j = 1; j < 9; j++)
@@ -108,11 +108,11 @@ void Cell::neighbor_row(int i) {
     }
 }
 
-void Cell::neighbor_column(int i) {
-    int x = i % 9;  // Calculates a cell's COLUMN
+void Cell::neighbor_column(int index) {
+    int x = index % 9;  // Calculates a cell's COLUMN
 
     // This clause calculates the cell's ROW, in order to initialize the position of the neighbors in its COLUMN
-    switch (i / 9) {
+    switch (index / 9) {
         // Cell is located in row 0
         case 0 :
             for (int j = 1; j < 9; j++) {

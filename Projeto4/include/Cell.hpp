@@ -8,11 +8,12 @@ private:
     int value;
     std::vector<int> neighbors;
 
-    void neighbor_column(int i);
-    void neighbor_row(int i);
+    void neighbor_column(int index);
+    void neighbor_row(int index);
+    void local_neighbors(int index);
 
 public:
-    Cell(int i);
+    Cell(int index);
     ~Cell();
 };
 
