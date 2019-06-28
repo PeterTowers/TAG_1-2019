@@ -23,6 +23,7 @@ public:
       os << (cell.getValue() > 0 ? std::to_string(cell.getValue()) : " ");
       return os;
     }
+    std::vector<int> get_neighbors() { return neighbors; }
 };
 
 

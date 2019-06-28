@@ -1,12 +1,9 @@
-#include "../include/sudoku.hpp"
+#include "../include/Sudoku.hpp"
 
 #define SIDE 9
 
 
-// Dummy Init
 Sudoku::Sudoku(){
-  // for(int i = 0; i < SIDE * SIDE; i++)
-  //   nodes.push_back(-1);
 
   // Example                  0    1    2    3    4    5    6    7    8
   std::vector<int> init = {  6,   7,   -1,  -1,  -1,  -1,  -1,  8,   -1  // 0
@@ -25,6 +22,22 @@ Sudoku::Sudoku(){
     nodes.push_back(c);
 
   return;
+}
+
+/*  valid_move()
+ *  Receives: nodes' index (where you wanna place a number) and the value you want to place there
+ *  Returns: 'true' if a move is valid or 'false' if not.
+ */
+bool Sudoku::valid_move(int index, int value) {
+    std::vector<int> neighbors = nodes[index].get_neighbors();  // Stores a given cell's neighbors
+
+    // Iterates through the cell's neighbors to find a matching value
+    for (auto n : neighbors)
+        if (value == nodes[n].getValue())  // If the input was placed elsewhere, the move is not valid
+            return false;
+
+    // If the input wasn't placed inside a given cell's neighbors, the move is valid
+    return true;
 }
 
 Sudoku::~Sudoku(){
