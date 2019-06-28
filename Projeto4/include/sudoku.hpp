@@ -2,11 +2,12 @@
 #include <vector>
 
 class Cell {
-  int value;
   std::vector<int> neighbors;
 
   public:
     Cell(int value = -1) : value(value) {};
+    int value;
+
 };
 
 class Sudoku {

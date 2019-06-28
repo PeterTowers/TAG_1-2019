@@ -5,55 +5,24 @@
 
 // Dummy Init
 Sudoku::Sudoku(){
-  for(int i = 0; i < SIDE * SIDE; i++)
-    nodes.push_back(-1);
+  // for(int i = 0; i < SIDE * SIDE; i++)
+  //   nodes.push_back(-1);
 
-
-  // Example -  n, x, y
-  std::vector<Cell> init = { { 6 } // 1st line
-              , { 7 }
-              , { 8 }
-              , { 4 } // 2nd line
-              , { 2 }
-              , { 6 }
-              , { 3 }
-              , { 2 } // 3rd line
-              , { 7 }
-              , { 1 }
-              , { 6 }
-              , { 9 }
-              , { 1 } // 4th line
-              , { 3 }
-              , { 6 }
-              , { 9 } // 5th line
-              , { 1 }
-              , { 5 }
-              , { 7 }
-              , { 3 } // 6th line
-              , { 9 }
-              , { 5 }
-              , { 1 } // 7th line
-              , { 3 }
-              , { 6 }
-              , { 9 }
-              , { 8 }
-              , { 5 } // 8th line
-              , { 8 }
-              , { 2 }
-              , { 1 }
-              , { 2 } // 9th line
-              , { 3 }
-              , { 9 }
-              };
+  // Example                   0       1       2       3       4       5       6       7      8
+  std::vector<Cell> init = { { 6 },  { 7 },  { -1 }, { -1 }, { -1 }, { -1 }, { -1 }, { 8 },  { -1 }  // 0
+                           , { -1 }, { -1 }, { 4 },  { 2 },  { -1 }, { 6 },  { -1 }, { -1 }, { 3 }   // 1
+                           , { -1 }, { -1 }, { 2 },  { 7 },  { -1 }, { 1 },  { 6 },  { 9 },  { -1 }  // 2
+                           , { -1 }, { -1 }, { 1 },  { -1 }, { -1 }, { 3 },  { -1 }, { 6 },  { -1 }  // 3
+                           , { 9 },  { -1 }, { -1 }, { 1 },  { -1 }, { 5 },  { -1 }, { -1 }, { 7 }   // 4
+                           , { -1 }, { 3 },  { -1 }, { 9 },  { -1 }, { -1 }, { 5 },  { -1 }, { -1 }  // 5
+                           , { -1 }, { 1 },  { 3 },  { 6 },  { -1 }, { 9 },  { 8 },  { -1 }, { -1 }  // 6
+                           , { 5 },  { -1 }, { -1 }, { 8 },  { -1 }, { 2 },  { 1 },  { -1 }, { -1 }  // 7
+                           , { -1 }, { 2 },  { -1 }, { -1 }, { -1 }, { -1 }, { -1 }, { 3 },  { 9 }   // 8
+                           };
 
   // Edition should come here
-
-  return;
-
-
-
-
-
+  for (auto &&c : init)
+    nodes.push_back(c.value);
 
   return;
 }
@@ -93,7 +62,7 @@ void Sudoku::print(){
 
       if(column > 0 && column%3 == 0) std::cout << "| "; // Print a divisor between clusters
 
-      if (node < 0) std::cout << 'x';
+      if (node < 0) std::cout << ' ';
       else std::cout << node;
 
       std::cout << ' ';
