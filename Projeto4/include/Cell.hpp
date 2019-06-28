@@ -14,7 +14,10 @@ private:
 
 public:
     Cell(int index);
-    ~Cell();
+    ~Cell() {};
+
+    int get_value() { return value; };
+    std::vector<int> get_neighbors() { return neighbors; }
 };
 
 
