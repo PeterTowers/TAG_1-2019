@@ -1,3 +1,6 @@
+#ifndef PROJETO_4_SUDOKU_HPP
+#define PROJETO_4_SUDOKU_HPP
+
 #include <iostream>
 #include <vector>
 
@@ -10,7 +13,9 @@ private:
 
 public:
     Sudoku();
-    ~Sudoku();
+    ~Sudoku() {};
     void solve();
     void print();
 };
+
+#endif //PROJETO_4_SUDOKU_HPP

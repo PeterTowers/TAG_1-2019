@@ -3,7 +3,7 @@
 // Dummy Init
 Sudoku::Sudoku(){
   for(int i = 0; i < 9*9; i++)
-    nodes.push_back(Cell(i));
+    nodes.push_back(Cell(0));
 
   return;
 }
@@ -37,7 +37,7 @@ void Sudoku::print(){
 
       if(column%3 == 0) std::cout << "| "; // Print a divisor between clusters
 
-      std::cout << (node < 0 ? ' ' : node); // Print a blank space if the node has not been set
+      std::cout << (node.get_value() < 0 ? ' ' : node.get_value()); // Print a blank space if the node has not been set
     }
 
     std::cout << '\n';
