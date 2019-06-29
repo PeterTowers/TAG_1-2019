@@ -1,6 +1,7 @@
 #ifndef PROJETO_4_CELL_HPP
 #define PROJETO_4_CELL_HPP
 
+#include <iostream>
 #include <vector>
 
 class Cell {
@@ -29,7 +30,12 @@ public:
     ~Cell() {};
 
     // Method get_value() returns the cell's stored value
-    int get_value() { return value; };
+    int getValue();
+
+    friend std::ostream& operator<<(std::ostream& os, Cell& cell){
+      os << (cell.getValue() > 0 ? std::to_string(cell.getValue()) : " ");
+      return os;
+    }
 
     // Method get_neighbors() returns the cell's neighbors, in the form of its adjacency list
     std::vector<int> get_neighbors() { return neighbors; }
