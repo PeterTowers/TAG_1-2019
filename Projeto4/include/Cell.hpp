@@ -41,6 +41,9 @@ public:
 
     // Method get_neighbors() returns the cell's neighbors, in the form of its adjacency list
     std::vector<int> get_neighbors() { return neighbors; }
+
+    // Method set_value() validates and, if possible, sets a new value for cell
+    void set_value(int value);
 };
 
 

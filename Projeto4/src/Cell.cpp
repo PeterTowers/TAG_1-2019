@@ -293,4 +293,9 @@ int Cell::getValue(){
   return value;
 }
 
-Cell::~Cell(){};
+void Cell::set_value(int value) {
+    if (0 < value && value < 10)
+        this->value = value;
+    else
+        std::cout << "ERROR: value is not within range (1-9)" << std::endl;
+}
