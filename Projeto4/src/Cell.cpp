@@ -1,14 +1,10 @@
 #include "../include/Cell.hpp"
 
-Cell::Cell(int index) {
-    value = index;
-
-    neighbor_column(index);
-    neighbor_row(index);
-    local_neighbors(index);
-
-}
-
+/*  neighbor_row()
+ *  Receives: the cell's index
+ *  Uses the cell's index to calculate the index of all the other cell's that are in the same row as itself.
+ *  Places this value inside cell's 'neighbors' vector.
+ */
 void Cell::neighbor_row(int index) {
     int y = index / 9;  // Calculates a cell's ROW
 
@@ -109,6 +105,11 @@ void Cell::neighbor_row(int index) {
     }
 }
 
+/*  neighbor_column()
+ *  Receives: the cell's index
+ *  Uses the cell's index to calculate the index of all the other cell's that are in the same column as itself.
+ *  Places this value inside cell's 'neighbors' vector.
+ */
 void Cell::neighbor_column(int index) {
     int x = index % 9;  // Calculates a cell's COLUMN
 
