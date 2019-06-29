@@ -6,7 +6,7 @@
 
 class Cell {
 private:
-    int value;                          // Stores the value attributed to a cell. 0 means no value attributed
+    int value;                          // Stores the value attributed to a cell. -1 means no value attributed
     std::vector<int> neighbors;         // Stores the index of a cell's neighbors in Sudoku's 'nodes' vector
 
     void neighbor_column(int index);    // Sets the neighbors inside the same COLUMN of the cell
@@ -15,10 +15,10 @@ private:
 
 public:
     /* Constructor method
-     * Receives cell's index inside Sudoku's 'nodes' vector and sets its 'value' to 0, by default.
+     * Receives cell's index inside Sudoku's 'nodes' vector and sets its 'value' to -1, by default.
      * Calls methods to calculate and set the cell's neighbors
      */
-    Cell(int index, int value = 0) : value(value) {
+    Cell(int index, int value = -1) : value(value) {
 
         neighbor_column(index);
         neighbor_row(index);
