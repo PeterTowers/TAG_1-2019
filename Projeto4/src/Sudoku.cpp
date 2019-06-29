@@ -203,3 +203,7 @@ void Sudoku::solve(){
     std::cout << std::endl;
     print();
 }
+
+void Sudoku::generate() {
+
+}

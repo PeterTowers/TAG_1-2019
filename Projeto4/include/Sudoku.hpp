@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+
 #include "../include/Cell.hpp"
 
 class Sudoku {
@@ -17,17 +18,20 @@ public:
 
     bool valid_move(int index, int value);
 
-    // Sudoku::solve: Iteratively solves the puzzle
+    // Sudoku::solve - Iteratively solves the puzzle
     void solve();
 
-    // Sudoku::solved: checks if the puzzle is solved
+    // Sudoku::solved - Checks if the puzzle is solved
     bool solved();
     
-    // Sudoku::print: Pretty-prints the sudoku as a matrix
+    // Sudoku::print - Pretty-prints the sudoku as a matrix
     void print();
 
-    // Sudoku::missing: Counts how many cells are missing until the puzzle is solved
+    // Sudoku::missing - Counts how many cells are missing until the puzzle is solved
     int missing();
+
+    // Sudoku::generate - Generates a new playable board
+    void generate();
 };
 
 #endif //PROJETO_4_SUDOKU_HPP
