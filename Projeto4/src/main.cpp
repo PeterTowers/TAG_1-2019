@@ -7,7 +7,7 @@ int main(){
 
   system("clear");
 
-  s.solve();
+  s.solve(true);
 
   return 0;
 }
