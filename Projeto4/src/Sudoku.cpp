@@ -104,7 +104,7 @@ int Sudoku::missing(){
   return i;
 }
 
-void Sudoku::solve(){
+void Sudoku::solve(bool interactive){
   int last_missing = -1;
   unsigned int step = 0;
 
@@ -122,13 +122,15 @@ void Sudoku::solve(){
       last_missing = missing();
     };
 
-    system("clear");
-    std::cout << "Step: " << step << std::endl;
-    std::cout << "Missing: " << missing() << std::endl;
-    std::cout << "Solved? " << (solved() ? "yes" : "no") << std::endl << std::endl;
-    print();
-    std::cout << std::endl;
-    step++;
+    if (interactive){
+      system("clear");
+      std::cout << "Step: " << step << std::endl;
+      std::cout << "Missing: " << missing() << std::endl;
+      std::cout << "Solved? " << (solved() ? "yes" : "no") << std::endl << std::endl;
+      print();
+      std::cout << std::endl;
+      step++;
+    }
     
 
 
@@ -150,18 +152,22 @@ void Sudoku::solve(){
 
 
       // Print valid moves
-      std::cout << "[" << i / 9 << "," << i % 9 << "]"
-                << " valid moves (" << guesses.size() << "): ";
+      if (interactive) {
+        std::cout << "[" << i / 9 << "," << i % 9 << "]"
+                  << " valid moves (" << guesses.size() << "): ";
 
-      for (auto &&g : guesses)
-        std::cout << g << " ";
-      std::cout << std::endl;
+        for (auto &&g : guesses)
+          std::cout << g << " ";
+        std::cout << std::endl;
+      }
 
       // If there are no valid moves, the problem is invalid (or we made a mistake?)
       if (guesses.empty()){
-        std::cout << "ERROR: Cell "
-                  << "[" << i / 9 << "," << i % 9 << "]"
-                  << " has no valid moves";
+        if (interactive) std::cout
+          << "ERROR: Cell "
+          << "[" << i / 9 << "," << i % 9 << "]"
+          << " has no valid moves";
+
         return;
       }
       
@@ -194,14 +200,16 @@ void Sudoku::solve(){
     }
 
     // Pause Frame
-    getchar();
+    if (interactive) getchar();
   }
 
 
-    system("clear");
-    std::cout << "Solved in " << step << " steps" << std::endl;
-    std::cout << std::endl;
-    print();
+    if (interactive) {
+      system("clear");
+      std::cout << "Solved in " << step << " steps" << std::endl;
+      std::cout << std::endl;
+      print();
+    }
 }
 
 void Sudoku::generate() {

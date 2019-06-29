@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 
-
 #include "../include/Cell.hpp"
 
 class Sudoku {
@@ -19,7 +18,7 @@ public:
     bool valid_move(int index, int value);
 
     // Sudoku::solve - Iteratively solves the puzzle
-    void solve();
+    void solve(bool = false);
 
     // Sudoku::solved - Checks if the puzzle is solved
     bool solved();
