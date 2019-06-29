@@ -104,6 +104,8 @@ void Sudoku::solve(){
   int last_missing = -1;
   int i = 0;
 
+  std::vector<int> guesses = {};
+
   // Repeat until the sudoku is solved
   while(!solved()){
 
@@ -121,12 +123,25 @@ void Sudoku::solve(){
 
     // On each node
     for (int i = 0; i < nodes.size(); i++){
+
+      // Skip if cell is not empty
+      if (nodes[i].getValue() > 0) continue;
+
+      // Start a new frame if a cell has already been filled this frame
       if (missing() != last_missing) break;
 
+      // Recalculate guesses
+      guesses.clear();
+
       // Try every possible move
-      for (int move = 1; move < SIDE + 1; move++)
-        if (valid_move(i, move))
-          nodes[i] = move;
+      for (int move = 1; move < SIDE + 1; move++){
+        
+        // Calculate valid moves within node
+        if (valid_move(i, move)) guesses.push_back(move);
+
+        // If there is only one valid move, apply it
+        if (guesses.size() == 1) nodes[i] = guesses[0];
+      }
     }
   }
 }
