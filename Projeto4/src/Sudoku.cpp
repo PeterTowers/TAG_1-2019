@@ -106,9 +106,9 @@ int Sudoku::missing(){
 
 void Sudoku::solve(){
   int last_missing = -1;
-  int step = 0;
+  unsigned int step = 0;
 
-  int tolerance = 1;
+  unsigned int tolerance = 1;
 
   std::vector<int> guesses = {};
 
@@ -133,7 +133,7 @@ void Sudoku::solve(){
 
 
     // On each node
-    for (int i = 0; i < nodes.size(); i++){
+    for (unsigned int i = 0; i < nodes.size(); i++){
 
       // Skip if cell is not empty
       if (nodes[i].getValue() > 0) continue;
@@ -165,10 +165,31 @@ void Sudoku::solve(){
         return;
       }
       
-      // If there is only one valid move, apply it
+      // Picking the cells with the least guess count
       if (guesses.size() <= tolerance){
-        nodes[i] = Cell(i, guesses[0]);
-        break;
+
+        // If there is only one valid move, apply it
+        if (tolerance == 1){
+          nodes[i] = Cell(i, guesses[0]);
+          break;
+        }
+        // If there are no cells with only one valid move (ambiguity)
+        else {
+
+          // For each possible guess
+          for (unsigned int g = 0; g < guesses.size(); g++){
+            Sudoku s(*this);          // Open a new solving frame
+            s.nodes[i] = guesses[g];  // Where the current guess has been applied
+            s.solve();                // Try to solve that frame
+
+            // (interactive mode) If it's solvable using that guess, apply it
+            if (s.solved()){
+              nodes[i] = Cell(i, guesses[g]);
+              break;
+            }
+          }
+          
+        }
       }
     }
 
