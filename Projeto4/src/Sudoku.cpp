@@ -119,8 +119,14 @@ void Sudoku::solve(){
     getchar();
 
 
-    // Repeat until the sudoku is solved
-    for (auto &&cell : nodes){      
+    // On each node
+    for (int i = 0; i < nodes.size(); i++){
+      if (missing() != last_missing) break;
+
+      // Try every possible move
+      for (int move = 1; move < SIDE + 1; move++)
+        if (valid_move(i, move))
+          nodes[i] = move;
     }
   }
 }
