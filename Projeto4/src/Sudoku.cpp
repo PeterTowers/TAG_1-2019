@@ -196,4 +196,10 @@ void Sudoku::solve(){
     // Pause Frame
     getchar();
   }
+
+
+    system("clear");
+    std::cout << "Solved in " << step << " steps" << std::endl;
+    std::cout << std::endl;
+    print();
 }
