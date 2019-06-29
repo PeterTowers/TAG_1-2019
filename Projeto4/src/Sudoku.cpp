@@ -18,8 +18,12 @@ Sudoku::Sudoku(){
                           };
 
   // Edition should come here
-  for (auto &&c : init)
-    nodes.push_back(c);
+  // for (auto &&c : init)
+  //   nodes.push_back(c);
+
+  for (int i = 0; i < init.size(); i++)
+    nodes.emplace_back(i, init[i]);
+  
 
   return;
 }
@@ -104,14 +108,19 @@ void Sudoku::solve(){
   int last_missing = -1;
   int step = 0;
 
+  int tolerance = 1;
+
   std::vector<int> guesses = {};
 
   // Repeat until the sudoku is solved
   while(!solved()){
 
     // The algorithm got stuck
-    if (missing() == last_missing) break;
-    else last_missing = missing();
+    if (missing() == last_missing) tolerance++;
+    else {
+      tolerance = 1;
+      last_missing = missing();
+    };
 
     system("clear");
     std::cout << "Step: " << step << std::endl;
@@ -142,15 +151,23 @@ void Sudoku::solve(){
 
       // Print valid moves
       std::cout << "[" << i / 9 << "," << i % 9 << "]"
-                << "valid moves (" << guesses.size() << "): ";
+                << " valid moves (" << guesses.size() << "): ";
 
       for (auto &&g : guesses)
         std::cout << g << " ";
       std::cout << std::endl;
 
+      // If there are no valid moves, the problem is invalid (or we made a mistake?)
+      if (guesses.empty()){
+        std::cout << "ERROR: Cell "
+                  << "[" << i / 9 << "," << i % 9 << "]"
+                  << " has no valid moves";
+        return;
+      }
+      
       // If there is only one valid move, apply it
-      if (guesses.size() == 1){
-        nodes[i] = guesses[0];
+      if (guesses.size() <= tolerance){
+        nodes[i] = Cell(i, guesses[0]);
         break;
       }
     }

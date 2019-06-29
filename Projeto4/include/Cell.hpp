@@ -27,7 +27,7 @@ public:
     /*  Destructor method
      *
      */
-    ~Cell() {};
+    ~Cell();
 
     // Method get_value() returns the cell's stored value
     int getValue();
