@@ -18,7 +18,7 @@ public:
     bool valid_move(int index, int value);
 
     // Sudoku::solve: Iteratively solves the puzzle
-    void solve();
+    void solve(bool = false);
 
     // Sudoku::solved: checks if the puzzle is solved
     bool solved();
