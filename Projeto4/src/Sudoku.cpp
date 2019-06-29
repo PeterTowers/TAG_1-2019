@@ -102,7 +102,7 @@ int Sudoku::missing(){
 
 void Sudoku::solve(){
   int last_missing = -1;
-  int i = 0;
+  int step = 0;
 
   std::vector<int> guesses = {};
 
@@ -114,11 +114,13 @@ void Sudoku::solve(){
     else last_missing = missing();
 
     system("clear");
-    std::cout << "Step: " << i << std::endl;
+    std::cout << "Step: " << step << std::endl;
     std::cout << "Missing: " << missing() << std::endl;
     std::cout << "Solved? " << (solved() ? "yes" : "no") << std::endl << std::endl;
     print();
-    getchar();
+    std::cout << std::endl;
+    step++;
+    
 
 
     // On each node
@@ -133,15 +135,27 @@ void Sudoku::solve(){
       // Recalculate guesses
       guesses.clear();
 
-      // Try every possible move
-      for (int move = 1; move < SIDE + 1; move++){
-        
-        // Calculate valid moves within node
+      // Calculate valid moves within node
+      for (int move = 1; move < SIDE + 1; move++)
         if (valid_move(i, move)) guesses.push_back(move);
 
-        // If there is only one valid move, apply it
-        if (guesses.size() == 1) nodes[i] = guesses[0];
+
+      // Print valid moves
+      std::cout << "[" << i / 9 << "," << i % 9 << "]"
+                << "valid moves (" << guesses.size() << "): ";
+
+      for (auto &&g : guesses)
+        std::cout << g << " ";
+      std::cout << std::endl;
+
+      // If there is only one valid move, apply it
+      if (guesses.size() == 1){
+        nodes[i] = guesses[0];
+        break;
       }
     }
+
+    // Pause Frame
+    getchar();
   }
 }
