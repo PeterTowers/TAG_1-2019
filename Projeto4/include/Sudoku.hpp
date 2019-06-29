@@ -16,8 +16,18 @@ public:
     ~Sudoku();
 
     bool valid_move(int index, int value);
+
+    // Sudoku::solve: Iteratively solves the puzzle
     void solve();
+
+    // Sudoku::solved: checks if the puzzle is solved
+    bool solved();
+    
+    // Sudoku::print: Pretty-prints the sudoku as a matrix
     void print();
+
+    // Sudoku::missing: Counts how many cells are missing until the puzzle is solved
+    int missing();
 };
 
 #endif //PROJETO_4_SUDOKU_HPP

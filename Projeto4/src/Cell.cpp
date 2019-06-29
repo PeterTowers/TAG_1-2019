@@ -224,7 +224,7 @@ void Cell::neighbor_column(int index) {
  *  neighbors position inside the same quadrant from the cell's index.                                          BL|BM|BR
  */
 void Cell::local_neighbors(int index) {
-    int x = (index % 9)/3;  // Calculates cell's X position inside its own quadrant
+    int x = (index % 9)%3;  // Calculates cell's X position inside its own quadrant
     int y = (index / 9)%3;  // Calculates cell's Y position inside its own quadrant
 
     if (x == 0) {           // Cell is in a left position
