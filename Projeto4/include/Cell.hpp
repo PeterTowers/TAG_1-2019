@@ -27,7 +27,9 @@ public:
     /*  Destructor method
      *
      */
-    ~Cell() {};
+    ~Cell() {
+        neighbors.clear();
+    };
 
     // Method get_value() returns the cell's stored value
     int getValue();
