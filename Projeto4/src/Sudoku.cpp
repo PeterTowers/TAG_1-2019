@@ -85,3 +85,42 @@ void Sudoku::print(){
 
   return;
 }
+
+bool Sudoku::solved(){
+  return missing() == 0;
+}
+
+int Sudoku::missing(){
+  int i = 0;
+
+  for (auto &&cell : nodes)
+    if (cell.getValue() < 0)
+      i++;
+
+  return i;
+}
+
+void Sudoku::solve(){
+  int last_missing = -1;
+  int i = 0;
+
+  // Repeat until the sudoku is solved
+  while(!solved()){
+
+    // The algorithm got stuck
+    if (missing() == last_missing) break;
+    else last_missing = missing();
+
+    system("clear");
+    std::cout << "Step: " << i << std::endl;
+    std::cout << "Missing: " << missing() << std::endl;
+    std::cout << "Solved? " << (solved() ? "yes" : "no") << std::endl << std::endl;
+    print();
+    getchar();
+
+
+    // Repeat until the sudoku is solved
+    for (auto &&cell : nodes){      
+    }
+  }
+}
