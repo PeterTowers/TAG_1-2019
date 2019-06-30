@@ -6,15 +6,15 @@
 Sudoku::Sudoku(){
 
   // Example                  0    1    2    3    4    5    6    7    8
-  std::vector<int> init = {  6,   7,   -1,  -1,  -1,  -1,  -1,  8,   -1  // 0
-                          ,  -1,  -1,  4,   2,   -1,  6,   -1,  -1,  3   // 1
-                          ,  -1,  -1,  2,   7,   -1,  1,   6,   9,   -1  // 2
-                          ,  -1,  -1,  1,   -1,  -1,  3,   -1,  6,   -1  // 3
-                          ,  9,   -1,  -1,  1,   -1,  5,   -1,  -1,  7   // 4
-                          ,  -1,  3,   -1,  9,   -1,  -1,  5,   -1,  -1  // 5
-                          ,  -1,  1,   3,   6,   -1,  9,   8,   -1,  -1  // 6
-                          ,  5,   -1,  -1,  8,   -1,  2,   1,   -1,  -1  // 7
-                          ,  -1,  2,   -1,  -1,  -1,  -1,  -1,  3,   9   // 8
+  std::vector<int> init = {   8,  -1,  -1,   1,   5,  -1,   6,  -1,  -1   // 0
+                          ,  -1,  -1,  -1,   3,  -1,  -1,  -1,   4,   1   // 1
+                          ,   5,  -1,  -1,  -1,  -1,  -1,   7,  -1,  -1   // 2
+                          ,  -1,  -1,  -1,  -1,  -1,   9,  -1,   6,   2   // 3
+                          ,  -1,  -1,  -1,  -1,   3,  -1,  -1,  -1,  -1   // 4
+                          ,   1,   4,  -1,   8,  -1,  -1,  -1,  -1,  -1   // 5
+                          ,  -1,  -1,   8,  -1,  -1,  -1,  -1,  -1,   9   // 6
+                          ,   2,   9,  -1,  -1,  -1,   1,  -1,  -1,  -1   // 7
+                          ,  -1,  -1,   5,  -1,   9,   7,  -1,  -1,   6   // 8
                           };
 
   // Edition should come here
@@ -213,5 +213,38 @@ void Sudoku::solve(bool interactive){
 }
 
 void Sudoku::generate() {
+    int count = 1;
+    do {
+        clear_board();
+        int i = 0;
+        std::vector<int> empty_cells;
 
+        for (int j = 0; j < SIDE*SIDE; j++)
+            empty_cells.push_back(j);
+
+        while (i < 27) {
+            srand(time(0));
+
+            int index = rand() % empty_cells.size();
+            int value = rand() % 8 + 1;
+
+            if (nodes[empty_cells[index]].getValue() < 0 && valid_move(index, value)) {
+                nodes[empty_cells[index]].set_value(value);
+                std::cout << i++ << std::endl;
+                empty_cells.erase(empty_cells.begin() + index);
+            }
+        }
+        solve(true);
+
+        if (solved())
+            std::cout << "IT WORKS!" << std::endl;
+        else
+            std::cout << count++ << std::endl;
+
+    } while (!solved());
+}
+
+void Sudoku::clear_board() {
+    for (auto &n : nodes)
+        n.clear_value();
 }

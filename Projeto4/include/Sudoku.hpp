@@ -31,6 +31,9 @@ public:
 
     // Sudoku::generate - Generates a new playable board
     void generate();
+
+    // Sudoku::clear_board() - Clears the board by setting all cell's values to -1
+    void clear_board();
 };
 
 #endif //PROJETO_4_SUDOKU_HPP
