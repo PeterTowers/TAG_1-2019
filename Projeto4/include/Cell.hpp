@@ -44,6 +44,8 @@ public:
 
     // Method set_value() validates and, if possible, sets a new value for cell
     void set_value(int value);
+
+    void clear_value() { value = -1; };
 };
 
 
