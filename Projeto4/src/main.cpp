@@ -7,9 +7,9 @@ int main(){
 
   system("clear");
 
-  s.solve(true);
+  //s.solve(true);
 
-  //s.generate();
+  s.generate();
 
   return 0;
 }

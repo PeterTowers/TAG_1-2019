@@ -222,13 +222,13 @@ void Sudoku::generate() {
         for (int j = 0; j < SIDE*SIDE; j++)
             empty_cells.push_back(j);
 
-        while (i < 27) {
+        while (i < 41) {
             srand(time(0));
 
             int index = rand() % empty_cells.size();
             int value = rand() % 8 + 1;
 
-            if (nodes[empty_cells[index]].getValue() < 0 && valid_move(index, value)) {
+            if (nodes[empty_cells[index]].getValue() < 0 && valid_move(empty_cells[index], value)) {
                 nodes[empty_cells[index]].set_value(value);
                 std::cout << i++ << std::endl;
                 empty_cells.erase(empty_cells.begin() + index);
