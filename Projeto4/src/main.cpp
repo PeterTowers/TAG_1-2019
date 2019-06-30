@@ -9,5 +9,7 @@ int main(){
 
   s.solve(true);
 
+  //s.generate();
+
   return 0;
 }
