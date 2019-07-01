@@ -6,15 +6,15 @@
 Sudoku::Sudoku(){
 
   // Example                  0    1    2    3    4    5    6    7    8
-  std::vector<int> init = {   8,  -1,  -1,   1,   5,  -1,   6,  -1,  -1   // 0
-                          ,  -1,  -1,  -1,   3,  -1,  -1,  -1,   4,   1   // 1
-                          ,   5,  -1,  -1,  -1,  -1,  -1,   7,  -1,  -1   // 2
-                          ,  -1,  -1,  -1,  -1,  -1,   9,  -1,   6,   2   // 3
-                          ,  -1,  -1,  -1,  -1,   3,  -1,  -1,  -1,  -1   // 4
-                          ,   1,   4,  -1,   8,  -1,  -1,  -1,  -1,  -1   // 5
-                          ,  -1,  -1,   8,  -1,  -1,  -1,  -1,  -1,   9   // 6
-                          ,   2,   9,  -1,  -1,  -1,   1,  -1,  -1,  -1   // 7
-                          ,  -1,  -1,   5,  -1,   9,   7,  -1,  -1,   6   // 8
+  std::vector<int> init = {  -1,  -1,  -1,   4,  -1,  -1,   2,   9,   6  // 0
+                          ,  -1,   8,   2,   6,  -1,  -1,   5,  -1,  -1  // 1
+                          ,  -1,  -1,   5,   1,  -1,  -1,  -1,  -1,  -1  // 2
+                          ,  -1,   4,   7,  -1,  -1,  -1,  -1,  -1,  -1  // 3
+                          ,  -1,  -1,   6,   8,   4,  -1,   1,   7,   9  // 4
+                          ,   1,   2,   9,  -1,  -1,   5,  -1,  -1,  -1  // 5
+                          ,   3,  -1,  -1,  -1,   8,  -1,   6,  -1,   5  // 6
+                          ,   6,  -1,  -1,  -1,   9,   4,  -1,  -1,   8  // 7
+                          ,  -1,  -1,  -1,  -1,   1,   6,  -1,  -1,  -1  // 8
                           };
 
   // Edition should come here
@@ -153,7 +153,7 @@ void Sudoku::solve(bool interactive){
 
       // Print valid moves
       if (interactive) {
-        std::cout << "[" << i / 9 << "," << i % 9 << "]"
+        std::cout << "[" << i % 9 << "," << i / 9 << "]"
                   << " valid moves (" << guesses.size() << "): ";
 
         for (auto &&g : guesses)
@@ -200,7 +200,10 @@ void Sudoku::solve(bool interactive){
     }
 
     // Pause Frame
-    if (interactive) getchar();
+    if (interactive) {
+        std::cout << "\nPressione ENTER para continuar." << std::endl;
+        getchar();
+    }
   }
 
 
@@ -214,6 +217,7 @@ void Sudoku::solve(bool interactive){
 
 void Sudoku::generate() {
     int count = 1;
+
     do {
         clear_board();
         int i = 0;
@@ -222,7 +226,9 @@ void Sudoku::generate() {
         for (int j = 0; j < SIDE*SIDE; j++)
             empty_cells.push_back(j);
 
-        while (i < 41) {
+        std::cout << "Gerando um tabuleiro valido... Tentativa: " << count++ << '\n' << std::endl;
+
+        while (i < 36) {
             srand(time(0));
 
             int index = rand() % empty_cells.size();
@@ -230,16 +236,23 @@ void Sudoku::generate() {
 
             if (nodes[empty_cells[index]].getValue() < 0 && valid_move(empty_cells[index], value)) {
                 nodes[empty_cells[index]].set_value(value);
-                std::cout << i++ << std::endl;
+                std::cout << "Preenchendo o tabuleiro... Numeros encontrados: " << ++i << std::endl;
                 empty_cells.erase(empty_cells.begin() + index);
             }
         }
-        solve(true);
+        std::cout << "\nTabuleiro encontrado:\n" << std::endl;
+        print();
+        std::cout << "\nTestando se o tabuleiro tem solucao..." << std::endl;
 
-        if (solved())
-            std::cout << "IT WORKS!" << std::endl;
+        Sudoku s (*this);
+        s.solve();
+
+        if (s.solved()) {
+            std::cout << "\nTabuleiro valido! Veja a solucao:\n" << std::endl;
+            solve(true);
+        }
         else
-            std::cout << count++ << std::endl;
+            std::cout << "\nTabuleiro invalido. Tentando novamente:" << std::endl;
 
     } while (!solved());
 }
@@ -247,4 +260,50 @@ void Sudoku::generate() {
 void Sudoku::clear_board() {
     for (auto &n : nodes)
         n.clear_value();
+}
+
+void Sudoku::games(int i) {
+    std::vector<int> init;
+    if (i == 0) {
+        // E.g.     0    1    2    3    4    5    6    7    8
+        init = {    6,   7,  -1,  -1,  -1,  -1,  -1,   8,  -1  // 0
+               ,   -1,  -1,   4,   2,  -1,   6,  -1,  -1,   3  // 1
+               ,   -1,  -1,   2,   7,  -1,   1,   6,   9,  -1  // 2
+               ,   -1,  -1,   1,  -1,  -1,   3,  -1,   6,  -1  // 3
+               ,    9,  -1,  -1,   1,  -1,   5,  -1,  -1,   7  // 4
+               ,   -1,   3,  -1,   9,  -1,  -1,   5,  -1,  -1  // 5
+               ,   -1,   1,   3,   6,  -1,   9,   8,  -1,  -1  // 6
+               ,    5,  -1,  -1,   8,  -1,   2,   1,  -1,  -1  // 7
+               ,   -1,   2,  -1,  -1,  -1,  -1,  -1,   3,   9  // 8
+        };
+    }
+    else if (i == 1) {
+        // E.g.     0    1    2    3    4    5    6    7    8
+        init = {   -1,  -1,  -1,   5,  -1,   9,  -1,  -1,  -1  // 0
+               ,   -1,  -1,   4,  -1,  -1,  -1,   3,  -1,   1  // 1
+               ,    7,  -1,   9,   4,   3,  -1,  -1,  -1,  -1  // 2
+               ,    1,   8,   6,   2,  -1,  -1,  -1,   5,  -1  // 3
+               ,   -1,  -1,   5,  -1,   1,  -1,  -1,   6,   9  // 4
+               ,   -1,   3,  -1,  -1,   7,   5,  -1,   1,  -1  // 5
+               ,    6,  -1,  -1,  -1,  -1,   7,   5,  -1,   4  // 6
+               ,   -1,  -1,  -1,   9,  -1,   3,  -1,  -1,  -1  // 7
+               ,    5,   1,   3,  -1,  -1,  -1,  -1,  -1,   2  // 8
+        };
+    }
+    else {
+        // E.g.     0    1    2    3    4    5    6    7    8
+        init = {   -1,  -1,  -1,   4,  -1,  -1,   2,   9,   6  // 0
+               ,   -1,   8,   2,   6,  -1,  -1,   5,  -1,  -1  // 1
+               ,   -1,  -1,   5,   1,  -1,  -1,  -1,  -1,  -1  // 2
+               ,   -1,   4,   7,  -1,  -1,  -1,  -1,  -1,  -1  // 3
+               ,   -1,  -1,   6,   8,   4,  -1,   1,   7,   9  // 4
+               ,    1,   2,   9,  -1,  -1,   5,  -1,  -1,  -1  // 5
+               ,    3,  -1,  -1,  -1,   8,  -1,   6,  -1,   5  // 6
+               ,    6,  -1,  -1,  -1,   9,   4,  -1,  -1,   8  // 7
+               ,   -1,  -1,  -1,  -1,   1,   6,  -1,  -1,  -1  // 8
+        };
+    }
+
+    for (int i = 0; i < init.size(); i++)
+        nodes.emplace_back(i, init[i]);
 }
