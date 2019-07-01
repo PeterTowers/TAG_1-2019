@@ -12,6 +12,6 @@ void user_interface();
 void precoded_games();
 
 // Prints an "invalid input" message
-void print_invalid()
+void print_invalid();
 
 #endif //PROJETO_4_USERINTERFACE_HPP

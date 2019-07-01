@@ -304,6 +304,8 @@ void Sudoku::games(int i) {
         };
     }
 
+
+    nodes.clear();
     for (int i = 0; i < init.size(); i++)
         nodes.emplace_back(i, init[i]);
 }
