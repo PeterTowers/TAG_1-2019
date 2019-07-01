@@ -1,15 +1,16 @@
 #include <iostream>
-#include "../include/Sudoku.hpp"
-#include "../include/Cell.hpp"
+#include "../include/UserInterface.hpp"
 
 int main(){
-  Sudoku s;
+    user_interface();
 
-  system("clear");
-
-  //s.solve(true);
-
-  s.generate();
+//  Sudoku s;
+//
+//  system("clear");
+//
+//  //s.solve(true);
+//
+//  s.generate();
 
   return 0;
 }
